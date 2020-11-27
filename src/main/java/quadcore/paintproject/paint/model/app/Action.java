@@ -17,9 +17,9 @@ public class Action {
     }
 
     protected Type reverseType() {
-        if (this.type == Type.EDIT) return Type.EDIT;
         if (this.type == Type.ADD) return Type.DELETE;
         if (this.type == Type.DELETE) return Type.ADD;
+        if (this.type == Type.EDIT) return Type.EDIT;
         else return null;
     }
 

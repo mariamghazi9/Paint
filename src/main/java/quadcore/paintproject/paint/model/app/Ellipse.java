@@ -4,23 +4,27 @@ import java.awt.*;
 
 public class Ellipse extends ClosedShape {
 
-    private final Point center;
     private float radiusX;
     private float radiusY;
 
-    protected Ellipse(String type, int id) {
-        super(type, id);
-        this.center = new Point(0, 0);
+    protected Ellipse() {
+        super("ellipse");
         this.radiusX = 1;
         this.radiusY = 1;
     }
 
+    public void setLocation(int x, int y, float radiusX, float radiusY) {
+        super.setPoint(x, y);
+        this.radiusX = radiusX;
+        this.radiusY = radiusY;
+    }
+
     public Point getCenter() {
-        return center;
+        return super.getPoint();
     }
 
     public void setCenter(int x, int y) {
-        this.center.setLocation(x, y);
+        super.setPoint(x, y);
     }
 
     public float getRadiusX() {

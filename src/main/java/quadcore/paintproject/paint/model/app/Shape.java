@@ -8,19 +8,32 @@ public abstract class Shape implements Cloneable {
     private int strokeWeight;
     private String type;
     private int id;
+    private final Point point;
 
-    protected Shape(String type, int id) {
+
+    protected Shape(String type) {
         this.strokeColor = new Color(0, 0, 0);
         this.strokeWeight = 1;
         this.type = type;
-        this.id = id;
+        point = new Point(0, 0);
+        this.id = App.getInstance().getCanvas().createID();
     }
 
     public Shape copy() {
         Shape shape = null;
         try {
             shape = (Shape) this.clone();
-            shape.setId(ShapeFactory.createID());
+            shape.id = App.getInstance().getCanvas().createID();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return shape;
+    }
+
+    protected Shape copyWithSameID() {
+        Shape shape = null;
+        try {
+            shape = (Shape) this.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -55,17 +68,11 @@ public abstract class Shape implements Cloneable {
         return id;
     }
 
-    protected void setId(int id) {
-        this.id = id;
+    protected Point getPoint() {
+        return point;
     }
 
-    protected Shape copyWithSameID() {
-        Shape shape = null;
-        try {
-            shape = (Shape) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return shape;
+    protected void setPoint(int x, int y) {
+        this.point.setLocation(x, y);
     }
 }

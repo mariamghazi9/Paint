@@ -1,15 +1,21 @@
 package quadcore.paintproject.paint.model.app;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class Canvas {
+
     private String name;
-    private final HashMap<Integer, Shape> shapes;
+    private int idCount = 0;
+
     private final ShapeFactory closedShapeFactory;
     private final ShapeFactory lineFactory;
+    private final HashMap<Integer, Shape> shapes;
+
     private final Stack<Action> undo;
     private final Stack<Action> redo;
+
 
     public Canvas() {
         this.name = "untitled";
@@ -29,7 +35,11 @@ public class Canvas {
         this.name = name;
     }
 
-    public void addShape(String type) {
+    protected int createID() {
+        return ++idCount;
+    }
+
+    public Shape addShape(String type) {
         String[] detailedType = type.split("-");
         Shape tempShape;
 
@@ -46,6 +56,8 @@ public class Canvas {
 
         shapes.put(tempShape.getId(), tempShape);
         undo.push(new Action(Action.Type.ADD, tempShape));
+
+        return tempShape;
     }
 
     private void addShape(Shape shape) {
@@ -57,28 +69,42 @@ public class Canvas {
         undo.push(new Action(Action.Type.DELETE, tempShape));
     }
 
-    //TODO: edit shape
+    public Shape getShapeForEditing(int id) {
+        Shape tempShape = shapes.get(id);
+        undo.push(new Action(Action.Type.EDIT, tempShape));
+        return tempShape;
+    }
 
-    public Shape undo() { //TODO return Action
+    public Action undo() {
         Action tempAction = undo.pop();
         Shape tempShape = tempAction.getShape();
 
         if (tempAction.getType() == Action.Type.ADD) {
             removeShape(tempShape.getId());
             redo.push(new Action(tempAction.reverseType(), tempShape));
-            return null;
+            return redo.peek();
 
         } else if (tempAction.getType() == Action.Type.DELETE) {
             addShape(tempShape);
             redo.push(new Action(tempAction.reverseType(), tempShape));
-            return tempShape.copyWithSameID();
+            return redo.peek();
 
         } else if (tempAction.getType() == Action.Type.EDIT) {
-            //TODO: edit shape
-            return null;
+            Shape soonToBeOld = shapes.remove(tempShape.getId());
+            shapes.put(tempShape.getId(), tempShape);
+            redo.push(new Action(tempAction.getType(), soonToBeOld));
+            return new Action(tempAction.getType(), tempShape);
 
         } else throw new RuntimeException("Invalid Action Type");
     }
 
     //TODO: redo
+    public Shape copyShape(int id) {
+        Shape shape = shapes.get(id);
+        shape = shape.copy();
+        Point point = shape.getPoint();
+        shape.setPoint(point.x + 1, point.y + 1);
+        return shape;
+    }
+    //TODO: handle shapes returning objects that can be changed (ex. Points)
 }
