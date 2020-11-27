@@ -20,6 +20,7 @@ public abstract class Shape implements Cloneable {
         Shape shape = null;
         try {
             shape = (Shape) this.clone();
+            shape.setId(ShapeFactory.createID());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -56,5 +57,15 @@ public abstract class Shape implements Cloneable {
 
     protected void setId(int id) {
         this.id = id;
+    }
+
+    protected Shape copyWithSameID() {
+        Shape shape = null;
+        try {
+            shape = (Shape) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return shape;
     }
 }
