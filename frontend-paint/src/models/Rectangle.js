@@ -35,36 +35,35 @@ class Rectangle {
         // 0  1  2
         // 3     4
         // 5  6  7
+
+        // 4  0  5
+        // 3     1
+        // 7  2  6
+
+        currentApp.selectionHandles[0].x = this.x + this.w/2 - half;
+        currentApp.selectionHandles[0].y = this.y - half;
+                
+        currentApp.selectionHandles[1].x = this.x + this.w - half;
+        currentApp.selectionHandles[1].y = this.y + this.h/2 - half;
         
-        // top left, middle, right
-        currentApp.selectionHandles[0].x = this.x-half;
-        currentApp.selectionHandles[0].y = this.y-half;
+        currentApp.selectionHandles[2].x = this.x + this.w/2 - half;
+        currentApp.selectionHandles[2].y = this.y + this.h - half;
         
-        currentApp.selectionHandles[1].x = this.x+this.w/2-half;
-        currentApp.selectionHandles[1].y = this.y-half;
-        
-        currentApp.selectionHandles[2].x = this.x+this.w-half;
-        currentApp.selectionHandles[2].y = this.y-half;
-        
-        //middle left
         currentApp.selectionHandles[3].x = this.x-half;
-        currentApp.selectionHandles[3].y = this.y+this.h/2-half;
+        currentApp.selectionHandles[3].y = this.y + this.h/2 -half;
         
-        //middle right
-        currentApp.selectionHandles[4].x = this.x+this.w-half;
-        currentApp.selectionHandles[4].y = this.y+this.h/2-half;
+        currentApp.selectionHandles[4].x = this.x - half;
+        currentApp.selectionHandles[4].y = this.y - half;
         
-        //bottom left, middle, right
-        currentApp.selectionHandles[6].x = this.x+this.w/2-half;
-        currentApp.selectionHandles[6].y = this.y+this.h-half;
+        currentApp.selectionHandles[5].x = this.x + this.w - half;
+        currentApp.selectionHandles[5].y = this.y-half;
+
+        currentApp.selectionHandles[6].x = this.x + this.w - half;
+        currentApp.selectionHandles[6].y = this.y + this.h - half;
         
-        currentApp.selectionHandles[5].x = this.x-half;
-        currentApp.selectionHandles[5].y = this.y+this.h-half;
-        
-        currentApp.selectionHandles[7].x = this.x+this.w-half;
-        currentApp.selectionHandles[7].y = this.y+this.h-half;
+        currentApp.selectionHandles[7].x = this.x - half;
+        currentApp.selectionHandles[7].y = this.y + this.h -half;
     
-        
         context.fillStyle = currentApp.selectionBoxColor;
         // Draw the tiny boxes on the selected shapes
         for (var i = 0; i < 8; i ++) {
@@ -74,6 +73,46 @@ class Rectangle {
         }
         
     } // end draw
+    resize(currentApp, expectResize) {
+        var oldx = this.x;
+        var oldy = this.y;
+        switch (expectResize) {
+            case 0:
+              this.y = currentApp.mouse_y;
+              this.h += oldy - currentApp.mouse_y;
+              break;
+            case 1:
+                this.w = currentApp.mouse_x - oldx;
+              break;
+            case 2:
+                this.h = currentApp.mouse_y - oldy;
+                break;
+            case 3:
+                this.x = currentApp.mouse_x;
+                this.w += oldx - currentApp.mouse_x;
+                break;
+            case 4:
+                this.x = currentApp.mouse_x;
+                this.y = currentApp.mouse_y;
+                this.w += oldx - currentApp.mouse_x;
+                this.h += oldy - currentApp.mouse_y;
+                break;
+            case 5:
+                this.y = currentApp.mouse_y;
+                this.w = currentApp.mouse_x - oldx;
+                this.h += oldy - currentApp.mouse_y;
+                break;
+            case 6:
+                this.w = currentApp.mouse_x - oldx;
+                this.h = currentApp.mouse_y - oldy;
+                break;
+            case 7:
+                this.x = currentApp.mouse_x;
+                this.w += oldx - currentApp.mouse_x;
+                this.h = currentApp.mouse_y - oldy;
+                break;
+          }
+    }
 }
   
 

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="container">
-    <canvas id="canvas" width="400" height="300"  v-bind:style="{cursor: selectedCursor}">
+    <canvas id="canvas" width="800" height="800"  v-bind:style="{cursor: selectedCursor}">
     This text is displayed if your browser does not support HTML5 Canvas.
     </canvas>
     </div>
@@ -32,6 +32,8 @@
 </style>
 <script>
 import Rectangle from './models/Rectangle';
+import Circle from './models/Circle';
+import Ellipse from './models/Ellipse';
 export default { 
   data() {
         return {
@@ -131,6 +133,10 @@ export default {
       // add a smaller purple rectangle
       this.addRect(45, 60, 25, 25, 'rgba(150,150,250,0.7)');
 
+      this.addCircle(45, 60, 50, 'rgba(150,150,250,0.7)');
+
+      this.addEllipse(70, 150, 60, 70, 'rgba(90,100,20,0.7)');
+
     },
     methods: {
         addRect(x, y, w, h, fill) {
@@ -141,6 +147,25 @@ export default {
           rect.h = h;
           rect.fill = fill;
           this.shapes.push(rect);
+          this.invalidate();
+      },
+      addCircle(x, y, r, fill) {
+          var cir = new Circle;
+          cir.x = x;
+          cir.y = y;
+          cir.r = r;
+          cir.fill = fill;
+          this.shapes.push(cir);
+          this.invalidate();
+      },
+      addEllipse(x, y, radius_x, radius_y, fill) {
+          var ell = new Ellipse;
+          ell.x = x;
+          ell.y = y;
+          ell.radius_x = radius_x;
+          ell.radius_y = radius_y;
+          ell.fill = fill;
+          this.shapes.push(ell);
           this.invalidate();
       },
       //wipes the canvas context
@@ -179,49 +204,12 @@ export default {
           this.invalidate();
         } else if (this.isResizeDrag) {
           // time ro resize!
-          var oldx = this.selectedShape.x;
-          var oldy = this.selectedShape.y;
+          
           
           // 0  1  2
           // 3     4
           // 5  6  7
-          switch (this.expectResize) {
-            case 0:
-              this.selectedShape.x = this.mouse_x;
-              this.selectedShape.y = this.mouse_y;
-              this.selectedShape.w += oldx - this.mouse_x;
-              this.selectedShape.h += oldy - this.mouse_y;
-              break;
-            case 1:
-              this.selectedShape.y = this.mouse_y;
-              this.selectedShape.h += oldy - this.mouse_y;
-              break;
-            case 2:
-              this.selectedShape.y = this.mouse_y;
-              this.selectedShape.w = this.mouse_x - oldx;
-              this.selectedShape.h += oldy - this.mouse_y;
-              break;
-            case 3:
-              this.selectedShape.x = this.mouse_x;
-              this.selectedShape.w += oldx - this.mouse_x;
-              break;
-            case 4:
-              this.selectedShape.w = this.mouse_x - oldx;
-              break;
-            case 5:
-              this.selectedShape.x = this.mouse_x;
-              this.selectedShape.w += oldx - this.mouse_x;
-              this.selectedShape.h = this.mouse_y - oldy;
-              break;
-            case 6:
-              this.selectedShape.h = this.mouse_y - oldy;
-              break;
-            case 7:
-              this.selectedShape.w = this.mouse_x - oldx;
-              this.selectedShape.h = this.mouse_y - oldy;
-              break;
-          }
-          
+          this.selectedShape.resize(this, this.expectResize)          
           this.invalidate();
         }
         
@@ -245,28 +233,28 @@ export default {
               
               switch (i) {
                 case 0:
-                  this.selectedCursor='nw-resize';
-                  break;
-                case 1:
                   this.selectedCursor='n-resize';
                   break;
+                case 1:
+                  this.selectedCursor='e-resize';
+                  break;
                 case 2:
-                  this.selectedCursor='ne-resize';
+                  this.selectedCursor='s-resize';
                   break;
                 case 3:
                   this.selectedCursor='w-resize';
                   break;
                 case 4:
-                  this.selectedCursor='e-resize';
+                  this.selectedCursor='nw-resize';
                   break;
                 case 5:
-                  this.selectedCursor='sw-resize';
+                  this.selectedCursor='ne-resize';
                   break;
                 case 6:
-                  this.selectedCursor='s-resize';
+                  this.selectedCursor='se-resize';
                   break;
                 case 7:
-                  this.selectedCursor='se-resize';
+                  this.selectedCursor='sw-resize';
                   break;
               }
               return;
@@ -329,9 +317,10 @@ export default {
       addShape(e) {
         this.getMouse(e);
         // Default size
-        var width = 20;
-        var height = 20;
-        this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
+        //var width = 20;
+        //var height = 20;
+        //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
+        this.addCircle(this.mouse_x, this.mouse_y, 40, 'rgba(220,205,65,0.7)')
       },
       invalidate() {
         this.canvasValid = false;
