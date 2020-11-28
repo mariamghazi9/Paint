@@ -1,15 +1,22 @@
 <template>
-  <div id="app">
-    <div id="container">
-      <canvas
-        id="canvas"
+  <div>
+    <v-container fill-height align-center justify-center>
+      <v-card
+        height="600"
         width="800"
-        height="800"
-        v-bind:style="{ cursor: selectedCursor }"
+        justify="center"
+        style="border: blueviolet"
       >
-        This text is displayed if your browser does not support HTML5 Canvas.
-      </canvas>
-    </div>
+        <canvas
+          id="canvas"
+          width="800"
+          height="600"
+          v-bind:style="{ cursor: selectedCursor }"
+        >
+          This text is displayed if your browser does not support HTML5 Canvas.
+        </canvas>
+      </v-card>
+    </v-container>
   </div>
 </template>
 

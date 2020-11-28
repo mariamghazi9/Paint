@@ -106,5 +106,4 @@ public class Canvas {
         shape.setPoint(point.x + 1, point.y + 1);
         return shape;
     }
-    //TODO: handle shapes returning objects that can be changed (ex. Points)
 }
