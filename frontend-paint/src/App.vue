@@ -31,9 +31,13 @@
 }
 </style>
 <script>
+import Point from './models/Point';
 import Rectangle from './models/Rectangle';
 import Circle from './models/Circle';
-import Ellipse from './models/Ellipse';
+import Triangle from'./models/Triangle';
+
+
+
 export default { 
   data() {
         return {
@@ -119,6 +123,8 @@ export default {
       for (var i = 0; i < 8; i ++) {
         var rect = new Rectangle;
         this.selectionHandles.push(rect);
+        
+        
       }
       
       // add custom initialization here:
@@ -134,8 +140,11 @@ export default {
       this.addRect(45, 60, 25, 25, 'rgba(150,150,250,0.7)');
 
       this.addCircle(45, 60, 50, 'rgba(150,150,250,0.7)');
+      var p1=new Point(30,25)
+      var p2=new Point(70,25)
+      var p3=new Point(50,55)
+      this.addTriangle(p1,p2,p3,'rgba(150,150,250,0.7)')
 
-      this.addEllipse(70, 150, 60, 70, 'rgba(90,100,20,0.7)');
 
     },
     methods: {
@@ -158,16 +167,14 @@ export default {
           this.shapes.push(cir);
           this.invalidate();
       },
-      addEllipse(x, y, radius_x, radius_y, fill) {
-          var ell = new Ellipse;
-          ell.x = x;
-          ell.y = y;
-          ell.radius_x = radius_x;
-          ell.radius_y = radius_y;
-          ell.fill = fill;
-          this.shapes.push(ell);
-          this.invalidate();
+
+      addTriangle(p1,p2,p3,fill)
+      {
+        var triangle= new Triangle(p1,p2,p3,fill);
+        this.shapes.push(triangle);
+        this.invalidate();
       },
+   
       //wipes the canvas context
       clear(c) {
         c.clearRect(0, 0, this.WIDTH, this.HEIGHT);
@@ -199,6 +206,8 @@ export default {
           
           this.selectedShape.x = this.mouse_x - this.offset_x;
           this.selectedShape.y = this.mouse_y - this.offset_y;   
+        
+
           
           // something is changing position so we better invalidate the canvas!
           this.invalidate();
