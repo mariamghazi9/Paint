@@ -11,8 +11,8 @@ public abstract class ClosedShape extends Shape {
         this.fillColor = new Color(255, 255, 255);
     }
 
-    public Color getFillColor() {
-        return fillColor;
+    public String getFillColor() {
+        return fillColor.toString();
     }
 
     public void setFillColor(int r, int g, int b) {

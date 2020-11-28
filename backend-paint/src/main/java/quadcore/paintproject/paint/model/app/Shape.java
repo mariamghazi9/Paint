@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.awt.*;
 
 public abstract class Shape implements Cloneable {
@@ -40,8 +42,8 @@ public abstract class Shape implements Cloneable {
         return shape;
     }
 
-    public Color getStrokeColor() {
-        return strokeColor;
+    public String  getStrokeColor() {
+        return strokeColor.toString();
     }
 
     public void setStrokeColor(int r, int g, int b) {

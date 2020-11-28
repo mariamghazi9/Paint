@@ -1,8 +1,10 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import quadcore.paintproject.paint.model.saveload.FileManager;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class App {
@@ -22,18 +24,22 @@ public class App {
         return canvas;
     }
 
-    public Canvas load(File file) {
+    public Canvas load() {
         //TODO
-        return new Canvas();
+        this.canvas = new Canvas();
+        return this.canvas;
     }
 
     /**
      * do not forget to delete file from server after sending to front-end
-     * @param name file name
+     * @param type either xml or json; the format in which the canvas is to be saved
      * @return file created in specified format
      */
-    public File save(String name) {
-        //TODO
-        return new File("");
+    public File save(String type) throws IOException {
+        if (type.equalsIgnoreCase("xml")) {
+            return fileManager.saveAsXML(this.canvas);
+        } else {
+            return null;
+        }
     }
 }
