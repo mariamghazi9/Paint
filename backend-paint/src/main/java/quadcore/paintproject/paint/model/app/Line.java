@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 
 public class Line extends Shape {
@@ -12,6 +14,7 @@ public class Line extends Shape {
         this.end = new Point(1, 1);
     }
 
+    @JsonIgnore
     public Point getStart() {
         return super.getPoint();
     }
