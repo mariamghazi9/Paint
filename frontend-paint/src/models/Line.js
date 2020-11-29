@@ -6,14 +6,14 @@ class Line{
         this.fill=fill;
         this.x=0;
         this.y=0;
-
+        console.log(JSON.stringify(this))
         
     }
 
      draw(context,currentApp)
      {
         if (context === currentApp.gctx) {
-            context.fillStyle = "black";
+            context.strokeStyle = "black";
           } else {
             context.strokeStyle = this.fill;
           }
@@ -40,12 +40,12 @@ class Line{
      
         
         
-    currentApp.selectionHandles[0].x = this.p1.x+this.x-3;
-    currentApp.selectionHandles[0].y = this.p1.y+this.y-3;
-    currentApp.selectionHandles[1].x = this.p2.x+this.x-3;
-    currentApp.selectionHandles[1].y = this.p2.y+this.y-3;
+    currentApp.selectionHandles[4].x = this.p1.x+this.x-3;
+    currentApp.selectionHandles[4].y = this.p1.y+this.y-3;
+    currentApp.selectionHandles[5].x = this.p2.x+this.x-3;
+    currentApp.selectionHandles[5].y = this.p2.y+this.y-3;
     for (var i = 0; i < 2; i++) {
-        var cur = currentApp.selectionHandles[i];
+        var cur = currentApp.selectionHandles[i+4];
         context.beginPath()
         context.fillStyle = "#CC0000";
         context.fillRect(
@@ -58,11 +58,9 @@ class Line{
     }
     resize(currentApp,expectResize)
     {
-
-      
       switch(expectResize)
       {    
-         case 0:
+         case 4:
              {  var oldx=this.p1.x
                 var oldY=this.p1.y
                 var diff = oldx - currentApp.mouse_x;
@@ -74,7 +72,7 @@ class Line{
                 else this.p1.y -= diff;
                 break;
              }
-        case 1:
+        case 5:
             {
                oldx=this.p2.x
                oldY=this.p2.y
