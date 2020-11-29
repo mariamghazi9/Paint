@@ -25,6 +25,8 @@ import Circle from "../models/Circle";
 import Rectangle from "../models/Rectangle";
 import Triangle from "../models/Triangle";
 import Point from "../models/Point";
+import Line from "../models/Line";
+import Square from "../models/Square";
 
 export default {
   name: "Canvas",
@@ -149,12 +151,21 @@ export default {
     this.addRect(240, 120, 40, 40, "rgba(2,165,165,0.7)");
 
     // add a smaller purple rectangle
-    this.addRect(45, 60, 25, 25, "rgba(150,150,250,0.7)");
+   
     this.addCircle(45, 60, 50, "rgba(150,150,250,0.7)");
-    var p1 = new Point(30, 25);
-    var p2 = new Point(70, 25);
-    var p3 = new Point(50, 55);
+ 
+    var p1 = new Point(300, 25);
+    var p2 = new Point(250, 25);
+    var p3 = new Point(200, 55);
     this.addTriangle(p1, p2, p3, "rgba(150,150,250,0.7)");
+    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
+    this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)");
+    this.addSquare(300,200,70,70,"rgba(150,150,250,0.7)")
+    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
+    this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)")
+    this.addSquare(400,355,89,89,"rgba(150,150,250,0.7)")
+    
+    
   },
   methods: {
     addRect(x, y, w, h, fill) {
@@ -180,6 +191,18 @@ export default {
       var triangle = new Triangle(p1, p2, p3, fill);
       this.shapes.push(triangle);
       this.invalidate();
+    },
+    addLine(p1,p2,fill)
+    {
+      var line=new Line(p1,p2,fill)
+      this.shapes.push(line);
+      this.invalidate();
+    },
+    addSquare(x,y,length,fill)
+    {
+      var square=new Square(x,y,length,fill)
+      this.shapes.push(square)
+      this.invalidate()
     },
 
     //wipes the canvas context
@@ -222,6 +245,7 @@ export default {
         // 0  1  2
         // 3     4
         // 5  6  7
+      
         this.selectedShape.resize(this, this.expectResize);
         this.invalidate();
       }
