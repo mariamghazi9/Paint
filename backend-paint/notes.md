@@ -3,4 +3,4 @@
 
 - **TODOs** (search for them in project)
 
-- Class Diagram Rev03
+- Class Diagram Rev02
