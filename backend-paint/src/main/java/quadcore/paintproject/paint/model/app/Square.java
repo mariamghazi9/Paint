@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 
 public class Square extends ClosedShape {
@@ -17,6 +19,7 @@ public class Square extends ClosedShape {
         this.length = length;
     }
 
+    @JsonIgnore
     public Point getTopRight() {
         return super.getPoint();
     }

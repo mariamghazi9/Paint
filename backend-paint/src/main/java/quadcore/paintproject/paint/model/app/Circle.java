@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 
 public class Circle extends ClosedShape {
@@ -16,12 +18,9 @@ public class Circle extends ClosedShape {
         this.radius = radius;
     }
 
+    @JsonIgnore
     public Point getCenter() {
         return super.getPoint();
-    }
-
-    public void setCenter(int x, int y) {
-        super.setPoint(x, y);
     }
 
     public float getRadius() {

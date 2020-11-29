@@ -1,6 +1,6 @@
 <template id="app">
   <v-app>
-    <v-main>
+    <v-main   style="background-color: #EEE7DF">
       <v-container>
         <Toolbar id="myToolbar"/>
         <Canvas id="myCanvas" />

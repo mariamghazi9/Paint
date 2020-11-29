@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 
 public class Ellipse extends ClosedShape {
@@ -19,12 +21,10 @@ public class Ellipse extends ClosedShape {
         this.radiusY = radiusY;
     }
 
+
+    @JsonIgnore
     public Point getCenter() {
         return super.getPoint();
-    }
-
-    public void setCenter(int x, int y) {
-        super.setPoint(x, y);
     }
 
     public float getRadiusX() {
