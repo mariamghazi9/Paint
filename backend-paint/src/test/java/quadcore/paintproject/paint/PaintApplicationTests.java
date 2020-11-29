@@ -18,7 +18,8 @@ class PaintApplicationTests {
         canvas = app.createCanvas();
         Shape shape = canvas.addShape("circle");
         shape.setColor("#506070");
-        ((Circle) shape).setLocation(6,6,5);
+        ((Circle) shape).setLocation(6,6);
+        ((Circle) shape).setRadius(5);
         shape = canvas.addShape("square");
         shape.setColor("#050607");
         canvas.addShape("rectangle");

@@ -13,9 +13,8 @@ public class Circle extends Shape {
         this.radius = 1;
     }
 
-    public void setLocation(int x, int y, int radius) {
+    public void setLocation(int x, int y) {
         super.setPoint(x, y);
-        this.radius = radius;
     }
 
     @JsonIgnore

@@ -45,6 +45,10 @@ public class Canvas {
         return list;
     }
 
+    public Shape getShape(int id) {
+        return shapes.get(id);
+    }
+
     public void setShapes(LinkedList<Shape> list) {
         for (Shape shape : list) {
             shapes.put(shape.getId(), shape);

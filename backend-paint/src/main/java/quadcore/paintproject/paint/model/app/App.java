@@ -12,6 +12,7 @@ public class App {
     private final FileManager fileManager = new FileManager();
 
     private App() {
+        canvas = new Canvas();
     }
 
     public static App getInstance() {
