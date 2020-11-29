@@ -21,7 +21,11 @@ class Line{
           context.moveTo(this.p1.x+this.x, this.p1.y+this.y);
           context.lineTo(this.p2.x+this.x , this.p2.y+this.y);
           context.stroke();
+<<<<<<< HEAD
       
+=======
+       
+>>>>>>> 99fb05293efc2ec62a41a8d8c7a2b7d886f2fe68
          
           
           if(currentApp.selectedShape==this)

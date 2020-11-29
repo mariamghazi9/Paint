@@ -13,13 +13,13 @@ public class Controller {
 
     Service service = new Service();
     @RequestMapping(value = "/addShape", method = RequestMethod.POST)
-    public Shape add(@RequestBody Map<String, Object> shape) {
-        return service.add(shape);
+    public void add(@RequestBody Map<String, Object> shape) {
+        service.add(shape);
     }
 
-    @RequestMapping(value = "/deleteShape", method = RequestMethod.DELETE)
-    public void delete(@RequestBody Map<String, Object> shape) {
-        service.delete(shape);
+    @RequestMapping(value = "/deleteShape/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable int id) {
+        service.delete(id);
     }
 
     @RequestMapping(value = "/undo", method = RequestMethod.GET)
