@@ -2,7 +2,7 @@ package quadcore.paintproject.paint.model.app;
 
 import java.awt.*;
 
-public class Triangle extends ClosedShape {
+public class Triangle extends Shape {
 
     private Point[] points;
 

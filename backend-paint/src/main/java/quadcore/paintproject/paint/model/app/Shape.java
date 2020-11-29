@@ -1,6 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -17,16 +18,14 @@ import java.awt.*;
 })
 public abstract class Shape implements Cloneable {
 
-    private String strokeColor;
-    private int strokeWeight;
+    private String color;
     private String name;
     private int id;
     private final Point point;
 
 
     protected Shape(String name) {
-        this.strokeColor = "#000000";
-        this.strokeWeight = 1;
+        this.color = "#000000";
         this.name = name.toLowerCase();
         point = new Point(0, 0);
         this.id = App.getInstance().getCanvas().createID();
@@ -53,20 +52,12 @@ public abstract class Shape implements Cloneable {
         return shape;
     }
 
-    public String getStrokeColor() {
-        return strokeColor;
+    public String getColor() {
+        return color;
     }
 
-    public void setStrokeColor(String color) {
-        this.strokeColor = color;
-    }
-
-    public int getStrokeWeight() {
-        return strokeWeight;
-    }
-
-    public void setStrokeWeight(int strokeWeight) {
-        this.strokeWeight = strokeWeight;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getName() {
@@ -81,20 +72,21 @@ public abstract class Shape implements Cloneable {
         return id;
     }
 
-    @JsonGetter("point")
     protected Point getPoint() {
         return point;
     }
 
-    protected void setPoint(int x, int y) {
+    protected void setPoint(float x, float y) {
         this.point.setLocation(x, y);
     }
 
-    public ClosedShape toClosedShape() {
-        return (ClosedShape)this;
+    @JsonGetter("point")
+    private int[] getPointAsArr() {
+        return new int[]{point.x, point.y};
     }
 
-    public Line toLine() {
-        return (Line)this;
+    @JsonSetter("point")
+    private void setPointFromArr(int[] arr) {
+        this.point.setLocation(arr[0], arr[1]);
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.awt.*;
 
-public class Square extends ClosedShape {
+public class Square extends Shape {
 
     private float length;
 

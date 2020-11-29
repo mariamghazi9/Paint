@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.awt.*;
 
-public class Ellipse extends ClosedShape {
+public class Ellipse extends Shape {
 
     private float radiusX;
     private float radiusY;

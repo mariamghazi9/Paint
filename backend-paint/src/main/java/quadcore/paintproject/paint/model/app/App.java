@@ -31,6 +31,7 @@ public class App {
     public Canvas load(File file) throws IOException {
         if (file.getName().endsWith(".xml")) {
             this.canvas = fileManager.loadXML(file);
+            return canvas;
         } else if (file.getName().endsWith(".json")){
             this.canvas = fileManager.loadJson(file);
             return canvas;

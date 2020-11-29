@@ -9,8 +9,8 @@ public class Line extends Shape {
     private final Point end;
 
 
-    protected Line(String type) {
-        super(type);
+    protected Line() {
+        super("line");
         this.end = new Point(1, 1);
     }
 

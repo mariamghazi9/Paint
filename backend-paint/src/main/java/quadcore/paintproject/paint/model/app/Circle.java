@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.awt.*;
 
-public class Circle extends ClosedShape {
+public class Circle extends Shape {
 
     private float radius;
 

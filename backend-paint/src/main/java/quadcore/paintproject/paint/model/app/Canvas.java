@@ -10,8 +10,7 @@ public class Canvas {
     private String name;
     private int idCount = 0;
 
-    private ShapeFactory closedShapeFactory;
-    private ShapeFactory lineFactory;
+    private ShapeFactory factory;
 
     private final HashMap<Integer, Shape> shapes;
     private final Stack<Action> undo;
@@ -21,9 +20,7 @@ public class Canvas {
     public Canvas() {
         this.name = "untitled";
         this.shapes = new HashMap<>();
-        FactoryProducer factoryProducer = new FactoryProducer();
-        this.closedShapeFactory = factoryProducer.getFactory("closedShape");
-        this.lineFactory = factoryProducer.getFactory("line");
+        this.factory = new ShapeFactory();
         this.undo = new Stack<>();
         this.redo = new Stack<>();
     }
@@ -68,22 +65,9 @@ public class Canvas {
     }
 
     public Shape addShape(String type) {
-        if (lineFactory == null) lineFactory = new LineFactory();
-        if (closedShapeFactory == null) closedShapeFactory = new LineFactory();
+        if (factory == null) factory = new ShapeFactory();
 
-        String[] detailedType = type.split("-");
-        Shape tempShape;
-
-        if (detailedType[0].equalsIgnoreCase("line")) {
-            tempShape = lineFactory.getShape(detailedType[1]);
-
-        } else if (detailedType[0].equalsIgnoreCase("closedShape") ||
-                detailedType[0].equalsIgnoreCase("shape")) {
-            tempShape = closedShapeFactory.getShape(detailedType[1]);
-
-        } else {
-            throw new RuntimeException("Invalid Shape Type");
-        }
+        Shape tempShape = factory.getShape(type);
 
         shapes.put(tempShape.getId(), tempShape);
         undo.push(new Action(Action.Type.ADD, tempShape));
@@ -112,19 +96,21 @@ public class Canvas {
 
         if (tempAction.getType() == Action.Type.ADD) {
             removeShape(tempShape.getId());
-            to.push(new Action(tempAction.reverseType(), tempShape));
+            tempAction.setType(tempAction.reverseType());
+            to.push(tempAction);
             return to.peek();
 
         } else if (tempAction.getType() == Action.Type.DELETE) {
             addShape(tempShape);
-            to.push(new Action(tempAction.reverseType(), tempShape));
+            tempAction.setType(tempAction.reverseType());
+            to.push(tempAction);
             return to.peek();
 
         } else if (tempAction.getType() == Action.Type.EDIT) {
             Shape soonToBeOld = shapes.remove(tempShape.getId());
             shapes.put(tempShape.getId(), tempShape);
             to.push(new Action(tempAction.getType(), soonToBeOld));
-            return new Action(tempAction.getType(), tempShape);
+            return tempAction;
 
         } else throw new RuntimeException("Invalid Action Type");
     }
