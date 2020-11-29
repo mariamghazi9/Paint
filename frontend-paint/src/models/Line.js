@@ -21,7 +21,7 @@ class Line{
           context.moveTo(this.p1.x+this.x, this.p1.y+this.y);
           context.lineTo(this.p2.x+this.x , this.p2.y+this.y);
           context.stroke();
-          this.sendLine();
+       
          
           
           if(currentApp.selectedShape==this)
