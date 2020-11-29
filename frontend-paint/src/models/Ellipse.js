@@ -6,6 +6,7 @@ class Ellipse {
     this.radius_x = 1;
     this.radius_y = 1;
     this.fill = "#8A4584";
+    this.type = "ellipse";
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'

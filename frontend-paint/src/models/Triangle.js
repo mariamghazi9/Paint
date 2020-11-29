@@ -6,6 +6,7 @@ class Triangle {
     this.fill = fill;
     this.x = 0;
     this.y = 0;
+    this.type = "triangle";
   }
   draw(context, currentApp) {
     if (context === currentApp.gctx) {
@@ -24,7 +25,7 @@ class Triangle {
     context.closePath();
     context.fill();
 
-    if (currentApp.selectedShape == this)
+    if (currentApp.selectedShape === this)
       this.drawSelected(context, currentApp);
   }
 

@@ -5,6 +5,7 @@ class Circle {
     // default radius?
     this.r = 1;
     this.fill = "#844484";
+    this.type = "circle";
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'
