@@ -21,15 +21,16 @@ class PaintApplicationTests {
         app = App.getInstance();
         canvas = app.createCanvas();
         Shape shape = canvas.addShape("closedShape-circle");
-        ((ClosedShape) shape).setFillColor(50, 60, 70);
+        ((ClosedShape) shape).setFillColor("#506070");
         shape = canvas.addShape("closedShape-square");
+        shape.setStrokeColor("#050607");
+        canvas.addShape("closedShape-rectangle");
         File file;
         try {
             file = app.save("json");
             canvas = null;
             canvas = app.load(file);
-            int[] arr = {50, 60, 70};
-            assert (Arrays.equals(canvas.getShapeForEditing(1).toClosedShape().getFillColor(), arr));
+            assert (canvas.getShapeForEditing(1).toClosedShape().getFillColor().equals("#506070"));
         } catch (IOException e) {
             e.printStackTrace();
         }

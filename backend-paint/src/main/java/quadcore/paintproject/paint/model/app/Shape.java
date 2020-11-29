@@ -1,5 +1,6 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -16,7 +17,7 @@ import java.awt.*;
 })
 public abstract class Shape implements Cloneable {
 
-    private final int[] strokeColor;
+    private String strokeColor;
     private int strokeWeight;
     private String name;
     private int id;
@@ -24,7 +25,7 @@ public abstract class Shape implements Cloneable {
 
 
     protected Shape(String name) {
-        this.strokeColor = new int[3];
+        this.strokeColor = "#000000";
         this.strokeWeight = 1;
         this.name = name.toLowerCase();
         point = new Point(0, 0);
@@ -52,14 +53,12 @@ public abstract class Shape implements Cloneable {
         return shape;
     }
 
-    public int[] getStrokeColor() {
+    public String getStrokeColor() {
         return strokeColor;
     }
 
-    public void setStrokeColor(int r, int g, int b) {
-        this.strokeColor[0] = r;
-        this.strokeColor[1] = g;
-        this.strokeColor[2] = b;
+    public void setStrokeColor(String color) {
+        this.strokeColor = color;
     }
 
     public int getStrokeWeight() {
@@ -82,6 +81,7 @@ public abstract class Shape implements Cloneable {
         return id;
     }
 
+    @JsonGetter("point")
     protected Point getPoint() {
         return point;
     }

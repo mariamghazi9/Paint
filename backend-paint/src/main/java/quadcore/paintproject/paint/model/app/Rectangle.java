@@ -6,17 +6,20 @@ import java.awt.*;
 
 public class Rectangle extends ClosedShape {
 
-    private final Point bottomRight;
+    private int height;
+    private int width;
 
 
     protected Rectangle() {
         super("rectangle");
-        this.bottomRight = new Point(1, 1);
+        height = 1;
+        width = 1;
     }
 
-    public void setLocation(int x1, int y1, int x2, int y2) {
-        super.setPoint(Math.min(x1, x2), Math.min(y1, y2));
-        this.bottomRight.setLocation(Math.max(x1, x2), Math.max(y1, y2));
+    public void setLocation(int x, int y, int h, int w) {
+        super.setPoint(x, y);
+        this.height = h;
+        this.width = w;
     }
 
     @JsonIgnore
@@ -24,8 +27,11 @@ public class Rectangle extends ClosedShape {
         return super.getPoint();
     }
 
-    public Point getBottomRight() {
-        return bottomRight;
+    public int getHeight() {
+        return height;
     }
 
+    public int getWidth() {
+        return width;
+    }
 }
