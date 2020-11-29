@@ -6,6 +6,7 @@ class Line{
         this.fill=fill;
         this.x=0;
         this.y=0;
+
         
     }
 
@@ -20,12 +21,15 @@ class Line{
           context.moveTo(this.p1.x+this.x, this.p1.y+this.y);
           context.lineTo(this.p2.x+this.x , this.p2.y+this.y);
           context.stroke();
+          this.sendLine();
          
           
           if(currentApp.selectedShape==this)
             this.drawSelected(context,currentApp)
           
      }
+
+   
      drawSelected(context,currentApp)
      { context.beginPath()
        context.strokeStyle = currentApp.selectionColor;
@@ -54,18 +58,34 @@ class Line{
     }
     resize(currentApp,expectResize)
     {
+
+      
       switch(expectResize)
       {    
          case 0:
-             {
-                this.p1.x=currentApp.mouse_x;
-                this.p1.y=currentApp.mouse_y;  
+             {  var oldx=this.p1.x
+                var oldY=this.p1.y
+                var diff = oldx - currentApp.mouse_x;
+                if (diff < 0) this.p1.x += Math.abs(diff);
+                else this.p1.x -= diff;
+
+                 diff = oldY - currentApp.mouse_y;
+                if (diff < 0) this.p1.y += Math.abs(diff);
+                else this.p1.y -= diff;
                 break;
              }
         case 1:
             {
-                this.p2.x=currentApp.mouse_x;
-                this.p2.y=currentApp.mouse_y;  
+               oldx=this.p2.x
+               oldY=this.p2.y
+               diff = oldx - currentApp.mouse_x;
+              if (diff < 0) this.p2.x += Math.abs(diff);
+              else this.p2.x -= diff;
+
+               diff = oldY - currentApp.mouse_y;
+              if (diff < 0) this.p2.y += Math.abs(diff);
+              else this.p2.y -= diff;
+              break;
              }
 
       }
