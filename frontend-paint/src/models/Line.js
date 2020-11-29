@@ -6,7 +6,7 @@ class Line{
         this.fill=fill;
         this.x=0;
         this.y=0;
-
+        this.type = "line";
         
     }
 

@@ -5,7 +5,7 @@ class Square{
         this.width=width;
         this.height=this.width;
         this.fill=fill;
-
+        this.type = "square";
     }
 
     draw(context,currentApp)

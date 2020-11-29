@@ -6,6 +6,7 @@ class Rectangle {
     this.w = 1;
     this.h = 1;
     this.fill = "#444444";
+    this.type = "rectangle";
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'

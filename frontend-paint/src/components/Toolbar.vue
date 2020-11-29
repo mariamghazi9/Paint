@@ -6,7 +6,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="addShape">
               <v-icon>mdi-file-outline</v-icon>
             </v-btn>
           </template>
@@ -138,6 +138,9 @@
 </template>
 
 <script>
+import PaintService from "../service/PaintService";
+import Circle from "../models/Circle";
+
 export default {
   name: "Toolbar",
   data() {
@@ -145,6 +148,11 @@ export default {
       color: "white",
       value: ""
     };
+  },
+  methods:{
+    addShape() {
+      PaintService.addShape(new Circle());
+    }
   }
 };
 </script>
