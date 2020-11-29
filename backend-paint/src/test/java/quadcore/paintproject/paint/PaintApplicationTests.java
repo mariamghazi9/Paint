@@ -1,13 +1,15 @@
 package quadcore.paintproject.paint;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import quadcore.paintproject.paint.model.app.*;
-import quadcore.paintproject.paint.model.saveload.FileManager;
+import quadcore.paintproject.paint.model.app.App;
+import quadcore.paintproject.paint.model.app.Canvas;
+import quadcore.paintproject.paint.model.app.ClosedShape;
+import quadcore.paintproject.paint.model.app.Shape;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 @SpringBootTest
 class PaintApplicationTests {
@@ -17,14 +19,22 @@ class PaintApplicationTests {
     @Test
     void contextLoads() {
         app = App.getInstance();
-        canvas = app.load();
+        canvas = app.createCanvas();
         Shape shape = canvas.addShape("closedShape-circle");
-        ((ClosedShape)shape).setFillColor(50, 60, 70);
+        ((ClosedShape) shape).setFillColor(50, 60, 70);
+        shape = canvas.addShape("closedShape-square");
+        File file;
         try {
-            app.save("xml");
+            file = app.save("json");
+            canvas = null;
+            canvas = app.load(file);
+            int[] arr = {50, 60, 70};
+            assert (Arrays.equals(canvas.getShapeForEditing(1).toClosedShape().getFillColor(), arr));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 }

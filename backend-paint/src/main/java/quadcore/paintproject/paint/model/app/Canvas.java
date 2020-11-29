@@ -1,10 +1,9 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 public class Canvas {
 
@@ -37,18 +36,29 @@ public class Canvas {
         this.name = name;
     }
 
-//    public int getIdCount() {
-//        return idCount;
-//    }
-
-    public HashMap<Integer, Shape> getShapes() {
-        return shapes;
+    public int getIdCount() {
+        return idCount;
     }
 
+    public LinkedList<Shape> getShapes() {
+        LinkedList<Shape> list = new LinkedList<>();
+        for (Map.Entry<Integer, Shape> entry: shapes.entrySet()) {
+            list.add(entry.getValue());
+        }
+        return list;
+    }
+
+    public void setShapes(LinkedList<Shape> list) {
+        for (Shape shape : list) {
+            shapes.put(shape.getId(), shape);
+        }
+    }
+    @JsonIgnore
     public Stack<Action> getUndo() {
         return undo;
     }
 
+    @JsonIgnore
     public Stack<Action> getRedo() {
         return redo;
     }

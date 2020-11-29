@@ -1,22 +1,32 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Square.class, name = "square"),
+        @JsonSubTypes.Type(value = Circle.class, name = "circle"),
+        @JsonSubTypes.Type(value = Ellipse.class, name = "ellipse"),
+        @JsonSubTypes.Type(value = Line.class, name = "line"),
+        @JsonSubTypes.Type(value = Rectangle.class, name = "rectangle"),
+        @JsonSubTypes.Type(value = Triangle.class, name = "triangle")
+})
 public abstract class Shape implements Cloneable {
 
-    private Color strokeColor;
+    private final int[] strokeColor;
     private int strokeWeight;
-    private String type;
+    private String name;
     private int id;
     private final Point point;
 
 
-    protected Shape(String type) {
-        this.strokeColor = new Color(0, 0, 0);
+    protected Shape(String name) {
+        this.strokeColor = new int[3];
         this.strokeWeight = 1;
-        this.type = type;
+        this.name = name.toLowerCase();
         point = new Point(0, 0);
         this.id = App.getInstance().getCanvas().createID();
     }
@@ -42,12 +52,14 @@ public abstract class Shape implements Cloneable {
         return shape;
     }
 
-    public String  getStrokeColor() {
-        return strokeColor.toString();
+    public int[] getStrokeColor() {
+        return strokeColor;
     }
 
     public void setStrokeColor(int r, int g, int b) {
-        this.strokeColor = new Color(r, g, b);
+        this.strokeColor[0] = r;
+        this.strokeColor[1] = g;
+        this.strokeColor[2] = b;
     }
 
     public int getStrokeWeight() {
@@ -58,12 +70,12 @@ public abstract class Shape implements Cloneable {
         this.strokeWeight = strokeWeight;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    protected void setType(String type) {
-        this.type = type;
+    protected void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -76,5 +88,13 @@ public abstract class Shape implements Cloneable {
 
     protected void setPoint(int x, int y) {
         this.point.setLocation(x, y);
+    }
+
+    public ClosedShape toClosedShape() {
+        return (ClosedShape)this;
+    }
+
+    public Line toLine() {
+        return (Line)this;
     }
 }

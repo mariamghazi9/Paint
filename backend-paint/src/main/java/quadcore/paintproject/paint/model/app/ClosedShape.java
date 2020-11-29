@@ -1,22 +1,26 @@
 package quadcore.paintproject.paint.model.app;
 
-import java.awt.*;
 
 public abstract class ClosedShape extends Shape {
 
-    private Color fillColor;
+    private final int[] fillColor;
 
     protected ClosedShape(String type) {
         super(type);
-        this.fillColor = new Color(255, 255, 255);
+        this.fillColor = new int[3];
+        fillColor[0] = 255;
+        fillColor[1] = 255;
+        fillColor[2] = 255;
     }
 
-    public String getFillColor() {
-        return fillColor.toString();
+    public int[] getFillColor() {
+        return fillColor;
     }
 
     public void setFillColor(int r, int g, int b) {
-        this.fillColor = new Color(r, g, b);
+        this.fillColor[0] = r;
+        this.fillColor[1] = g;
+        this.fillColor[2] = b;
     }
 
 }

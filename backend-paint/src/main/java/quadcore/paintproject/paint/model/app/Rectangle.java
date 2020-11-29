@@ -1,5 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.awt.*;
 
 public class Rectangle extends ClosedShape {
@@ -17,6 +19,7 @@ public class Rectangle extends ClosedShape {
         this.bottomRight.setLocation(Math.max(x1, x2), Math.max(y1, y2));
     }
 
+    @JsonIgnore
     public Point getTopLeft() {
         return super.getPoint();
     }
