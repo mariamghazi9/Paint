@@ -3,7 +3,12 @@
     <v-container>
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
-
+        <v-btn-toggle
+        v-model="value"
+        color="dark"
+        dense
+        group
+      >
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on">
@@ -117,6 +122,7 @@
           </template>
           <span>Fill</span>
         </v-tooltip>
+        </v-btn-toggle>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -140,7 +146,8 @@ export default {
   name: "Toolbar",
   data() {
     return {
-      color: "white"
+      color: "white",
+      value:""
     };
   }
 };
