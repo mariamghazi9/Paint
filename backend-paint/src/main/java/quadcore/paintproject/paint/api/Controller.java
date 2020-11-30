@@ -66,10 +66,14 @@ public class Controller {
         } catch (IOException e) {
             throw new RuntimeException("File Error");
         }
+
         if(!file.delete()) System.out.println("Could not delete file");
+
+
         return ResponseEntity.ok()
                 .contentLength(arr.length)
                 .header(HttpHeaders.CONTENT_TYPE, "application/" + type)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
                 .body(arr);
     }
 

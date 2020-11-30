@@ -4,8 +4,6 @@ import quadcore.paintproject.paint.model.app.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.awt.Point;
@@ -109,12 +107,14 @@ public class Service {
 
     private int setLine(Shape myShape, Map<String, Object> shape) {
         Line line = (Line) myShape;
-        int offSetx=(Integer)shape.get("x");
-        int offSety=(Integer)shape.get("y");
+        int offSetX = (Integer) shape.get("x");
+        int offSetY = (Integer) shape.get("y");
+        @SuppressWarnings("unchecked")
         Map<String, Integer> p1 = (Map<String, Integer>) shape.get("p1");
+        @SuppressWarnings("unchecked")
         Map<String, Integer> p2 = (Map<String, Integer>) shape.get("p2");
-        line.setStart(p1.get("x")+offSetx, p1.get("y")+offSety);
-        line.setEnd(p2.get("x")+offSetx, p2.get("y")+offSety);
+        line.setStart(p1.get("x") + offSetX, p1.get("y") + offSetY);
+        line.setEnd(p2.get("x") + offSetX, p2.get("y") + offSetY);
         line.setColor((String) shape.get("fill"));
         return line.getId();
     }
@@ -147,15 +147,17 @@ public class Service {
 
     private int setTriangle(Shape myShape, Map<String, Object> shape) {
         Triangle triangle = (Triangle) myShape;
-        int offSetx= (Integer) shape.get("x");
-        int offSety= (Integer) shape.get("y");
-        
+        int offSetX = (Integer) shape.get("x");
+        int offSetY = (Integer) shape.get("y");
+        @SuppressWarnings("unchecked")
         Map<String, Integer> p1 = (Map<String, Integer>) shape.get("p1");
+        @SuppressWarnings("unchecked")
         Map<String, Integer> p2 = (Map<String, Integer>) shape.get("p2");
+        @SuppressWarnings("unchecked")
         Map<String, Integer> p3 = (Map<String, Integer>) shape.get("p3");
-        Point[] points = new Point[]{new Point(p1.get("x")+offSetx, p1.get("y")+offSety),
-                new Point(p2.get("x")+offSetx, p2.get("y")+offSety),
-                new Point(p3.get("x")+offSetx, p3.get("y")+offSety)};
+        Point[] points = new Point[]{new Point(p1.get("x") + offSetX, p1.get("y") + offSetY),
+                new Point(p2.get("x") + offSetX, p2.get("y") + offSetY),
+                new Point(p3.get("x") + offSetX, p3.get("y") + offSetY)};
         triangle.setLocation(points);
         triangle.setColor((String) shape.get("fill"));
 
