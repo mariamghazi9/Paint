@@ -16,13 +16,6 @@ public class Action {
         this.shape = shape.copyWithSameID();
     }
 
-    protected Type reverseType() {
-        if (this.type == Type.ADD) return Type.DELETE;
-        if (this.type == Type.DELETE) return Type.ADD;
-        if (this.type == Type.EDIT) return Type.EDIT;
-        else return null;
-    }
-
     public Type getType() {
         return type;
     }
@@ -37,5 +30,12 @@ public class Action {
 
     public void setShape(Shape shape) {
         this.shape = shape;
+    }
+
+    protected Type reverseType() {
+        if (this.type == Type.ADD) return Type.DELETE;
+        if (this.type == Type.DELETE) return Type.ADD;
+        if (this.type == Type.EDIT) return Type.EDIT;
+        else return null;
     }
 }

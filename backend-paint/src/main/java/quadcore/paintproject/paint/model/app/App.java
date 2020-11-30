@@ -7,6 +7,7 @@ import java.io.IOException;
 
 
 public class App {
+
     static private App instance;
     private Canvas canvas;
     private final FileManager fileManager = new FileManager();

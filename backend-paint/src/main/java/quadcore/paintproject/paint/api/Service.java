@@ -12,6 +12,7 @@ public class Service {
 
     Canvas canvas = App.getInstance().getCanvas();
 
+
     protected int addShape(Map<String, Object> shape) {
         String name = (String) shape.get("type");
         Shape myShape = canvas.addShape(name);
@@ -127,7 +128,6 @@ public class Service {
         square.setLocation((Integer) shape.get("x"), (Integer) shape.get("y"));
         square.setLength((Float) shape.get("length"));
         square.setColor((String) shape.get("fill"));
-        square.setTopRight((Integer) shape.get("x"), (Integer) shape.get("y"));
         return square.getId();
     }
 
@@ -139,7 +139,6 @@ public class Service {
         ellipse.setColor((String) shape.get("fill"));
         return ellipse.getId();
     }
-
 
     private int setTriangle(Shape myShape, Map<String, Object> shape) {
         Triangle triangle = (Triangle) myShape;

@@ -16,10 +16,6 @@ public class Square extends Shape {
         super.setPoint(x, y);
     }
 
-    public void setTopRight(int x, int y) {
-        super.setPoint(x, y);
-    }
-
     public void setLength(float length) {
         this.length = length;
     }

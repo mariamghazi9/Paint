@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.awt.*;
+import java.io.*;
+
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -16,7 +18,7 @@ import java.awt.*;
         @JsonSubTypes.Type(value = Rectangle.class, name = "rectangle"),
         @JsonSubTypes.Type(value = Triangle.class, name = "triangle")
 })
-public abstract class Shape implements Cloneable {
+public abstract class Shape implements Serializable {
 
     private String color;
     private final String name;
@@ -32,24 +34,32 @@ public abstract class Shape implements Cloneable {
     }
 
     public Shape copy() {
-        Shape shape = null;
         try {
-            shape = (Shape) this.clone();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(this);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
+            Shape shape = (Shape) objInputStream.readObject();
             shape.id = App.getInstance().getCanvas().createID();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            return shape;
         }
-        return shape;
+        catch (Exception e) {
+            throw new RuntimeException("Error Copying");
+        }
     }
 
     protected Shape copyWithSameID() {
-        Shape shape = null;
         try {
-            shape = (Shape) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(this);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
+            return (Shape) objInputStream.readObject();
+        } catch (Exception e) {
+            throw new RuntimeException("Error Copying");
         }
-        return shape;
     }
 
     public String getColor() {
@@ -78,7 +88,7 @@ public abstract class Shape implements Cloneable {
     }
 
     @JsonGetter("point")
-    private int[] getPointAsArr() {
+    public int[] getPointAsArr() {
         return new int[]{point.x, point.y};
     }
 
