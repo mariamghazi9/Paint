@@ -1,8 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.awt.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public class Rectangle extends Shape {
 
@@ -16,22 +15,25 @@ public class Rectangle extends Shape {
         width = 1;
     }
 
-    public void setLocation(int x, int y, int h, int w) {
+    public void setLocation(int x, int y) {
         super.setPoint(x, y);
-        this.height = h;
-        this.width = w;
     }
 
-    @JsonIgnore
-    public Point getTopLeft() {
-        return super.getPoint();
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    public int getHeight() {
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    @JsonGetter("height")
+    private int getHeight() {
         return height;
     }
 
-    public int getWidth() {
+    @JsonGetter("width")
+    private int getWidth() {
         return width;
     }
 }

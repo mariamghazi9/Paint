@@ -1,8 +1,6 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.awt.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public class Square extends Shape {
 
@@ -14,25 +12,20 @@ public class Square extends Shape {
         this.length = 1;
     }
 
-    public void setLocation(int x, int y, float length) {
+    public void setLocation(int x, int y) {
         super.setPoint(x, y);
-        this.length = length;
-    }
-
-    @JsonIgnore
-    public Point getTopRight() {
-        return super.getPoint();
     }
 
     public void setTopRight(int x, int y) {
         super.setPoint(x, y);
     }
 
-    public float getLength() {
-        return length;
-    }
-
     public void setLength(float length) {
         this.length = length;
+    }
+
+    @JsonGetter("length")
+    private float getLength() {
+        return length;
     }
 }

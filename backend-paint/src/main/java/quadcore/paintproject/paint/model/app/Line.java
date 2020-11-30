@@ -1,6 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.awt.*;
 
@@ -14,20 +15,22 @@ public class Line extends Shape {
         this.end = new Point(1, 1);
     }
 
-    @JsonIgnore
-    public Point getStart() {
-        return super.getPoint();
-    }
 
     public void setStart(int x, int y) {
         super.setPoint(x, y);
     }
 
-    public Point getEnd() {
-        return end;
+    public void setEnd(int x, int y) {
+        end.setLocation(x, y);
     }
 
-    public void setEnd(int x, int y) {
-        this.end.setLocation(x, y);
+    @JsonGetter("end")
+    private int[] getEndAsArr() {
+        return new int[]{end.x, end.y};
+    }
+
+    @JsonSetter("end")
+    private void setEndFromArr(int[] arr) {
+        this.end.setLocation(arr[0], arr[1]);
     }
 }

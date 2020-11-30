@@ -19,13 +19,13 @@ import java.awt.*;
 public abstract class Shape implements Cloneable {
 
     private String color;
-    private String name;
+    private final String name;
     private int id;
     private final Point point;
 
 
     protected Shape(String name) {
-        this.color = "#000000";
+        this.color = "#FFFFFF";
         this.name = name.toLowerCase();
         point = new Point(0, 0);
         this.id = App.getInstance().getCanvas().createID();
@@ -60,14 +60,6 @@ public abstract class Shape implements Cloneable {
         this.color = color;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    protected void setName(String name) {
-        this.name = name;
-    }
-
     public int getId() {
         return id;
     }
@@ -76,8 +68,13 @@ public abstract class Shape implements Cloneable {
         return point;
     }
 
-    protected void setPoint(float x, float y) {
+    protected void setPoint(int x, int y) {
         this.point.setLocation(x, y);
+    }
+
+    @JsonGetter("name")
+    private String getName() {
+        return name;
     }
 
     @JsonGetter("point")

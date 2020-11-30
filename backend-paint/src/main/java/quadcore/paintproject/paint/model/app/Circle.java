@@ -1,8 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
-import java.awt.*;
 
 public class Circle extends Shape {
 
@@ -17,16 +16,12 @@ public class Circle extends Shape {
         super.setPoint(x, y);
     }
 
-    @JsonIgnore
-    public Point getCenter() {
-        return super.getPoint();
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    @JsonGetter("radius")
+    private float getRadius() {
+        return radius;
     }
 }

@@ -17,9 +17,7 @@ public class Controller {
 
     @RequestMapping(value = "/addShape", method = RequestMethod.POST)
     public int add(@RequestBody Map<String, Object> shape) {
-        System.out.println("=============================");
-        System.out.println(shape);
-        return service.add(shape);
+        return service.addShape(shape);
     }
 
     @RequestMapping(value = "/deleteShape", method = RequestMethod.DELETE)
@@ -29,8 +27,6 @@ public class Controller {
 
     @RequestMapping(value = "/editShape", method = RequestMethod.POST)
     public void editShape(@RequestBody Map<String, Object> shape) {
-        System.out.println("=============================");
-        System.out.println(shape);
         service.editShape(shape);
     }
 

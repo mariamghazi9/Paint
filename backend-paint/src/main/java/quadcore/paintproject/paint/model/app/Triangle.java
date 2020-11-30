@@ -1,10 +1,13 @@
 package quadcore.paintproject.paint.model.app;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.awt.*;
 
 public class Triangle extends Shape {
 
-    private Point[] points;
+    private final Point[] points;
 
 
     protected Triangle() {
@@ -18,12 +21,16 @@ public class Triangle extends Shape {
         this.points[1] = points[2];
     }
 
-    public Point[] getPoints() {
-        Point[] arr = new Point[3];
-        arr[0] = super.getPoint();
-        arr[1] = points[0];
-        arr[2] = points[1];
-        return arr;
+    @JsonGetter("points")
+    private int[] getPointsAsArray() {
+        return new int[]{super.getPoint().x,super.getPoint().y, points[0].x, points[0].y, points[1].x, points[1].y};
+    }
+
+    @JsonSetter("points")
+    private void setPointsAsArray(int[] arr) {
+        super.setPoint(arr[0], arr[1]);
+        points[0].setLocation(arr[2], arr[3]);
+        points[1].setLocation(arr[4], arr[5]);
     }
 
 }

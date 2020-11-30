@@ -1,8 +1,6 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.awt.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public class Ellipse extends Shape {
 
@@ -15,32 +13,26 @@ public class Ellipse extends Shape {
         this.radiusY = 1;
     }
 
-    public void setLocation(int x, int y, float radiusX, float radiusY) {
+    public void setLocation(int x, int y) {
         super.setPoint(x, y);
-        this.radiusX = radiusX;
-        this.radiusY = radiusY;
-    }
-
-
-    @JsonIgnore
-    public Point getCenter() {
-        return super.getPoint();
-    }
-
-    public float getRadiusX() {
-        return radiusX;
     }
 
     public void setRadiusX(float radiusX) {
         this.radiusX = radiusX;
     }
 
-    public float getRadiusY() {
-        return radiusY;
-    }
-
     public void setRadiusY(float radiusY) {
         this.radiusY = radiusY;
+    }
+
+    @JsonGetter("radiusX")
+    private float getRadiusX() {
+        return radiusX;
+    }
+
+    @JsonGetter("radiusY")
+    private float getRadiusY() {
+        return radiusY;
     }
 
 }
