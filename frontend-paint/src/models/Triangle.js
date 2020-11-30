@@ -73,25 +73,24 @@ class Triangle {
   }
   /*to do check bounds of app*/
   resize(currentApp, expectResize) {
-    var oldy = currentApp.selectionHandles[expectResize].y;
-    var oldx = currentApp.selectionHandles[expectResize].x;
+    //var oldy = currentApp.selectionHandles[expectResize].y;
+    //var oldx = currentApp.selectionHandles[expectResize].x;
     switch (expectResize) {
-      case 0:
-        diff = oldx - currentApp.mouse_x;
-        if (diff < 0) this.p1.x += Math.abs(diff);
-        else this.p1.x -= diff;
+      case 0:{
+        this.p1.x = currentApp.mouse_x - this.x
+        this.p1.y = currentApp.mouse_y - this.y
         break;
+      }
       case 1:
-        diff = oldx - currentApp.mouse_x;
-        if (diff < 0) this.p2.x += Math.abs(diff);
-        else this.p2.x -= diff;
+        this.p2.x = currentApp.mouse_x - this.x
+        this.p2.y = currentApp.mouse_y - this.y
         break;
       case 2:
-        var diff = oldy - currentApp.mouse_y;
-        if (diff < 0) this.p3.y += Math.abs(diff);
-        else this.p3.y -= diff;
+        this.p3.x = currentApp.mouse_x - this.x
+        this.p3.y = currentApp.mouse_y - this.y
         break;
     }
-  }
+    }
 }
+
 export default Triangle;

@@ -26,7 +26,6 @@ class PaintApplicationTests {
         ((Circle) shape).setRadius(5);
         shape = canvas.getShapeForEditing(id);
         ((Circle) shape).setLocation(7,7);
-        System.out.println(Arrays.toString(canvas.undo().getShape().getPointAsArr()));
     }
     @Test
     void contextLoads() {

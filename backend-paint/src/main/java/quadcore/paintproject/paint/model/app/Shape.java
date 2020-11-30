@@ -88,7 +88,7 @@ public abstract class Shape implements Serializable {
     }
 
     @JsonGetter("point")
-    public int[] getPointAsArr() {
+    private int[] getPointAsArr() {
         return new int[]{point.x, point.y};
     }
 
