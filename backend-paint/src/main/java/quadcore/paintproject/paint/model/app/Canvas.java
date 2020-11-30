@@ -1,6 +1,7 @@
 package quadcore.paintproject.paint.model.app;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.awt.*;
 import java.util.*;
@@ -33,39 +34,12 @@ public class Canvas {
         this.name = name;
     }
 
-    public int getIdCount() {
-        return idCount;
-    }
-
     public LinkedList<Shape> getShapes() {
         LinkedList<Shape> list = new LinkedList<>();
         for (Map.Entry<Integer, Shape> entry: shapes.entrySet()) {
             list.add(entry.getValue());
         }
         return list;
-    }
-
-    public Shape getShape(int id) {
-        return shapes.get(id);
-    }
-
-    public void setShapes(LinkedList<Shape> list) {
-        for (Shape shape : list) {
-            shapes.put(shape.getId(), shape);
-        }
-    }
-    @JsonIgnore
-    public Stack<Action> getUndo() {
-        return undo;
-    }
-
-    @JsonIgnore
-    public Stack<Action> getRedo() {
-        return redo;
-    }
-
-    protected int createID() {
-        return ++idCount;
     }
 
     public Shape addShape(String type) {
@@ -79,10 +53,6 @@ public class Canvas {
         return tempShape;
     }
 
-    private void addShape(Shape shape) {
-        shapes.put(shape.getId(), shape);
-    }
-
     public void removeShape(int id) {
         Shape tempShape = shapes.remove(id);
         undo.push(new Action(Action.Type.DELETE, tempShape));
@@ -92,6 +62,26 @@ public class Canvas {
         Shape tempShape = shapes.get(id);
         undo.push(new Action(Action.Type.EDIT, tempShape));
         return tempShape;
+    }
+
+    public Action undo() {
+        return myUndo(undo, redo);
+    }
+
+    public Action redo() {
+        return myUndo(redo, undo);
+    }
+
+    public Shape copyShape(int id) {
+        Shape shape = shapes.get(id);
+        shape = shape.copy();
+        Point point = shape.getPoint();
+        shape.setPoint(point.x + 5, point.y + 5);
+        return shape;
+    }
+
+    protected int createID() {
+        return ++idCount;
     }
 
     private Action myUndo(Stack<Action> from, Stack<Action> to) {
@@ -119,19 +109,19 @@ public class Canvas {
         } else throw new RuntimeException("Invalid Action Type");
     }
 
-    public Action undo() {
-        return myUndo(undo, redo);
+    private void addShape(Shape shape) {
+        shapes.put(shape.getId(), shape);
     }
 
-    public Action redo() {
-        return myUndo(redo, undo);
+    @JsonGetter("idCount")
+    private int getIdCount() {
+        return idCount;
     }
 
-    public Shape copyShape(int id) {
-        Shape shape = shapes.get(id);
-        shape = shape.copy();
-        Point point = shape.getPoint();
-        shape.setPoint(point.x + 5, point.y + 5);
-        return shape;
+    @JsonSetter("shapes")
+    private void setShapes(LinkedList<Shape> list) {
+        for (Shape shape : list) {
+            shapes.put(shape.getId(), shape);
+        }
     }
 }

@@ -29,11 +29,6 @@ class PaintApplicationTests {
             canvas = null;
             canvas = app.load(file);
             assert (canvas.getShapeForEditing(1).getColor().equals("#506070"));
-            Shape shape1 = canvas.getShapeForEditing(1);
-            Class<? extends Shape> s = shape1.getClass();
-            if(s == Circle.class){
-
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

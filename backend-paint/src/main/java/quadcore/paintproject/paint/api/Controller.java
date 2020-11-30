@@ -5,6 +5,7 @@ import quadcore.paintproject.paint.model.app.Action;
 import quadcore.paintproject.paint.model.app.Shape;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,7 +24,7 @@ public class Controller {
 
     @RequestMapping(value = "/deleteShape", method = RequestMethod.DELETE)
     public void delete(@RequestParam int id) {
-        service.delete(id);
+        service.deleteShape(id);
     }
 
     @RequestMapping(value = "/editShape", method = RequestMethod.POST)
@@ -53,11 +54,20 @@ public class Controller {
         service.createCanvas();
     }
 
+    //TODO check save is working
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public File save(@RequestParam String type) {
         return service.save(type);
     }
 
     //TODO load
+    @RequestMapping(value = "/load", method = RequestMethod.GET)
+    public List<Shape> load(@RequestBody File file) {
+        return service.load(file);
+    }
 
+    @RequestMapping(value = "/setName", method = RequestMethod.POST)
+    public void setName(@RequestParam String canvasName) {
+        service.setCanvasName(canvasName);
+    }
 }

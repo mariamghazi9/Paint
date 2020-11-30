@@ -29,17 +29,6 @@ public class App {
         return canvas;
     }
 
-    public Canvas load(File file) throws IOException {
-        if (file.getName().endsWith(".xml")) {
-            this.canvas = fileManager.loadXML(file);
-            return canvas;
-        } else if (file.getName().endsWith(".json")){
-            this.canvas = fileManager.loadJson(file);
-            return canvas;
-        }
-        throw new RuntimeException("Invalid File Format: Valid formats are xml and json");
-    }
-
     /**
      * do not forget to delete file from server after sending to front-end
      *
@@ -51,6 +40,17 @@ public class App {
             return fileManager.saveAsXML(this.canvas);
         } else if (type.equalsIgnoreCase("json")){
             return fileManager.saveAsJson(this.canvas);
+        }
+        throw new RuntimeException("Invalid File Format: Valid formats are xml and json");
+    }
+
+    public Canvas load(File file) throws IOException {
+        if (file.getName().endsWith(".xml")) {
+            this.canvas = fileManager.loadXML(file);
+            return canvas;
+        } else if (file.getName().endsWith(".json")){
+            this.canvas = fileManager.loadJson(file);
+            return canvas;
         }
         throw new RuntimeException("Invalid File Format: Valid formats are xml and json");
     }
