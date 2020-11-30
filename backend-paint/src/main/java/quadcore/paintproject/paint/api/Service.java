@@ -4,6 +4,8 @@ import quadcore.paintproject.paint.model.app.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.awt.Point;
@@ -76,6 +78,7 @@ public class Service {
     protected File save(String type) {
         try {
             return App.getInstance().save(type);
+
         } catch (IOException e) {
             throw new RuntimeException("File Error");
         }

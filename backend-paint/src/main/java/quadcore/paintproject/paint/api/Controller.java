@@ -1,10 +1,15 @@
 package quadcore.paintproject.paint.api;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import quadcore.paintproject.paint.model.app.Action;
 import quadcore.paintproject.paint.model.app.Shape;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +57,20 @@ public class Controller {
 
     //TODO check save is working
     @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public File save(@RequestParam String type) {
-        return service.save(type);
+    public ResponseEntity<byte[]> save(@RequestParam String type) {
+        File file = service.save(type);
+
+        byte[] arr;
+        try {
+            arr = Files.readAllBytes(Paths.get(String.valueOf(file.toPath())));
+        } catch (IOException e) {
+            throw new RuntimeException("File Error");
+        }
+        if(!file.delete()) System.out.println("Could not delete file");
+        return ResponseEntity.ok()
+                .contentLength(arr.length)
+                .header(HttpHeaders.CONTENT_TYPE, "application/" + type)
+                .body(arr);
     }
 
     //TODO load

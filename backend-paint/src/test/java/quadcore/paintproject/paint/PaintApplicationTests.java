@@ -3,11 +3,13 @@ package quadcore.paintproject.paint;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import quadcore.paintproject.paint.model.app.*;
+import quadcore.paintproject.paint.model.app.App;
+import quadcore.paintproject.paint.model.app.Canvas;
+import quadcore.paintproject.paint.model.app.Circle;
+import quadcore.paintproject.paint.model.app.Shape;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 
 @SpringBootTest
