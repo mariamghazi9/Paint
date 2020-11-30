@@ -26,7 +26,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/deleteShape", method = RequestMethod.DELETE)
-    public void delete(@RequestParam int id) {
+    public void deleteShape(@RequestParam int id) {
         service.deleteShape(id);
     }
 
@@ -72,7 +72,7 @@ public class Controller {
 
         return ResponseEntity.ok()
                 .contentLength(arr.length)
-                .header(HttpHeaders.CONTENT_TYPE, "application/" + type)
+                .header(HttpHeaders.CONTENT_TYPE, "text/" + type + "; charset=utf-8")
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
                 .body(arr);
     }
