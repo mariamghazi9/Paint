@@ -61,28 +61,15 @@ class Line{
       switch(expectResize)
       {    
          case 4:
-             {  var oldx=this.p1.x
-                var oldY=this.p1.y
-                var diff = oldx - currentApp.mouse_x;
-                if (diff < 0) this.p1.x += Math.abs(diff);
-                else this.p1.x -= diff;
-
-                 diff = oldY - currentApp.mouse_y;
-                if (diff < 0) this.p1.y += Math.abs(diff);
-                else this.p1.y -= diff;
+             {  
+                this.p1.x = currentApp.mouse_x - this.x
+                this.p1.y = currentApp.mouse_y - this.y
                 break;
              }
         case 5:
             {
-               oldx=this.p2.x
-               oldY=this.p2.y
-               diff = oldx - currentApp.mouse_x;
-              if (diff < 0) this.p2.x += Math.abs(diff);
-              else this.p2.x -= diff;
-
-               diff = oldY - currentApp.mouse_y;
-              if (diff < 0) this.p2.y += Math.abs(diff);
-              else this.p2.y -= diff;
+              this.p2.x = currentApp.mouse_x - this.x
+              this.p2.y = currentApp.mouse_y - this.y
               break;
              }
 
