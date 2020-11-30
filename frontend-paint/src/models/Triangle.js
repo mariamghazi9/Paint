@@ -4,8 +4,8 @@ class Triangle {
     this.p2 = p2;
     this.p3 = p3;
     this.fill = fill;
-    this.x = 0;
-    this.y = 0;
+    this.x = p1.x;
+    this.y = p1.y;
     this.type = "triangle";
   }
   draw(context, currentApp) {
@@ -32,6 +32,8 @@ class Triangle {
   drawSelected(context, currentApp) {
     context.strokeStyle = currentApp.selectionColor;
     context.lineWidth = currentApp.selectionWidth;
+    console.log(this.x)
+    console.log(this.y)
     context.beginPath();
     context.moveTo(this.p1.x + this.x, this.p1.y + this.y);
     context.lineTo(this.p2.x + this.x, this.p2.y + this.y);
@@ -73,25 +75,24 @@ class Triangle {
   }
   /*to do check bounds of app*/
   resize(currentApp, expectResize) {
-    var oldy = currentApp.selectionHandles[expectResize].y;
-    var oldx = currentApp.selectionHandles[expectResize].x;
+    //var oldy = currentApp.selectionHandles[expectResize].y;
+    //var oldx = currentApp.selectionHandles[expectResize].x;
     switch (expectResize) {
-      case 0:
-        diff = oldx - currentApp.mouse_x;
-        if (diff < 0) this.p1.x += Math.abs(diff);
-        else this.p1.x -= diff;
+      case 0:{
+        this.p1.x = currentApp.mouse_x - this.x
+        this.p1.y = currentApp.mouse_y - this.y
         break;
+      }
       case 1:
-        diff = oldx - currentApp.mouse_x;
-        if (diff < 0) this.p2.x += Math.abs(diff);
-        else this.p2.x -= diff;
+        this.p2.x = currentApp.mouse_x - this.x
+        this.p2.y = currentApp.mouse_y - this.y
         break;
       case 2:
-        var diff = oldy - currentApp.mouse_y;
-        if (diff < 0) this.p3.y += Math.abs(diff);
-        else this.p3.y -= diff;
+        this.p3.x = currentApp.mouse_x - this.x
+        this.p3.y = currentApp.mouse_y - this.y
         break;
     }
-  }
+    }
 }
+
 export default Triangle;
