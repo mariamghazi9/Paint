@@ -105,10 +105,12 @@ public class Service {
 
     private int setLine(Shape myShape, Map<String, Object> shape) {
         Line line = (Line) myShape;
+        int offSetx=(Integer)shape.get("x");
+        int offSety=(Integer)shape.get("y");
         Map<String, Integer> p1 = (Map<String, Integer>) shape.get("p1");
         Map<String, Integer> p2 = (Map<String, Integer>) shape.get("p2");
-        line.setStart(p1.get("x"), p1.get("y"));
-        line.setEnd(p2.get("x"), p2.get("y"));
+        line.setStart(p1.get("x")+offSetx, p1.get("y")+offSety);
+        line.setEnd(p2.get("x")+offSetx, p2.get("y")+offSety);
         line.setColor((String) shape.get("fill"));
         return line.getId();
     }
@@ -143,12 +145,15 @@ public class Service {
 
     private int setTriangle(Shape myShape, Map<String, Object> shape) {
         Triangle triangle = (Triangle) myShape;
+        int offSetx= (Integer) shape.get("x");
+        int offSety= (Integer) shape.get("y");
+        
         Map<String, Integer> p1 = (Map<String, Integer>) shape.get("p1");
         Map<String, Integer> p2 = (Map<String, Integer>) shape.get("p2");
         Map<String, Integer> p3 = (Map<String, Integer>) shape.get("p3");
-        Point[] points = new Point[]{new Point(p1.get("x"), p1.get("y")),
-                new Point(p2.get("x"), p2.get("y")),
-                new Point(p3.get("x"), p3.get("y"))};
+        Point[] points = new Point[]{new Point(p1.get("x")+offSetx, p1.get("y")+offSety),
+                new Point(p2.get("x")+offSetx, p2.get("y")+offSety),
+                new Point(p3.get("x")+offSetx, p3.get("y")+offSety)};
         triangle.setLocation(points);
         triangle.setColor((String) shape.get("fill"));
 

@@ -4,8 +4,8 @@ class Triangle {
     this.p2 = p2;
     this.p3 = p3;
     this.fill = fill;
-    this.x = p1.x;
-    this.y = p1.y;
+    this.x = 0;
+    this.y = 0;
     this.type = "triangle";
   }
   draw(context, currentApp) {
@@ -32,8 +32,6 @@ class Triangle {
   drawSelected(context, currentApp) {
     context.strokeStyle = currentApp.selectionColor;
     context.lineWidth = currentApp.selectionWidth;
-    console.log(this.x)
-    console.log(this.y)
     context.beginPath();
     context.moveTo(this.p1.x + this.x, this.p1.y + this.y);
     context.lineTo(this.p2.x + this.x, this.p2.y + this.y);
