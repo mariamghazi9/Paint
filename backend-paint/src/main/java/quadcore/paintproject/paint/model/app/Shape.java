@@ -21,7 +21,7 @@ public abstract class Shape implements Cloneable {
     private String color;
     private final String name;
     private int id;
-    private final Point point;
+    private Point point;
 
 
     protected Shape(String name) {
@@ -33,22 +33,14 @@ public abstract class Shape implements Cloneable {
 
     public Shape copy() {
         Shape shape = null;
-        try {
-            shape = (Shape) this.clone();
-            shape.id = App.getInstance().getCanvas().createID();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        shape = (Shape) this.clone();
+        shape.id = App.getInstance().getCanvas().createID();
         return shape;
     }
 
     protected Shape copyWithSameID() {
         Shape shape = null;
-        try {
-            shape = (Shape) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        shape = (Shape) this.clone();
         return shape;
     }
 
@@ -85,5 +77,17 @@ public abstract class Shape implements Cloneable {
     @JsonSetter("point")
     private void setPointFromArr(int[] arr) {
         this.point.setLocation(arr[0], arr[1]);
+    }
+
+    @Override 
+    protected Shape clone() { 
+        Shape clone = null; 
+        try{ 
+            clone = (Shape) super.clone(); 
+            clone.point = new Point(this.point.x, this.point.y);
+        } catch(Exception e){
+            e.printStackTrace();
+        } 
+         return clone;
     }
 }
