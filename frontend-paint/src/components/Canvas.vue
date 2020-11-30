@@ -27,6 +27,8 @@ import Triangle from "../models/Triangle";
 import Point from "../models/Point";
 import Line from "../models/Line";
 import Square from "../models/Square";
+import Service from "../service/PaintService";
+
 
 export default {
   name: "Canvas",
@@ -160,10 +162,10 @@ export default {
     this.addTriangle(p1, p2, p3, "rgba(150,150,250,0.7)");
     this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
     this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)");
-    this.addSquare(300,200,70,70,"rgba(150,150,250,0.7)")
+    this.addSquare(300,200,70,"rgba(150,150,250,0.7)")
     this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
     this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)")
-    this.addSquare(400,355,89,89,"rgba(150,150,250,0.7)")
+    this.addSquare(400,355,89,"rgba(150,150,250,0.7)")
     
     
   },
@@ -177,6 +179,7 @@ export default {
       rect.fill = fill;
       this.shapes.push(rect);
       this.invalidate();
+      return rect;
     },
     addCircle(x, y, r, fill) {
       var cir = new Circle();
@@ -186,23 +189,27 @@ export default {
       cir.fill = fill;
       this.shapes.push(cir);
       this.invalidate();
+      return cir;
     },
     addTriangle(p1, p2, p3, fill) {
       var triangle = new Triangle(p1, p2, p3, fill);
       this.shapes.push(triangle);
       this.invalidate();
+      return triangle;
     },
     addLine(p1,p2,fill)
     {
       var line=new Line(p1,p2,fill)
       this.shapes.push(line);
       this.invalidate();
+      return line;
     },
     addSquare(x,y,length,fill)
     {
       var square=new Square(x,y,length,fill)
       this.shapes.push(square)
       this.invalidate()
+      return square;
     },
 
     //wipes the canvas context
@@ -245,7 +252,6 @@ export default {
         // 0  1  2
         // 3     4
         // 5  6  7
-      
         this.selectedShape.resize(this, this.expectResize);
         this.invalidate();
       }
@@ -353,6 +359,9 @@ export default {
       this.invalidate();
     },
     mouseUp() {
+      if (this.isDrag || this.isResizeDrag) {
+          Service.editShape(this.selectedShape);
+      }
       this.isDrag = false;
       this.isResizeDrag = false;
       this.expectResize = -1;
@@ -363,7 +372,7 @@ export default {
       //var width = 20;
       //var height = 20;
       //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
-      this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)");
+      Service.addShape(this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
     },
     invalidate() {
       this.canvasValid = false;

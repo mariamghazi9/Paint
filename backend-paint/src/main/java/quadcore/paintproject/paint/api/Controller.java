@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Map;
 
 
-@CrossOrigin (origins = "http://localhost:8081")
+@CrossOrigin
 @RestController
 public class Controller {
 
@@ -28,6 +28,8 @@ public class Controller {
 
     @RequestMapping(value = "/editShape", method = RequestMethod.POST)
     public void editShape(@RequestBody Map<String, Object> shape) {
+        System.out.println("=============================");
+        System.out.println(shape);
         service.editShape(shape);
     }
 
