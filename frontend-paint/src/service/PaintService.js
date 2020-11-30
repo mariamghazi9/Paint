@@ -66,6 +66,14 @@ class PaintService {
   }
 
   /**
+   * @param name of canvas
+   * @returns nothing
+   */
+  setCanvasName(name) {
+    return axios.post(API_URL + "/setName", name);
+  }
+
+  /**
    * calls createCanvas();
    * @returns nothing
    */
