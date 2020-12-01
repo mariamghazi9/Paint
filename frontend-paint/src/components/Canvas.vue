@@ -184,7 +184,7 @@ export default {
     this.addSquare(400,355,89,"rgba(150,150,250,0.7)", 206);*/
   },
   methods: {
-     loadShapes()
+      loadShapes()
     {   
         Service.getList().then(Response => {
  
