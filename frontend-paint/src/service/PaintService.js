@@ -78,14 +78,6 @@ class PaintService {
   }
 
   /**
-   * calls createCanvas();
-   * @returns nothing
-   */
-  deleteCanvas() {
-    return this.createCanvas();
-  }
-
-  /**
    * @param type of file to be saved: xml or json
    * @returns The File
    */
@@ -107,14 +99,9 @@ class PaintService {
    * @param file to be deserialized
    * @returns List of Shapes
    */
-  load(file) {
-    return axios.get(API_URL + "/load", {
-      params: {
-        file: file
-      }
-    });
+  load(/*file*/) {
+   //TODO
   }
-
 }
 
 export default new PaintService();
