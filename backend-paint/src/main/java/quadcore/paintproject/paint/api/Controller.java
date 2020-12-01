@@ -85,10 +85,10 @@ public class Controller {
         try {
             initialStream = multipartFile.getInputStream();
             byte[] buffer = new byte[initialStream.available()];
-            initialStream.read(buffer);
+            if(initialStream.read(buffer) == -1) throw new RuntimeException("Empty File");
             System.out.println(initialStream);
             targetFile = new File("targetFile.tmp");
-            targetFile.createNewFile();
+            if (!targetFile.createNewFile()) throw new RuntimeException("Target File Cannot Be Created");
             OutputStream outStream = new FileOutputStream(targetFile);
             outStream.write(buffer);
             outStream.close();
@@ -100,6 +100,7 @@ public class Controller {
               sb.append(data);
             }
             myReader.close();
+            if(!targetFile.delete()) System.out.println("Could not delete file");
             return service.load(sb.toString(), ext);
         } catch (IOException e1) {
             e1.printStackTrace();

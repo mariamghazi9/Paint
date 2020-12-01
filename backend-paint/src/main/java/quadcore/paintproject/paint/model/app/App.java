@@ -3,7 +3,6 @@ package quadcore.paintproject.paint.model.app;
 import quadcore.paintproject.paint.model.saveload.FileManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 

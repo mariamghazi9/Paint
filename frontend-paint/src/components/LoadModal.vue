@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <div class="modal-container" style="width: 400px">
           <div class="modal-header"></div>
 
           <div class="modal-body">
