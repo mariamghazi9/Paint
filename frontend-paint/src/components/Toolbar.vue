@@ -17,15 +17,6 @@
     <v-container>
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
-      
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
-                <v-icon>mdi-file-outline</v-icon>
-              </v-btn>
-            </template>
-            <span>New Canvas</span>
-          </v-tooltip>
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -61,6 +52,15 @@
             <v-list-item @click="saveXML">XML</v-list-item>
           </v-list>
         </v-menu>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span>Delete Canvas</span>
+        </v-tooltip>
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -174,8 +174,8 @@ export default {
       value: "",
       fileName: "",
       file: "",
-      fileType: "json",
-      flag:"",
+      flag: "",
+      nameField: "untitled",
       undoFlag:""
     };
   },
@@ -227,10 +227,13 @@ export default {
     save() {
       PaintService.save("xml");
     }
-  },
- 
+  }
 };
 </script>
 
-<style />
-
+<style>
+.myContainer {
+  margin-bottom: -60px;
+  margin-top: -20px;
+}
+</style>
