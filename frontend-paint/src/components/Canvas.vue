@@ -476,11 +476,6 @@ export default {
     },
     addShape(e) {
       this.getMouse(e);
-      // Default size
-      //var width = 20;
-      //var height = 20;
-      //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
-      //Service.addShape(this.addSquare(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
       var addedShape;
       switch (this.toolbarFlag) {
         case 1:

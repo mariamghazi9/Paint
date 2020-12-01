@@ -36,16 +36,21 @@ import PaintService from "../service/PaintService";
 export default {
   data() {
     return {
-      file: ""
+      file: "",
+      extension:""
     };
   },
   methods: {
     submitFile() {
+      if (this.$refs.file.files[0] == null) {
+        return
+      }
       let formData = new FormData();
       formData.append("file", this.file);
-      PaintService.load(formData)
-        .then(response => {
-          console.log(response.data);
+      formData.append("ext", this.extension);
+      PaintService.load(formData, this.extension)
+        .then(function() {
+          console.log("SUCCESS!!");
         })
         .catch(function() {
           console.log("FAILURE LOADING FILE");
@@ -54,6 +59,11 @@ export default {
     },
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
+      
+      let fileName = this.file.name;
+      console.log(this.file);
+      let regex = new RegExp('[^.]+$');
+      this.extension = fileName.match(regex);
     }
   }
 };

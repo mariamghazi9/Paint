@@ -78,14 +78,14 @@ public class Controller {
 
     // TODO load
     @RequestMapping(value = "/load", method = RequestMethod.POST)
-    public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestParam String type) {
+    public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) {
+        System.out.println(ext);
         InputStream initialStream;
         File targetFile;
         try {
             initialStream = multipartFile.getInputStream();
             byte[] buffer = new byte[initialStream.available()];
             initialStream.read(buffer);
-            System.out.println(initialStream);
             System.out.println(initialStream);
             targetFile = new File("targetFile.tmp");
             targetFile.createNewFile();
@@ -100,7 +100,7 @@ public class Controller {
               sb.append(data);
             }
             myReader.close();
-            return service.load(sb.toString(), type);
+            return service.load(sb.toString(), ext);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
