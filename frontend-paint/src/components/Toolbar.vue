@@ -20,7 +20,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="$emit('load')">
               <v-icon>mdi-file-upload</v-icon>
             </v-btn>
           </template>
@@ -28,7 +28,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="save">
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
           </template>
@@ -156,6 +156,15 @@ export default {
   methods:{
     addShape() {
       PaintService.addShape(new Circle());
+    },
+    save() {
+      PaintService.save("xml").then(Response => {
+        console.log(Response.headers.get('Content-Disposition'));
+        var anchorElement = document.createElement('a');
+        anchorElement.setAttribute('href', window.URL.createObjectURL(new Blob([Response.data], {type: 'text/plain'})));
+        anchorElement.setAttribute('download', "paint.xml");
+        anchorElement.click();
+      });
     }
   }
 };
