@@ -27,6 +27,7 @@ class PaintService {
    * @returns nothing
    */
   editShape(shape) {
+    console.log(shape.x, shape.y);
     return axios.post(API_URL + "/editShape", shape);
   }
 
@@ -46,15 +47,12 @@ class PaintService {
   /**
    * @returns Action object
    */
-  undo() {
-    return axios.get(API_URL + "/undo");
-  }
-
-  /**
-   * @returns Action object
-   */
-  redo() {
-    return axios.get(API_URL + "/redo");
+  undoRedo(isUndo) {
+    if (isUndo) {
+      return axios.get(API_URL + "/undo");
+    } else {
+      return axios.get(API_URL + "/redo");
+    }
   }
 
   /**
@@ -102,6 +100,7 @@ class PaintService {
   load(/*file*/) {
    //TODO
   }
+
 }
 
 export default new PaintService();
