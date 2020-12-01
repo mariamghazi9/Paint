@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fill-height align-center justify-center>
+    <v-container fill-height align-center justify-center class="myContainer">
       <v-card
         height="600"
         width="800"
@@ -15,7 +15,6 @@
         >
           This text is displayed if your browser does not support HTML5 Canvas.
         </canvas>
-        
       </v-card>
     </v-container>
   </div>
@@ -30,14 +29,13 @@ import Line from "../models/Line";
 import Square from "../models/Square";
 import Service from "../service/PaintService";
 import Point from "../models/Point";
-import UndoHandler from  "../service/UndoHandler";
-
+import UndoHandler from "../service/UndoHandler";
 
 export default {
   name: "Canvas",
   data() {
     return {
-      toolbarFlag:"",
+      toolbarFlag: "",
       //to save the flag coming from toolbar to choose the shape to be drawn
       shapes: [],
       // Array to carry the selection handles (drag boxes) for each shape selection
@@ -149,22 +147,20 @@ export default {
     // add a green-blue rectangle
     this.addRect(240, 120, 40, 40, "rgba(2,165,165,0.7)");
     // add a smaller purple rectangle
-   
+
     this.addCircle(45, 60, 50, "rgba(150,150,250,0.7)");
- 
+
     /*var p1 = new Point(300, 25);
     var p2 = new Point(250, 25);
     var p3 = new Point(200, 55);*/
-    
-    this.addSquare(300,200,70,"rgba(150,150,250,0.7)")
-    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-    
 
-    this.$root.$on('flag', (flag) => {
-            this.toolbarFlag=flag;
-        })
-    
-    
+    this.addSquare(300, 200, 70, "rgba(150,150,250,0.7)");
+    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
+
+    this.$root.$on("flag", flag => {
+      this.toolbarFlag = flag;
+    });
+
     /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
     Service.addShape(s).then(Response => {
         s.id = Number(Response.data);
@@ -214,18 +210,16 @@ export default {
       this.invalidate();
       return triangle;
     },
-    addLine(p1,p2,fill)
-    {
-      var line=new Line(p1,p2,fill)
+    addLine(p1, p2, fill) {
+      var line = new Line(p1, p2, fill);
       this.shapes.push(line);
       this.invalidate();
       return line;
     },
-    addSquare(x,y,length,fill)
-    {
-      var square=new Square(x,y,length,fill)
-      this.shapes.push(square)
-      this.invalidate()
+    addSquare(x, y, length, fill) {
+      var square = new Square(x, y, length, fill);
+      this.shapes.push(square);
+      this.invalidate();
       return square;
     },
     //wipes the canvas context
@@ -358,7 +352,7 @@ export default {
     },
     mouseUp() {
       if (this.isDrag || this.isResizeDrag) {
-          Service.editShape(this.selectedShape);
+        Service.editShape(this.selectedShape);
       }
       this.isDrag = false;
       this.isResizeDrag = false;
@@ -372,30 +366,61 @@ export default {
       //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
       //Service.addShape(this.addSquare(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
       var addedShape;
-      switch(this.toolbarFlag){
-              case 1:
-                addedShape=this.addLine(new Point(this.mouse_x-30,this.mouse_y),new Point(this.mouse_x+30,this.mouse_y), "rgba(220,205,65,0.7)");
-                break;
-              case 2:
-                addedShape=this.addRect(this.mouse_x, this.mouse_y, 60, 40, "rgba(220,205,65,0.7)");
-                break;
-              case 3:
-                addedShape=this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)");
-                break;
-              case 4:
-                addedShape=this.addSquare(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)");
-                break;
-              case 5:
-                addedShape=this.addTriangle(new Point(this.mouse_x-30,this.mouse_y),new Point(this.mouse_x+30,this.mouse_y),new Point(this.mouse_x,this.mouse_y-50), "rgba(220,205,65,0.7)");
-                break;
-              case 6:
-                addedShape=this.addEllipse(this.mouse_x, this.mouse_y, 60, 40, "rgba(220,205,65,0.7)");
-                break;
+      switch (this.toolbarFlag) {
+        case 1:
+          addedShape = this.addLine(
+            new Point(this.mouse_x - 30, this.mouse_y),
+            new Point(this.mouse_x + 30, this.mouse_y),
+            "rgba(220,205,65,0.7)"
+          );
+          break;
+        case 2:
+          addedShape = this.addRect(
+            this.mouse_x,
+            this.mouse_y,
+            60,
+            40,
+            "rgba(220,205,65,0.7)"
+          );
+          break;
+        case 3:
+          addedShape = this.addCircle(
+            this.mouse_x,
+            this.mouse_y,
+            40,
+            "rgba(220,205,65,0.7)"
+          );
+          break;
+        case 4:
+          addedShape = this.addSquare(
+            this.mouse_x,
+            this.mouse_y,
+            40,
+            "rgba(220,205,65,0.7)"
+          );
+          break;
+        case 5:
+          addedShape = this.addTriangle(
+            new Point(this.mouse_x - 30, this.mouse_y),
+            new Point(this.mouse_x + 30, this.mouse_y),
+            new Point(this.mouse_x, this.mouse_y - 50),
+            "rgba(220,205,65,0.7)"
+          );
+          break;
+        case 6:
+          addedShape = this.addEllipse(
+            this.mouse_x,
+            this.mouse_y,
+            60,
+            40,
+            "rgba(220,205,65,0.7)"
+          );
+          break;
       }
       Service.addShape(addedShape).then(Response => {
         addedShape.id = Number(Response.data);
       });
-      
+
       /*var addedShape = this.addCircle(this.mouse_x , this.mouse_y, 50, "rgba(150,150,250,0.7)");
       // Added the shape in the backend
       Service.addShape(addedShape).then(Response => {
@@ -427,7 +452,7 @@ export default {
     },
     undoRedo(isUndo) {
       Service.undoRedo(isUndo).then(Response => {
-        switch(Response.data["type"]) {
+        switch (Response.data["type"]) {
           case "DELETE":
             UndoHandler.undoByDelete(Response.data["shape"]["id"], this);
             break;
@@ -435,7 +460,11 @@ export default {
             UndoHandler.undoByEditing(Response.data["shape"], this);
             break;
           case "ADD":
-            UndoHandler.undoByAdding(Response.data["shape"]["type"], Response.data["shape"], this);
+            UndoHandler.undoByAdding(
+              Response.data["shape"]["type"],
+              Response.data["shape"],
+              this
+            );
             break;
         }
         this.invalidate();
@@ -462,5 +491,8 @@ export default {
 }
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+.myContainer {
+  margin-top: -20px;
 }
 </style>

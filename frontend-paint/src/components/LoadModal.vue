@@ -1,59 +1,61 @@
 <template>
-    <transition name="modal">
-        <div class="modal-mask">
-          <div class="modal-wrapper">
-            <div class="modal-container">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="modal-header"></div>
 
-              <div class="modal-header">
-              </div>
+          <div class="modal-body">
+            <input
+              type="file"
+              id="file"
+              ref="file"
+              v-on:change="handleFileUpload()"
+            />
+          </div>
 
-              <div class="modal-body">
-                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-                
-              </div>
-
-              <div class="modal-footer">
-                <slot name="footer">
-                  <v-btn icon v-on:click="submitFile()">
-                    Load
-                  </v-btn>
-                  <br>
-                  <v-btn id="close" icon @click= "$emit('close')">
-                    OK
-                  </v-btn>
-                </slot>
-              </div>
-            </div>
+          <div class="modal-footer">
+            <slot name="footer">
+              <v-btn icon v-on:click="submitFile()">
+                Load
+              </v-btn>
+              <br />
+              <v-btn id="close" icon @click="$emit('close')">
+                OK
+              </v-btn>
+            </slot>
           </div>
         </div>
-      </transition>
+      </div>
+    </div>
+  </transition>
 </template>
 <script>
 import PaintService from "../service/PaintService";
 export default {
-    data() {
-        return {
-            file: ''
-        }
+  data() {
+    return {
+      file: ""
+    };
+  },
+  methods: {
+    submitFile() {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      PaintService.load(formData)
+        .then(function() {
+          console.log("SUCCESS!!");
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+      document.getElementById("close").click();
     },
-    methods: {
-        submitFile() {
-          let formData = new FormData();
-          formData.append('file', this.file);
-          PaintService.load(formData)
-          .then(function () {
-            console.log('SUCCESS!!');
-          })
-          .catch(function () {
-            console.log('FAILURE!!');
-          }); 
-          document.getElementById("close").click();
-        },
-        handleFileUpload(){
-          this.file = this.$refs.file.files[0];
-        }
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
     }
-}
+  }
+};
 </script>
 <style>
 .modal-mask {
