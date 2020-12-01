@@ -96,7 +96,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="setFlag(6)">
               <v-icon>mdi-ellipse-outline</v-icon>
             </v-btn>
           </template>
@@ -104,7 +104,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="setFlag(5)">
               <v-icon>mdi-triangle-outline</v-icon>
             </v-btn>
           </template>
@@ -112,7 +112,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="setFlag(4)">
               <v-icon>mdi-square-outline</v-icon>
             </v-btn>
           </template>
@@ -120,15 +120,15 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="setFlag(3)">
               <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
             </v-btn>
           </template>
           <span>Circle</span>
         </v-tooltip>
         <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+          <template v-slot:activator="{ on }" >
+            <v-btn icon v-on="on" @click="setFlag(2)">
               <v-icon>mdi-rectangle-outline</v-icon>
             </v-btn>
           </template>
@@ -136,20 +136,22 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="setFlag(1)">
               <v-img src="../assets/horizontal-line.png" />
             </v-btn>
           </template>
           <span>Line</span>
         </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-format-color-fill</v-icon>
-            </v-btn>
-          </template>
-          <span>Fill</span>
-        </v-tooltip>
+            </v-btn-toggle>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-format-color-fill</v-icon>
+              </v-btn>
+            </template>
+            <span>Fill</span>
+          </v-tooltip>
+        
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -181,7 +183,8 @@ export default {
       fileName: "",
       file: "",
       flag: "",
-      nameField: "untitled"
+      nameField: "untitled",
+      undoFlag:""
     };
   },
   methods: {
@@ -222,6 +225,10 @@ export default {
     setFlag(f) {
       this.flag = f;
       this.$root.$emit("flag", this.flag);
+    },
+    undo(u){
+      this.undoFlag=u;
+      this.$root.$emit('undoFlag',this.undoFlag);
     },
     save() {
       PaintService.save("xml");

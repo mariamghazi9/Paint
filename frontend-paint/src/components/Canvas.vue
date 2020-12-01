@@ -160,7 +160,12 @@ export default {
     this.$root.$on("flag", flag => {
       this.toolbarFlag = flag;
     });
+    this.$root.$on('undoFlag', (undoFlag) => {
+      console.log(undoFlag);
+          this.undoRedo(undoFlag);
+        })
 
+    
     /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
     Service.addShape(s).then(Response => {
         s.id = Number(Response.data);
@@ -469,6 +474,7 @@ export default {
         }
         this.invalidate();
       });
+
     }
   }
 };
@@ -483,6 +489,7 @@ export default {
   color: #2c3e50;
 }
 #nav {
+
   padding: 30px;
 }
 #nav a {
