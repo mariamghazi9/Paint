@@ -3,7 +3,7 @@
     <v-main   style="background-color: #EEE7DF">
       <v-container>
         <LoadModal id ="modal" v-if= "showModal" @close= "showModal = false"/>
-        <Toolbar id="myToolbar" @load = "showModal = true"/>
+        <Toolbar id="myToolbar" @load= "showModal = true"/>
         <Canvas id="myCanvas" />
       </v-container>
     </v-main>

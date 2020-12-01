@@ -29,14 +29,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="pickFile">
-              <input
-                type="file"
-                style="display: none"
-                ref="file"
-                accept=".xml, .json"
-                @change="onFilePicked"
-              />
+            <v-btn icon v-on="on" @click="$emit('load')">
               <v-icon>mdi-file-upload</v-icon>
             </v-btn>
           </template>
@@ -142,7 +135,6 @@
           </template>
           <span>Line</span>
         </v-tooltip>
-            </v-btn-toggle>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">

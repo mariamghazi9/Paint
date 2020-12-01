@@ -10,6 +10,7 @@
               type="file"
               id="file"
               ref="file"
+              accept=".xml, .json"
               v-on:change="handleFileUpload()"
             />
           </div>
