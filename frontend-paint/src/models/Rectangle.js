@@ -2,11 +2,11 @@ class Rectangle {
   constructor() {
     this.x = 0;
     this.y = 0;
-    // default width and height?
     this.w = 1;
     this.h = 1;
     this.fill = "#444444";
     this.type = "rectangle";
+    this.id = -1;
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'
@@ -117,6 +117,14 @@ class Rectangle {
         this.h = currentApp.mouse_y - oldy;
         break;
     }
+  }
+  setAttributes(shape) {
+    this.x = shape["point"][0];
+    this.y = shape["point"][1];
+    this.w = shape["height"];
+    this.h = shape["width"];
+    this.fill = shape["color"];
+    this.id = shape["id"];
   }
 }
 

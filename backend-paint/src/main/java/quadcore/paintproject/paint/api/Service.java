@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import java.awt.Point;
 
 public class Service {
@@ -131,15 +132,15 @@ public class Service {
     private int setSquare(Shape myShape, Map<String, Object> shape) {
         Square square = (Square) myShape;
         square.setLocation((Integer) shape.get("x"), (Integer) shape.get("y"));
-        square.setLength((Float) shape.get("length"));
+        square.setLength((Integer) shape.get("length"));
         square.setColor((String) shape.get("fill"));
         return square.getId();
     }
 
     private int setEllipse(Shape myShape, Map<String, Object> shape) {
         Ellipse ellipse = (Ellipse) myShape;
-        ellipse.setRadiusX((Float) shape.get("radius_x"));
-        ellipse.setRadiusY((Float) shape.get("radius_y"));
+        ellipse.setRadiusX((Integer) shape.get("radius_x"));
+        ellipse.setRadiusY((Integer) shape.get("radius_y"));
         ellipse.setLocation((Integer) shape.get("x"), (Integer) shape.get("y"));
         ellipse.setColor((String) shape.get("fill"));
         return ellipse.getId();

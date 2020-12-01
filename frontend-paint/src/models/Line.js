@@ -7,7 +7,7 @@ class Line{
         this.x=0;
         this.y=0;
         this.type = "line";
-        
+        this.id = -1;
     }
 
      draw(context,currentApp)
@@ -61,20 +61,29 @@ class Line{
       switch(expectResize)
       {    
          case 4:
-             {  
-                this.p1.x = currentApp.mouse_x - this.x
-                this.p1.y = currentApp.mouse_y - this.y
-                break;
-             }
+        {  
+          this.p1.x = currentApp.mouse_x - this.x
+          this.p1.y = currentApp.mouse_y - this.y
+          break;
+        }
         case 5:
-            {
-              this.p2.x = currentApp.mouse_x - this.x
-              this.p2.y = currentApp.mouse_y - this.y
-              break;
-             }
-
+        {
+          this.p2.x = currentApp.mouse_x - this.x
+          this.p2.y = currentApp.mouse_y - this.y
+          break;
+        }
       }
     }
-
+    setAttributes(shape) {
+      this.p1.x=shape["end"][0];
+      this.p1.y=shape["end"][1];  
+      this.p2.x=shape["point"][0];
+      this.p2.y=shape["point"][1];
+        
+      this.fill=shape["fill"];
+      this.x=0;
+      this.y=0;
+      this.id = shape["id"];
+    }
 }
 export default Line;

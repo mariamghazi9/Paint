@@ -15,6 +15,7 @@
         >
           This text is displayed if your browser does not support HTML5 Canvas.
         </canvas>
+        
       </v-card>
     </v-container>
   </div>
@@ -24,10 +25,12 @@
 import Circle from "../models/Circle";
 import Rectangle from "../models/Rectangle";
 import Triangle from "../models/Triangle";
-import Point from "../models/Point";
+import Ellipse from "../models/Ellipse";
 import Line from "../models/Line";
 import Square from "../models/Square";
+import Point from "../models/Point";
 import Service from "../service/PaintService";
+import UndoHandler from  "../service/UndoHandler";
 
 
 export default {
@@ -156,18 +159,15 @@ export default {
    
     this.addCircle(45, 60, 50, "rgba(150,150,250,0.7)");
  
-    var p1 = new Point(300, 25);
-    var p2 = new Point(250, 25);
-    var p3 = new Point(200, 55);
-    this.addTriangle(p1, p2, p3, "rgba(150,150,250,0.7)");
-    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-    this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)");
-    this.addSquare(300,200,70,"rgba(150,150,250,0.7)")
-    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-    this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)")
-    this.addSquare(400,355,89,"rgba(150,150,250,0.7)")
-    
-    
+    var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
+    Service.addShape(s).then(Response => {
+        s.id = Number(Response.data);
+    });
+
+    this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)", 202);
+    this.addSquare(300,200,70,"rgba(150,150,250,0.7)", 203);
+    this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)", 205);
+    this.addSquare(400,355,89,"rgba(150,150,250,0.7)", 206);
   },
   methods: {
     addRect(x, y, w, h, fill) {
@@ -191,6 +191,17 @@ export default {
       this.invalidate();
       return cir;
     },
+    addEllipse(x, y, rx, ry, fill) {
+      var ell = new Ellipse();
+      ell.x = x;
+      ell.y = y;
+      ell.radius_x = rx;
+      ell.radius_y = ry;
+      ell.fill = fill;
+      this.shapes.push(ell);
+      this.invalidate();
+      return ell;
+    },
     addTriangle(p1, p2, p3, fill) {
       var triangle = new Triangle(p1, p2, p3, fill);
       this.shapes.push(triangle);
@@ -211,7 +222,6 @@ export default {
       this.invalidate()
       return square;
     },
-
     //wipes the canvas context
     clear(c) {
       c.clearRect(0, 0, this.WIDTH, this.HEIGHT);
@@ -222,17 +232,11 @@ export default {
     mainDraw() {
       if (this.canvasValid === false) {
         this.clear(this.ctx);
-
-        // Add stuff you want drawn in the background all the time here
-
         // draw all boxes
         var l = this.shapes.length;
         for (var i = 0; i < l; i++) {
           this.shapes[i].draw(this.ctx, this);
         }
-
-        // Add stuff you want drawn on top all the time here
-
         this.canvasValid = true;
       }
     },
@@ -372,7 +376,11 @@ export default {
       //var width = 20;
       //var height = 20;
       //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
-      Service.addShape(this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
+      var addedShape = this.addCircle(this.mouse_x , this.mouse_y, 50, "rgba(150,150,250,0.7)");
+      // Added the shape in the backend
+      Service.addShape(addedShape).then(Response => {
+        addedShape.id = Number(Response.data);
+      });
     },
     invalidate() {
       this.canvasValid = false;
@@ -396,6 +404,22 @@ export default {
       offsetY += this.styleBorderTop;
       this.mouse_x = e.pageX - offsetX;
       this.mouse_y = e.pageY - offsetY;
+    },
+    undoRedo(isUndo) {
+      Service.undoRedo(isUndo).then(Response => {
+        switch(Response.data["type"]) {
+          case "DELETE":
+            UndoHandler.undoByDelete(Response.data["shape"]["id"], this);
+            break;
+          case "EDIT":
+            UndoHandler.undoByEditing(Response.data["shape"], this);
+            break;
+          case "ADD":
+            UndoHandler.undoByAdding(Response.data["shape"]["type"], Response.data["shape"], this);
+            break;
+        }
+        this.invalidate();
+      });
     }
   }
 };

@@ -7,6 +7,7 @@ class Ellipse {
     this.radius_y = 1;
     this.fill = "#8A4584";
     this.type = "ellipse";
+    this.id = -1;
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'
@@ -111,6 +112,14 @@ class Ellipse {
         break;
     }
   } // end draw
+  setAttributes(shape) {
+    this.x = shape["point"][0];
+    this.y = shape["point"][1];
+    this.radius_x = shape["radiusX"];
+    this.radius_y = shape["radiusY"];
+    this.fill = shape["color"];
+    this.id = shape["id"];
+  }
 }
 
 export default Ellipse;
