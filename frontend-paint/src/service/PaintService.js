@@ -76,14 +76,6 @@ class PaintService {
   }
 
   /**
-   * calls createCanvas();
-   * @returns nothing
-   */
-  deleteCanvas() {
-    return this.createCanvas();
-  }
-
-  /**
    * @param type of file to be saved: xml or json
    * @returns The File
    */
