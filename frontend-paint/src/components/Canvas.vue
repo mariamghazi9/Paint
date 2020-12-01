@@ -27,13 +27,14 @@ import Triangle from "../models/Triangle";
 import Point from "../models/Point";
 import Line from "../models/Line";
 import Square from "../models/Square";
+import Ellipse from "../models/Ellipse";
 import Service from "../service/PaintService";
-
-
 export default {
   name: "Canvas",
   data() {
     return {
+      toolbarFlag:"",
+      //to save the flag coming from toolbar to choose the shape to be drawn
       shapes: [],
       // Array to carry the selection handles (drag boxes) for each shape selection
       selectionHandles: [],
@@ -89,12 +90,10 @@ export default {
     this.ghostcanvas.height = this.HEIGHT;
     this.ghostcanvas.width = this.WIDTH;
     this.gctx = this.ghostcanvas.getContext("2d");
-
     //fixes a problem where double clicking causes text to get selected on the canvas
     this.canvas.onselectstart = function() {
       return false;
     };
-
     // fixes mouse co-ordinate problems when there's a border or padding
     // see getMouse for more detail
     if (document.defaultView && document.defaultView.getComputedStyle) {
@@ -127,45 +126,39 @@ export default {
           10
         ) || 0;
     }
-
     // make mainDraw() fire every INTERVAL milliseconds
     setInterval(this.mainDraw, this.INTERVAL);
-
     // set our events. Up and down are for dragging,
     // double click is for making new boxes
     this.canvas.onmousedown = this.mouseDown;
     this.canvas.onmouseup = this.mouseUp;
     this.canvas.ondblclick = this.addShape;
     this.canvas.onmousemove = this.mouseMove;
-
     // set up the selection handle boxes
     for (var i = 0; i < 8; i++) {
       var rect = new Rectangle();
       this.selectionHandles.push(rect);
     }
-
     // add custom initialization here:
-
     // add a large green rectangle
     this.addRect(260, 70, 60, 65, "rgba(0,205,0,0.7)");
-
     // add a green-blue rectangle
     this.addRect(240, 120, 40, 40, "rgba(2,165,165,0.7)");
-
     // add a smaller purple rectangle
    
     this.addCircle(45, 60, 50, "rgba(150,150,250,0.7)");
  
-    var p1 = new Point(300, 25);
+    /*var p1 = new Point(300, 25);
     var p2 = new Point(250, 25);
-    var p3 = new Point(200, 55);
-    this.addTriangle(p1, p2, p3, "rgba(150,150,250,0.7)");
-    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-    this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)");
+    var p3 = new Point(200, 55);*/
+    
     this.addSquare(300,200,70,"rgba(150,150,250,0.7)")
     this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-    this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)")
-    this.addSquare(400,355,89,"rgba(150,150,250,0.7)")
+    
+
+    this.$root.$on('flag', (flag) => {
+            this.toolbarFlag=flag;
+        })
     
     
   },
@@ -191,6 +184,17 @@ export default {
       this.invalidate();
       return cir;
     },
+    addEllipse(x, y, rx, ry, fill) {
+      var ell = new Ellipse();
+      ell.x = x;
+      ell.y = y;
+      ell.radius_x = rx;
+      ell.radius_y = ry;
+      ell.fill = fill;
+      this.shapes.push(ell);
+      this.invalidate();
+      return ell;
+    },
     addTriangle(p1, p2, p3, fill) {
       var triangle = new Triangle(p1, p2, p3, fill);
       this.shapes.push(triangle);
@@ -211,7 +215,6 @@ export default {
       this.invalidate()
       return square;
     },
-
     //wipes the canvas context
     clear(c) {
       c.clearRect(0, 0, this.WIDTH, this.HEIGHT);
@@ -222,17 +225,13 @@ export default {
     mainDraw() {
       if (this.canvasValid === false) {
         this.clear(this.ctx);
-
         // Add stuff you want drawn in the background all the time here
-
         // draw all boxes
         var l = this.shapes.length;
         for (var i = 0; i < l; i++) {
           this.shapes[i].draw(this.ctx, this);
         }
-
         // Add stuff you want drawn on top all the time here
-
         this.canvasValid = true;
       }
     },
@@ -240,22 +239,18 @@ export default {
     mouseMove(e) {
       if (this.isDrag) {
         this.getMouse(e);
-
         this.selectedShape.x = this.mouse_x - this.offset_x;
         this.selectedShape.y = this.mouse_y - this.offset_y;
-
         // something is changing position so we better invalidate the canvas!
         this.invalidate();
       } else if (this.isResizeDrag) {
         // time ro resize!
-
         // 0  1  2
         // 3     4
         // 5  6  7
         this.selectedShape.resize(this, this.expectResize);
         this.invalidate();
       }
-
       this.getMouse(e);
       // if there's a selection see if we grabbed one of the selection handles
       if (this.selectedShape !== null && !this.isResizeDrag) {
@@ -263,9 +258,7 @@ export default {
           // 0  1  2
           // 3     4
           // 5  6  7
-
           var cur = this.selectionHandles[i];
-
           // we dont need to use the ghost context because
           // selection handles will always be rectangles
           if (
@@ -277,7 +270,6 @@ export default {
             // we found one!
             this.expectResize = i;
             this.invalidate();
-
             switch (i) {
               case 0:
                 this.selectedCursor = "n-resize";
@@ -316,19 +308,16 @@ export default {
     // Happens when the mouse is clicked in the canvas
     mouseDown(e) {
       this.getMouse(e);
-
       //we are over a selection box
       if (this.expectResize !== -1) {
         this.isResizeDrag = true;
         return;
       }
-
       this.clear(this.gctx);
       var l = this.shapes.length;
       for (var i = l - 1; i >= 0; i--) {
         // draw shape onto ghost context
         this.shapes[i].draw(this.gctx, "black");
-
         // get image data at the mouse x,y pixel
         var imageData = this.gctx.getImageData(
           this.mouse_x,
@@ -336,7 +325,6 @@ export default {
           1,
           1
         );
-
         // if the mouse pixel exists, select and break
         if (imageData.data[3] > 0) {
           this.selectedShape = this.shapes[i];
@@ -345,7 +333,6 @@ export default {
           this.selectedShape.x = this.mouse_x - this.offset_x;
           this.selectedShape.y = this.mouse_y - this.offset_y;
           this.isDrag = true;
-
           this.invalidate();
           this.clear(this.gctx);
           return;
@@ -372,7 +359,30 @@ export default {
       //var width = 20;
       //var height = 20;
       //this.addRect(this.mouse_x - (width / 2), this.mouse_y - (height / 2), width, height, 'rgba(220,205,65,0.7)');
-      Service.addShape(this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
+      //Service.addShape(this.addSquare(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
+      switch(this.toolbarFlag){
+              case 1:
+                Service.addShape(this.addLine(new Point(this.mouse_x-30,this.mouse_y),new Point(this.mouse_x+30,this.mouse_y), "rgba(220,205,65,0.7)"));
+                break;
+              case 2:
+                Service.addShape(this.addRect(this.mouse_x, this.mouse_y, 60, 40, "rgba(220,205,65,0.7)"));
+                break;
+              case 3:
+                Service.addShape(this.addCircle(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
+                break;
+              case 4:
+                Service.addShape(this.addSquare(this.mouse_x, this.mouse_y, 40, "rgba(220,205,65,0.7)"));
+                break;
+              case 5:
+                Service.addShape(this.addTriangle(new Point(this.mouse_x-30,this.mouse_y),new Point(this.mouse_x+30,this.mouse_y),new Point(this.mouse_x,this.mouse_y-50), "rgba(220,205,65,0.7)"));
+                break;
+              case 6:
+                Service.addShape(this.addEllipse(this.mouse_x, this.mouse_y, 60, 40, "rgba(220,205,65,0.7)"));
+                break;
+
+
+      }
+      
     },
     invalidate() {
       this.canvasValid = false;
