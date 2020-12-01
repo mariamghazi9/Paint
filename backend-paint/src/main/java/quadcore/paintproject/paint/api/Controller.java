@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@CrossOrigin
+@CrossOrigin(allowedHeaders = "*")
 @RestController
 public class Controller {
 
@@ -72,7 +72,6 @@ public class Controller {
 
         return ResponseEntity.ok()
                 .contentLength(arr.length)
-                .header(HttpHeaders.CONTENT_TYPE, "text/" + type + "; charset=utf-8")
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
                 .body(arr);
     }

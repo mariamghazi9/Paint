@@ -70,7 +70,11 @@ class PaintService {
    * @returns nothing
    */
   setCanvasName(name) {
-    return axios.post(API_URL + "/setName", name);
+    return axios.post(API_URL + "/setName", null, {
+      params: {
+        canvasName: name
+      }
+    });
   }
 
   /**
@@ -86,11 +90,17 @@ class PaintService {
    * @returns The File
    */
   save(type) {
-    return axios.get(API_URL + "/save", {
-      params: {
-        type: type
-      }
-    });
+    let i = document.createElement("iframe");
+    i.style.display = "none";
+    i.onload = function() {
+      i.parentNode.removeChild(i);
+    };
+    i.src = "http://localhost:9000/save?type=" + type;
+    let a = document.createElement("a");
+    a.href = i.src;
+    a.download = "file";
+    a.appendChild(i);
+    document.body.appendChild(a);
   }
   //TODO load
   /**
@@ -104,6 +114,7 @@ class PaintService {
       }
     });
   }
+
 }
 
 export default new PaintService();
