@@ -46,7 +46,7 @@
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
+              <v-btn icon v-on="on" @click="undo(true)">
                 <v-icon>mdi-undo</v-icon>
               </v-btn>
             </template>
@@ -54,7 +54,7 @@
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
+              <v-btn icon v-on="on" @click="undo(false)">
                 <v-icon>mdi-redo</v-icon>
               </v-btn>
             </template>
@@ -150,7 +150,8 @@ export default {
       fileName: "",
       file: "",
       fileType: "json",
-      flag:""
+      flag:"",
+      undoFlag:""
     };
   },
   methods: {
@@ -185,6 +186,10 @@ export default {
     setFlag(f){
       this.flag=f;
       this.$root.$emit('flag',this.flag);
+    },
+    undo(u){
+      this.undoFlag=u;
+      this.$root.$emit('undoFlag',this.undoFlag);
     },
     save() {
       PaintService.save("xml");

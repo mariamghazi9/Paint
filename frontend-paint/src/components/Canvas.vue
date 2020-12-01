@@ -163,6 +163,11 @@ export default {
     this.$root.$on('flag', (flag) => {
             this.toolbarFlag=flag;
         })
+
+    this.$root.$on('undoFlag', (undoFlag) => {
+      console.log(undoFlag);
+          this.undoRedo(undoFlag);
+        })
     
     
     /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
@@ -440,6 +445,7 @@ export default {
         }
         this.invalidate();
       });
+
     }
   }
 };
