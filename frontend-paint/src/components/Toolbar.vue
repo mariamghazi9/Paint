@@ -158,13 +158,7 @@ export default {
       PaintService.addShape(new Circle());
     },
     save() {
-      PaintService.save("xml").then(Response => {
-        console.log(Response.headers.get('Content-Disposition'));
-        var anchorElement = document.createElement('a');
-        anchorElement.setAttribute('href', window.URL.createObjectURL(new Blob([Response.data], {type: 'text/plain'})));
-        anchorElement.setAttribute('download', "paint.xml");
-        anchorElement.click();
-      });
+      PaintService.save("xml");
     }
   }
 };
