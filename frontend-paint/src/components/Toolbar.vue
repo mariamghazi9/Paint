@@ -1,5 +1,19 @@
 <template>
   <div>
+    <v-container class="myContainer">
+      <v-row justify="center">
+        <v-col cols="12" sm="6" md="3">
+          <v-text-field
+            label="Canvas Name"
+            placeholder="Untitled"
+            outlined
+            class="myContainer"
+            @change="setName"
+            v-model="nameField"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-container>
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
@@ -28,14 +42,26 @@
             </template>
             <span>Upload Canvas</span>
           </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="save(fileType)">
-                <v-icon>mdi-content-save</v-icon>
-              </v-btn>
-            </template>
-            <span>Save Canvas</span>
-          </v-tooltip>
+
+          <v-menu offset-y>
+          <template #activator="{ on: onMenu }">
+            <v-tooltip bottom>
+              <template #activator="{ on: onTooltip }">
+                <v-btn icon v-on="{ ...onMenu, ...onTooltip }">
+                  <v-icon>mdi-content-save</v-icon>
+                </v-btn>
+              </template>
+
+              <span>Save Canvas</span>
+            </v-tooltip>
+          </template>
+
+          <v-list>
+            <v-list-item @click="saveJSON">JSON</v-list-item>
+            <v-list-item @click="saveXML">XML</v-list-item>
+          </v-list>
+        </v-menu>
+
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on">
@@ -139,7 +165,6 @@
 
 <script>
 import PaintService from "../service/PaintService";
-import Circle from "../models/Circle";
 
 export default {
   name: "Toolbar",
@@ -179,10 +204,18 @@ export default {
     loadCanvas(file) {
       PaintService.load(file);
     },
-    
-    addShape() {
-      PaintService.addShape(new Circle());
+    saveJSON() {
+      PaintService.save("json");
     },
+    saveXML() {
+      PaintService.save("xml");
+    },
+    setName() {
+      if (this.nameField === "") this.nameField = "Untitled";
+      PaintService.setCanvasName(this.nameField);
+    },
+    
+    
     setFlag(f){
       this.flag=f;
       this.$root.$emit('flag',this.flag);
