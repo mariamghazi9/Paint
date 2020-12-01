@@ -7,6 +7,7 @@ class Triangle {
     this.x = 0;
     this.y = 0;
     this.type = "triangle";
+    this.id = -1;
   }
   draw(context, currentApp) {
     if (context === currentApp.gctx) {
@@ -90,7 +91,19 @@ class Triangle {
         this.p3.y = currentApp.mouse_y - this.y
         break;
     }
-    }
+  }
+  setAttributes(shape) {
+    this.p1.x=shape["points"][0];
+    this.p1.y=shape["points"][1];
+    this.p2.x=shape["points"][2];
+    this.p2.y=shape["points"][3];
+    this.p3.x=shape["points"][4];
+    this.p3.y=shape["points"][5];
+    this.fill=shape["color"];
+    this.x=0;
+    this.y=0;
+    this.id = shape["id"];
+}
 }
 
 export default Triangle;

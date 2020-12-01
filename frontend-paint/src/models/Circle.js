@@ -6,6 +6,7 @@ class Circle {
     this.r = 1;
     this.fill = "#844484";
     this.type = "circle";
+    this.id = -1;
   }
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'
@@ -94,6 +95,13 @@ class Circle {
         break;
     }
   } // end draw
+  setAttributes(shape) {
+    this.x = shape["point"][0];
+    this.y = shape["point"][1];
+    this.r = shape["radius"];
+    this.fill = shape["color"];
+    this.id = shape["id"];
+  }
 }
 
 export default Circle;

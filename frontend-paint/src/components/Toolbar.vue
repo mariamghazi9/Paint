@@ -3,73 +3,65 @@
     <v-container>
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
-        
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-file-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>New Canvas</span>
-        </v-tooltip>
+      
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-file-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>New Canvas</span>
+          </v-tooltip>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-file-upload</v-icon>
-            </v-btn>
-          </template>
-          <span>Upload Canvas</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-content-save</v-icon>
-            </v-btn>
-          </template>
-          <span>Save Canvas</span>
-        </v-tooltip>
-        <!--v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </template>
-          <span>Delete Canvas</span>
-        </v-tooltip-->
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-content-copy</v-icon>
-            </v-btn>
-          </template>
-          <span>Copy</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-undo</v-icon>
-            </v-btn>
-          </template>
-          <span>Undo</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-redo</v-icon>
-            </v-btn>
-          </template>
-          <span>Redo</span>
-        </v-tooltip>
-
-        <v-btn-toggle
-        v-model="value"
-        color="dark"
-        dense
-        group
-      >
-
-        <v-tooltip bottom>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="pickFile">
+                <input
+                  type="file"
+                  style="display: none"
+                  ref="file"
+                  accept=".xml, .json"
+                  @change="onFilePicked"
+                />
+                <v-icon>mdi-file-upload</v-icon>
+              </v-btn>
+            </template>
+            <span>Upload Canvas</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="save(fileType)">
+                <v-icon>mdi-content-save</v-icon>
+              </v-btn>
+            </template>
+            <span>Save Canvas</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-content-copy</v-icon>
+              </v-btn>
+            </template>
+            <span>Copy</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-undo</v-icon>
+              </v-btn>
+            </template>
+            <span>Undo</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-redo</v-icon>
+              </v-btn>
+            </template>
+            <span>Redo</span>
+          </v-tooltip>
+            <v-btn-toggle v-model="value" color="dark" dense group>
+          <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="setFlag(6)">
               <v-icon>mdi-ellipse-outline</v-icon>
@@ -117,16 +109,16 @@
           </template>
           <span>Line</span>
         </v-tooltip>
-         </v-btn-toggle>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
-              <v-icon>mdi-format-color-fill</v-icon>
-            </v-btn>
-          </template>
-          <span>Fill</span>
-        </v-tooltip>
-       
+            </v-btn-toggle>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon>mdi-format-color-fill</v-icon>
+              </v-btn>
+            </template>
+            <span>Fill</span>
+          </v-tooltip>
+        
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -154,17 +146,54 @@ export default {
   data() {
     return {
       color: "white",
-      value:"",
+      value: "",
+      fileName: "",
+      file: "",
+      fileType: "json",
       flag:""
     };
   },
-  methods:{
+  methods: {
+    pickFile() {
+      this.$refs.file.click();
+    },
+    onFilePicked(e) {
+      const files = e.target.files;
+      if (files[0] !== undefined) {
+        this.fileName = files[0].name;
+        if (this.fileName.lastIndexOf(".") <= 0) {
+          return;
+        }
+        const fr = new FileReader();
+        fr.readAsDataURL(files[0]);
+        fr.addEventListener("load", () => {
+          this.file = files[0]; // this is a file that can be sent to server...
+          this.loadCanvas(this.file);
+        });
+      } else {
+        this.fileName = "";
+        this.file = "";
+      }
+    },
+    loadCanvas(file) {
+      PaintService.load(file);
+    },
+    
     addShape() {
       PaintService.addShape(new Circle());
     },
     setFlag(f){
       this.flag=f;
       this.$root.$emit('flag',this.flag);
+    },
+    save() {
+      PaintService.save("xml").then(Response => {
+        console.log(Response.headers.get('Content-Disposition'));
+        var anchorElement = document.createElement('a');
+        anchorElement.setAttribute('href', window.URL.createObjectURL(new Blob([Response.data], {type: 'text/plain'})));
+        anchorElement.setAttribute('download', "paint.xml");
+        anchorElement.click();
+      });
     }
   },
  
