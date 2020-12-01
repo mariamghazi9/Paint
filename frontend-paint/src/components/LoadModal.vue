@@ -22,7 +22,7 @@
               </v-btn>
               <br />
               <v-btn id="close" icon @click="$emit('close')">
-                OK
+                Cancel
               </v-btn>
             </slot>
           </div>
@@ -44,11 +44,11 @@ export default {
       let formData = new FormData();
       formData.append("file", this.file);
       PaintService.load(formData)
-        .then(function() {
-          console.log("SUCCESS!!");
+        .then(response => {
+          console.log(response.data);
         })
         .catch(function() {
-          console.log("FAILURE!!");
+          console.log("FAILURE LOADING FILE");
         });
       document.getElementById("close").click();
     },

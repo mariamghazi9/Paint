@@ -3,6 +3,7 @@ package quadcore.paintproject.paint.model.app;
 import quadcore.paintproject.paint.model.saveload.FileManager;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 
@@ -45,11 +46,11 @@ public class App {
         throw new RuntimeException("Invalid File Format: Valid formats are xml and json");
     }
 
-    public Canvas load(File file) throws IOException {
-        if (file.getName().endsWith(".xml")) {
+    public Canvas load(String file, String type) throws IOException {
+        if (type.equalsIgnoreCase("xml")) {
             this.canvas = fileManager.loadXML(file);
             return canvas;
-        } else if (file.getName().endsWith(".json")){
+        } else if (type.equalsIgnoreCase("json")){
             this.canvas = fileManager.loadJson(file);
             return canvas;
         }

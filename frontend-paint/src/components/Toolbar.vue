@@ -15,26 +15,19 @@
       </v-row>
     </v-container>
     <v-container>
-      <v-toolbar dense floating src="../assets/colors.jpg">
+      <v-toolbar dense floating src="../assets/colors.jpg" width="800">
         <v-spacer />
 
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="pickFile">
-                <input
-                  type="file"
-                  style="display: none"
-                  ref="file"
-                  accept=".xml, .json"
-                  @change="onFilePicked"
-                />
-                <v-icon>mdi-file-upload</v-icon>
-              </v-btn>
-            </template>
-            <span>Upload Canvas</span>
-          </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="$emit('load')">
+              <v-icon>mdi-file-upload</v-icon>
+            </v-btn>
+          </template>
+          <span>Upload Canvas</span>
+        </v-tooltip>
 
-          <v-menu offset-y>
+        <v-menu offset-y>
           <template #activator="{ on: onMenu }">
             <v-tooltip bottom>
               <template #activator="{ on: onTooltip }">
@@ -62,89 +55,89 @@
           <span>Delete Canvas</span>
         </v-tooltip>
 
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-content-copy</v-icon>
+            </v-btn>
+          </template>
+          <span>Copy</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="undo(true)" color="primary">
+              <v-icon>mdi-undo</v-icon>
+            </v-btn>
+          </template>
+          <span>Undo</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="undo(false)" color="primary">
+              <v-icon>mdi-redo</v-icon>
+            </v-btn>
+          </template>
+          <span>Redo</span>
+        </v-tooltip>
+        <v-btn-toggle v-model="value" color="dark" dense group>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
-                <v-icon>mdi-content-copy</v-icon>
+              <v-btn icon v-on="on" @click="setFlag(6)">
+                <v-icon>mdi-ellipse-outline</v-icon>
               </v-btn>
             </template>
-            <span>Copy</span>
+            <span>Ellipse</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="undo(true)">
-                <v-icon>mdi-undo</v-icon>
+              <v-btn icon v-on="on" @click="setFlag(5)">
+                <v-icon>mdi-triangle-outline</v-icon>
               </v-btn>
             </template>
-            <span>Undo</span>
+            <span>Triangle</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="undo(false)">
-                <v-icon>mdi-redo</v-icon>
+              <v-btn icon v-on="on" @click="setFlag(4)">
+                <v-icon>mdi-square-outline</v-icon>
               </v-btn>
             </template>
-            <span>Redo</span>
+            <span>Square</span>
           </v-tooltip>
-            <v-btn-toggle v-model="value" color="dark" dense group>
-          <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(6)">
-              <v-icon>mdi-ellipse-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Ellipse</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(5)">
-              <v-icon>mdi-triangle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Triangle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(4)">
-              <v-icon>mdi-square-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Square</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(3)">
-              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Circle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }" >
-            <v-btn icon v-on="on" @click="setFlag(2)">
-              <v-icon>mdi-rectangle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Rectangle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(1)">
-              <v-img src="../assets/horizontal-line.png" />
-            </v-btn>
-          </template>
-          <span>Line</span>
-        </v-tooltip>
-            </v-btn-toggle>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
-                <v-icon>mdi-format-color-fill</v-icon>
+              <v-btn icon v-on="on" @click="setFlag(3)">
+                <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
               </v-btn>
             </template>
-            <span>Fill</span>
+            <span>Circle</span>
           </v-tooltip>
-        
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(2)">
+                <v-icon>mdi-rectangle-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Rectangle</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(1)">
+                <v-img src="../assets/horizontal-line.png" />
+              </v-btn>
+            </template>
+            <span>Line</span>
+          </v-tooltip>
+        </v-btn-toggle>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+              <v-icon>mdi-format-color-fill</v-icon>
+            </v-btn>
+          </template>
+          <span>Fill</span>
+        </v-tooltip>
+
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -176,7 +169,7 @@ export default {
       file: "",
       flag: "",
       nameField: "untitled",
-      undoFlag:""
+      undoFlag: ""
     };
   },
   methods: {
@@ -214,15 +207,14 @@ export default {
       if (this.nameField === "") this.nameField = "Untitled";
       PaintService.setCanvasName(this.nameField);
     },
-    
-    
-    setFlag(f){
-      this.flag=f;
-      this.$root.$emit('flag',this.flag);
+
+    setFlag(f) {
+      this.flag = f;
+      this.$root.$emit("flag", this.flag);
     },
-    undo(u){
-      this.undoFlag=u;
-      this.$root.$emit('undoFlag',this.undoFlag);
+    undo(u) {
+      this.undoFlag = u;
+      this.$root.$emit("undoFlag", this.undoFlag);
     },
     save() {
       PaintService.save("xml");

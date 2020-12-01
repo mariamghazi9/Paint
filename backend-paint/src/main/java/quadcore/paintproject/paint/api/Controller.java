@@ -8,11 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import quadcore.paintproject.paint.model.app.Action;
 import quadcore.paintproject.paint.model.app.Shape;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,7 +16,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-@CrossOrigin(allowedHeaders = "*")
+@CrossOrigin
 @RestController
 public class Controller {
 
@@ -82,7 +78,7 @@ public class Controller {
 
     // TODO load
     @RequestMapping(value = "/load", method = RequestMethod.POST)
-    public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile) {
+    public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestParam String type) {
         InputStream initialStream;
         File targetFile;
         try {
@@ -90,18 +86,21 @@ public class Controller {
             byte[] buffer = new byte[initialStream.available()];
             initialStream.read(buffer);
             System.out.println(initialStream);
+            System.out.println(initialStream);
             targetFile = new File("targetFile.tmp");
             targetFile.createNewFile();
             OutputStream outStream = new FileOutputStream(targetFile);
             outStream.write(buffer);
             outStream.close();
             Scanner myReader = new Scanner(targetFile);
+            StringBuilder sb = new StringBuilder();
             while (myReader.hasNextLine()) {
               String data = myReader.nextLine();
               System.out.println(data);
+              sb.append(data);
             }
             myReader.close();
-            return service.load(targetFile);
+            return service.load(sb.toString(), type);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

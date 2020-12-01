@@ -20,10 +20,9 @@ public class FileManager {
         return file;
     }
 
-    public Canvas loadXML(File file) throws IOException {
+    public Canvas loadXML(String file) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
-        String xml = inputStreamToString(new FileInputStream(file));
-        return xmlMapper.readValue(xml, Canvas.class);
+        return xmlMapper.readValue(file, Canvas.class);
     }
 
     public File saveAsJson(Canvas canvas) throws IOException {
@@ -36,20 +35,9 @@ public class FileManager {
         return file;
     }
 
-    public Canvas loadJson(File file) throws IOException {
+    public Canvas loadJson(String file) throws IOException {
         JsonMapper jsonMapper = new JsonMapper();
-        String json = inputStreamToString(new FileInputStream(file));
-        return jsonMapper.readValue(json, Canvas.class);
+        return jsonMapper.readValue(file, Canvas.class);
     }
 
-    private String inputStreamToString(InputStream is) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        String line;
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-        br.close();
-        return sb.toString();
-    }
 }

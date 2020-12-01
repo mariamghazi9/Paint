@@ -3,6 +3,7 @@ package quadcore.paintproject.paint.api;
 import quadcore.paintproject.paint.model.app.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -83,9 +84,9 @@ public class Service {
         }
     }
 
-    protected List<Shape> load(File file) {
+    protected List<Shape> load(String file, String type) {
         try {
-            List<Shape> list = App.getInstance().load(file).getShapes();
+            List<Shape> list = App.getInstance().load(file, type).getShapes();
             canvas = App.getInstance().getCanvas();
             return list;
         } catch (IOException e) {
