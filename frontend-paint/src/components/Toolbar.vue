@@ -138,7 +138,7 @@
             </v-btn-toggle>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
+              <v-btn icon v-on="on" @click="fill()">
                 <v-icon>mdi-format-color-fill</v-icon>
               </v-btn>
             </template>
@@ -154,6 +154,7 @@
           <v-color-picker
             value="#7417BE"
             v-model="color"
+            v-bind="getColor()"
             hide-inputs
             show-swatches
           />
@@ -176,9 +177,11 @@ export default {
       file: "",
       flag: "",
       nameField: "untitled",
-      undoFlag:""
+      undoFlag:"",
+      isFill:""
     };
   },
+ 
   methods: {
     pickFile() {
       this.$refs.file.click();
@@ -214,8 +217,6 @@ export default {
       if (this.nameField === "") this.nameField = "Untitled";
       PaintService.setCanvasName(this.nameField);
     },
-    
-    
     setFlag(f){
       this.flag=f;
       this.$root.$emit('flag',this.flag);
@@ -223,6 +224,14 @@ export default {
     undo(u){
       this.undoFlag=u;
       this.$root.$emit('undoFlag',this.undoFlag);
+    },
+    fill(){
+      this.isFill=true;
+      this.$root.$emit('isFill',this.isFill);
+
+    },
+    getColor(){
+      this.$root.$emit('color',this.color);
     },
     save() {
       PaintService.save("xml");

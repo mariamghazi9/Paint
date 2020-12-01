@@ -34,6 +34,10 @@ export default {
   name: "Canvas",
   data() {
     return {
+      colorChosen:"",
+      //color chosen from colorpicker
+      fill:"",
+      //check if fill button is clicked
       toolbarFlag: "",
       //to save the flag coming from toolbar to choose the shape to be drawn
       shapes: [],
@@ -152,13 +156,23 @@ export default {
     var p3 = new Point(200, 55);*/
     this.addSquare(300, 200, 70, "rgba(150,150,250,0.7)");
     this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
+
+
     this.$root.$on("flag", flag => {
       this.toolbarFlag = flag;
     });
     this.$root.$on('undoFlag', (undoFlag) => {
       console.log(undoFlag);
           this.undoRedo(undoFlag);
-        })
+        });
+    this.$root.$on("isFill", isFill => {
+      console.log(isFill);
+      this.fill = isFill;
+    });
+    this.$root.$on("color", color => {
+      console.log(color);
+      this.colorChosen = color;
+    });
     
     /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
     Service.addShape(s).then(Response => {
@@ -170,6 +184,110 @@ export default {
     this.addSquare(400,355,89,"rgba(150,150,250,0.7)", 206);*/
   },
   methods: {
+     loadShapes()
+    {   
+        Service.getList().then(Response => {
+ 
+        var loadedData=Response.data;
+ 
+        console.log(loadedData)
+ 
+ 
+       for (var i=0;i<loadedData.length;i++)
+        {
+          const shape=loadedData[i]
+           this.shapes.push(this.deserializeShape(shape,shape.name))
+ 
+        }
+          //this.invalidate()
+ 
+      })
+ 
+ 
+ 
+ 
+    },
+ 
+    deserializeShape(shape,name)
+  {
+     switch (name)
+     {
+       case "circle":
+         {
+          var circle=new Circle()
+          circle.fill=shape.color
+          circle.r=shape.radius
+          var point=shape.point
+          circle.x=point[0]
+          circle.y=point[1]
+          return circle
+         }
+ 
+         case "rectangle":
+          {
+           var rectangle=new Rectangle()
+           rectangle.fill=shape.color
+           rectangle.w=shape.width
+           rectangle.h=shape.height
+            point=shape.point
+           rectangle.x=point[0]
+           rectangle.y=point[1]
+           return rectangle
+          }
+          case "line":
+            {
+             var line=new Line()
+             line.fill=shape.color
+              p1=shape.point
+              p2=shape.end
+             var start= new Point(p1[0],p1[1])
+             var end= new Point(p2[0],p2[1])
+             line.p1=start
+             line.p2=end
+             return line
+            }
+ 
+             case "ellipse":
+            {
+              var ellipse=new Ellipse()
+              ellipse.fill=shape.color
+              ellipse.radius_X=shape.radiusX
+              ellipse.radius_Y=shape.radiusY
+              point=shape.point
+              ellipse.x=point[0]
+              ellipse.y=point[1]
+              return ellipse
+            }
+ 
+             case "triangle":
+            {
+              var triangle=new Triangle()
+              triangle.fill=shape.color
+              var points=shape.points
+              var p1=new Point(points[0],points[1])
+              var p2=new Point(points[2],points[3])
+              var p3=new Point(points[4],points[5])
+              triangle.p1=p1
+              triangle.p2=p2
+              triangle.p3=p3
+ 
+              return triangle
+            }
+ 
+            case "square":
+            {
+               var square=new Square()
+               square.fill=shape.color
+               square.width=shape.length
+               point=shape.point
+               square.x=point[0]
+               square.y=point[1]
+               return square
+            }
+ 
+ 
+     }
+  },
     addRect(x, y, w, h, fill) {
       var rect = new Rectangle();
       rect.x = x;
