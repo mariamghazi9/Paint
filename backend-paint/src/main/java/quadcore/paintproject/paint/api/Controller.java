@@ -3,16 +3,24 @@ package quadcore.paintproject.paint.api;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import quadcore.paintproject.paint.model.app.Action;
 import quadcore.paintproject.paint.model.app.Shape;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
+import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin(allowedHeaders = "*")
 @RestController
@@ -55,7 +63,7 @@ public class Controller {
         service.createCanvas();
     }
 
-    //TODO check save is working
+    // TODO check save is working
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public ResponseEntity<byte[]> save(@RequestParam String type) {
         File file = service.save(type);
@@ -67,19 +75,39 @@ public class Controller {
             throw new RuntimeException("File Error");
         }
 
-        if(!file.delete()) System.out.println("Could not delete file");
+        if (!file.delete())
+            System.out.println("Could not delete file");
 
-
-        return ResponseEntity.ok()
-                .contentLength(arr.length)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
-                .body(arr);
+        return ResponseEntity.ok().contentLength(arr.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()).body(arr);
     }
 
-    //TODO load
-    @RequestMapping(value = "/load", method = RequestMethod.GET)
-    public List<Shape> load(@RequestBody File file) {
-        return service.load(file);
+    // TODO load
+    @RequestMapping(value = "/load", method = RequestMethod.POST)
+    public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile) {
+        InputStream initialStream;
+        File targetFile;
+        try {
+            initialStream = multipartFile.getInputStream();
+            byte[] buffer = new byte[initialStream.available()];
+            initialStream.read(buffer);
+            System.out.println(initialStream);
+            targetFile = new File("targetFile.tmp");
+            targetFile.createNewFile();
+            OutputStream outStream = new FileOutputStream(targetFile);
+            outStream.write(buffer);
+            outStream.close();
+            Scanner myReader = new Scanner(targetFile);
+            while (myReader.hasNextLine()) {
+              String data = myReader.nextLine();
+              System.out.println(data);
+            }
+            myReader.close();
+            return service.load(targetFile);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/setName", method = RequestMethod.POST)

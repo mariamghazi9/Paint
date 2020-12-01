@@ -5,24 +5,22 @@
             <div class="modal-container">
 
               <div class="modal-header">
-                <input type="file" id="file" name="file">
               </div>
 
               <div class="modal-body">
-                <slot name="body">
-                  <h1>default body</h1>
-                </slot>
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                
               </div>
 
               <div class="modal-footer">
                 <slot name="footer">
-                  default footer
-                  <button class="modal-default-button" @click= "submitFile">
-                    sumbit
-                  </button>
-                  <button class="modal-default-button" @click= "$emit('close')">
+                  <v-btn icon v-on:click="submitFile()">
+                    Load
+                  </v-btn>
+                  <br>
+                  <v-btn id="close" icon @click= "$emit('close')">
                     OK
-                  </button>
+                  </v-btn>
                 </slot>
               </div>
             </div>
@@ -40,14 +38,20 @@ export default {
     },
     methods: {
         submitFile() {
-            PaintService.load(document.getElementById('file').files[0]);
-            // You should have a server side REST API 
-            
-            },
-            handleFileUpload() {
-            //this.file = ;
-            //console.log('>>>> 1st element in files array >>>> ', this.file);
-            }
+          let formData = new FormData();
+          formData.append('file', this.file);
+          PaintService.load(formData)
+          .then(function () {
+            console.log('SUCCESS!!');
+          })
+          .catch(function () {
+            console.log('FAILURE!!');
+          }); 
+          document.getElementById("close").click();
+        },
+        handleFileUpload(){
+          this.file = this.$refs.file.files[0];
+        }
     }
 }
 </script>

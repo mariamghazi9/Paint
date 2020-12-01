@@ -88,6 +88,7 @@ class PaintService {
     i.src = "http://localhost:9000/save?type=" + type;
     let a = document.createElement("a");
     a.href = i.src;
+    a.onclick = document.execCommand('SaveAs',true,'file.html');
     a.download = "file";
     a.appendChild(i);
     document.body.appendChild(a);
@@ -97,8 +98,14 @@ class PaintService {
    * @param file to be deserialized
    * @returns List of Shapes
    */
-  load(/*file*/) {
-   //TODO
+  load(formData) {
+    return axios.post(API_URL + "/load", formData,
+      {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
   }
 
 }
