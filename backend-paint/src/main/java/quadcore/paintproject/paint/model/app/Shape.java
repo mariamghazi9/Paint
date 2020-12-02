@@ -62,10 +62,6 @@ public abstract class Shape implements Serializable {
         }
     }
 
-    public String getColor() {
-        return color;
-    }
-
     public void setColor(String color) {
         this.color = color;
     }
@@ -80,6 +76,11 @@ public abstract class Shape implements Serializable {
 
     protected void setPoint(int x, int y) {
         this.point.setLocation(x, y);
+    }
+
+    @JsonGetter("color")
+    private String getColor() {
+        return color;
     }
 
     @JsonGetter("name")
