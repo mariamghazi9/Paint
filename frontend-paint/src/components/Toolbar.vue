@@ -18,13 +18,13 @@
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
         <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="newCanvas">
-                <v-icon>mdi-file-outline</v-icon>
-              </v-btn>
-            </template>
-            <span>New Canvas</span>
-          </v-tooltip>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="newCanvas">
+              <v-icon>mdi-file-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>New Canvas</span>
+        </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="$emit('load')">
@@ -55,7 +55,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="del" >
+            <v-btn icon v-on="on" @click="del">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </template>
@@ -88,63 +88,63 @@
         </v-tooltip>
         <v-btn-toggle v-model="value" color="dark" dense group>
           <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(6)">
-              <v-icon>mdi-ellipse-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Ellipse</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(5)">
-              <v-icon>mdi-triangle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Triangle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(4)">
-              <v-icon>mdi-square-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Square</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(3)">
-              <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Circle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }" >
-            <v-btn icon v-on="on" @click="setFlag(2)">
-              <v-icon>mdi-rectangle-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Rectangle</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="setFlag(1)">
-              <v-img src="../assets/horizontal-line.png" />
-            </v-btn>
-          </template>
-          <span>Line</span>
-        </v-tooltip>
-            </v-btn-toggle>
-          <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="fill()">
-                <v-icon>mdi-format-color-fill</v-icon>
+              <v-btn icon v-on="on" @click="setFlag(6)">
+                <v-icon>mdi-ellipse-outline</v-icon>
               </v-btn>
             </template>
-            <span>Fill</span>
+            <span>Ellipse</span>
           </v-tooltip>
-        
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(5)">
+                <v-icon>mdi-triangle-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Triangle</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(4)">
+                <v-icon>mdi-square-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Square</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(3)">
+                <v-icon>mdi-checkbox-blank-circle-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Circle</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(2)">
+                <v-icon>mdi-rectangle-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Rectangle</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="setFlag(1)">
+                <v-img src="../assets/horizontal-line.png" />
+              </v-btn>
+            </template>
+            <span>Line</span>
+          </v-tooltip>
+        </v-btn-toggle>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="fill()">
+              <v-icon>mdi-format-color-fill</v-icon>
+            </v-btn>
+          </template>
+          <span>Fill</span>
+        </v-tooltip>
+
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -177,36 +177,12 @@ export default {
       file: "",
       flag: "",
       nameField: "untitled",
-      undoFlag:"",
-      isFill:""
+      undoFlag: "",
+      isFill: ""
     };
   },
 
   methods: {
-    pickFile() {
-      this.$refs.file.click();
-    },
-    onFilePicked(e) {
-      const files = e.target.files;
-      if (files[0] !== undefined) {
-        this.fileName = files[0].name;
-        if (this.fileName.lastIndexOf(".") <= 0) {
-          return;
-        }
-        const fr = new FileReader();
-        fr.readAsDataURL(files[0]);
-        fr.addEventListener("load", () => {
-          this.file = files[0]; // this is a file that can be sent to server...
-          this.loadCanvas(this.file);
-        });
-      } else {
-        this.fileName = "";
-        this.file = "";
-      }
-    },
-    loadCanvas(file) {
-      PaintService.load(file);
-    },
     saveJSON() {
       PaintService.save("json");
     },
@@ -226,24 +202,24 @@ export default {
       this.undoFlag = u;
       this.$root.$emit("undoFlag", this.undoFlag);
     },
-    fill(){
-      this.isFill=true;
-      this.$root.$emit('isFill',this.isFill);
+    fill() {
+      this.isFill = true;
+      this.$root.$emit("isFill", this.isFill);
     },
-    getColor(){
-      this.$root.$emit('color',this.color);
+    getColor() {
+      this.$root.$emit("color", this.color);
     },
     save() {
       PaintService.save("xml");
     },
     copy() {
-      this.$root.$emit('copy');
+      this.$root.$emit("copy");
     },
     del() {
-      this.$root.$emit('delete');
+      this.$root.$emit("delete");
     },
     newCanvas() {
-      this.$root.$emit('new');
+      this.$root.$emit("new");
     }
   }
 };

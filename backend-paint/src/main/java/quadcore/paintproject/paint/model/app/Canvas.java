@@ -48,9 +48,16 @@ public class Canvas {
         Shape tempShape = factory.getShape(type);
 
         shapes.put(tempShape.getId(), tempShape);
-        undo.push(new Action(Action.Type.ADD, tempShape));
 
         return tempShape;
+    }
+
+    /**
+     * used after using addShape() and editing the shape in order to copy edited shape to undo stack
+     * @param shape after addition and editing
+     */
+    public void setShapeAfterAddAndEdit(Shape shape) {
+        undo.push(new Action(Action.Type.ADD, shape));
     }
 
     public void removeShape(int id) {

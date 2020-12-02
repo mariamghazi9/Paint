@@ -16,26 +16,31 @@ public class Service {
 
     protected int addShape(Map<String, Object> shape) {
         String name = (String) shape.get("type");
-        System.out.println("Add req");
-            for (Shape s: App.getInstance().getCanvas().getShapes()) {
-                System.out.println(s.getId());
-        }
+        //System.out.println("Add req");
+//            for (Shape s: App.getInstance().getCanvas().getShapes()) {
+//                System.out.println(s.getId());
+//        }
         Shape myShape = canvas.addShape(name);
         Class<? extends Shape> type = myShape.getClass();
 
+        int id;
+
         if (type == Circle.class)
-            return setCircle(myShape, shape);
-        if (type == Line.class)
-            return setLine(myShape, shape);
-        if (type == Rectangle.class)
-            return setRectangle(myShape, shape);
-        if (type == Square.class)
-            return setSquare(myShape, shape);
-        if (type == Ellipse.class)
-            return setEllipse(myShape, shape);
-        if (type == Triangle.class)
-            return setTriangle(myShape, shape);
-        throw new RuntimeException("Invalid Shape Type");
+            id = setCircle(myShape, shape);
+        else if (type == Line.class)
+            id= setLine(myShape, shape);
+        else if (type == Rectangle.class)
+            id= setRectangle(myShape, shape);
+        else if (type == Square.class)
+            id= setSquare(myShape, shape);
+        else if (type == Ellipse.class)
+            id= setEllipse(myShape, shape);
+        else if (type == Triangle.class)
+            id= setTriangle(myShape, shape);
+        else throw new RuntimeException("Invalid Shape Type");
+
+        canvas.setShapeAfterAddAndEdit(myShape);
+        return id;
     }
 
     protected void deleteShape(int id) {
@@ -52,10 +57,10 @@ public class Service {
 
     protected void editShape(Map<String, Object> shapeMap) {
         int id = (Integer) shapeMap.get("id");
-        System.out.println("Edit req");
-            for (Shape s: App.getInstance().getCanvas().getShapes()) {
-                System.out.println(s.getId());
-        }
+        //System.out.println("Edit req");
+//            for (Shape s: App.getInstance().getCanvas().getShapes()) {
+//                System.out.println(s.getId());
+//        }
         Shape shape = App.getInstance().getCanvas().getShapeForEditing(id);
         Class<? extends Shape> type = shape.getClass();
 
@@ -95,10 +100,10 @@ public class Service {
         try {
             List<Shape> list = App.getInstance().load(file, type).getShapes();
             canvas = App.getInstance().getCanvas();
-            System.out.println("Before sending req");
-            for (Shape s: canvas.getShapes()) {
-                System.out.println(s.getId());
-            }
+            //System.out.println("Before sending req");
+//            for (Shape s: canvas.getShapes()) {
+//                System.out.println(s.getId());
+//            }
             return list;
         } catch (IOException e) {
             throw new RuntimeException("File Error");

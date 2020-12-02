@@ -44,16 +44,12 @@ public class Controller {
 
     @RequestMapping(value = "/undo", method = RequestMethod.GET)
     public Action undo() {
-        Action action = service.undo();
-        System.out.println(action.getType());
-        return action;
+        return service.undo();
     }
 
     @RequestMapping(value = "/redo", method = RequestMethod.GET)
     public Action redo() {
-        Action action = service.redo();
-        System.out.println(action.getType());
-        return action;
+        return service.redo();
     }
 
     @RequestMapping(value = "/createCanvas", method = RequestMethod.POST)
@@ -100,8 +96,7 @@ public class Controller {
             }
             myReader.close();
             if(!targetFile.delete()) System.out.println("Could not delete file");
-            List<Shape> list = service.load(sb.toString(), ext);
-            return list;
+            return service.load(sb.toString(), ext);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
