@@ -11,6 +11,7 @@ class Circle {
   // mainDraw() will call this with the normal canvas
   // myDown will call this with the ghost canvas with 'black'
   draw(context, currentApp) {
+    
     if (context === currentApp.gctx) {
       context.fillStyle = "black"; // always want black for the ghost canvas
     } else {
@@ -38,7 +39,7 @@ class Circle {
       //    0
       // 3     1
       //    2
-
+      console.log("x circle", currentApp.selectionHandles[0].x);
       currentApp.selectionHandles[0].x = this.x - half;
       currentApp.selectionHandles[0].y = this.y - this.r - half;
 

@@ -16,6 +16,10 @@ public class Service {
 
     protected int addShape(Map<String, Object> shape) {
         String name = (String) shape.get("type");
+        System.out.println("Add req");
+            for (Shape s: App.getInstance().getCanvas().getShapes()) {
+                System.out.println(s.getId());
+        }
         Shape myShape = canvas.addShape(name);
         Class<? extends Shape> type = myShape.getClass();
 
@@ -48,7 +52,11 @@ public class Service {
 
     protected void editShape(Map<String, Object> shapeMap) {
         int id = (Integer) shapeMap.get("id");
-        Shape shape = canvas.getShapeForEditing(id);
+        System.out.println("Edit req");
+            for (Shape s: App.getInstance().getCanvas().getShapes()) {
+                System.out.println(s.getId());
+        }
+        Shape shape = App.getInstance().getCanvas().getShapeForEditing(id);
         Class<? extends Shape> type = shape.getClass();
 
         if (type == Circle.class)
@@ -87,6 +95,10 @@ public class Service {
         try {
             List<Shape> list = App.getInstance().load(file, type).getShapes();
             canvas = App.getInstance().getCanvas();
+            System.out.println("Before sending req");
+            for (Shape s: canvas.getShapes()) {
+                System.out.println(s.getId());
+            }
             return list;
         } catch (IOException e) {
             throw new RuntimeException("File Error");

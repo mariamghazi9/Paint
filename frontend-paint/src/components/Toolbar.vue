@@ -2,7 +2,7 @@
   <div>
     <v-container class="myContainer">
       <v-row justify="center">
-        <v-col cols="15" sm="6" md="3">
+        <v-col cols="12" sm="6" md="3">
           <v-text-field
             label="Canvas Name"
             placeholder="Untitled"

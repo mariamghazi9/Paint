@@ -50,7 +50,7 @@ public class App {
             this.canvas = fileManager.loadXML(file);
             return canvas;
         } else if (type.equalsIgnoreCase("json")){
-            this.canvas = fileManager.loadJson(file);
+            this.canvas.setAttributes(fileManager.loadJson(file));
             return canvas;
         }
         throw new RuntimeException("Invalid File Format: Valid formats are xml and json");

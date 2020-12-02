@@ -162,6 +162,7 @@ export default {
       this.delete();
     });
     this.$root.$on("loaded", data => {
+      console.log("coming  data",data);
       this.loadShapes(data);
     });
     this.$root.$on("new", () => {
@@ -174,7 +175,6 @@ export default {
       this.isResizeDrag = false;
       this.expectResize =  -1;
       this.shapes = [];
-      this.selectionHandles = [];
       this.selectedShape = null;
       Service.createCanvas();
       this.invalidate()
@@ -191,17 +191,18 @@ export default {
  
     deserializeShape(shape,name)
     {
+      var point=shape.point
      switch (name)
-     {
+     {  
       case "circle":
       {
-      var circle=new Circle()
-      circle.fill=shape.color
-      circle.r=shape.radius
-      var point=shape.point
-      circle.x=point[0]
-      circle.y=point[1]
-      return circle
+        var circle=new Circle()
+        circle.fill=shape.color
+        circle.r=shape.radius
+        circle.x=point[0]
+        circle.y=point[1]
+        circle.id = shape.id;
+        return circle
       }
       case "rectangle":
       {
@@ -212,6 +213,7 @@ export default {
         point=shape.point
         rectangle.x=point[0]
         rectangle.y=point[1]
+        rectangle.id = shape.id;
         return rectangle
       }
       case "line":
@@ -224,6 +226,7 @@ export default {
         var end= new Point(p2[0],p2[1])
         line.p1=start
         line.p2=end
+        line.id = shape.id;
         return line
       }
 
@@ -236,6 +239,7 @@ export default {
         point=shape.point
         ellipse.x=point[0]
         ellipse.y=point[1]
+        ellipse.id = shape.id;
         return ellipse
       }
 
@@ -250,7 +254,7 @@ export default {
         triangle.p1=p1
         triangle.p2=p2
         triangle.p3=p3
-
+        triangle.id = shape.id;
         return triangle
       }
 
@@ -262,6 +266,7 @@ export default {
         point=shape.point
         square.x=point[0]
         square.y=point[1]
+        square.id = shape.id;
         return square
       }
     }
@@ -455,6 +460,9 @@ export default {
       this.expectResize = -1;
     },
     addShape(e) {
+      this.shapes.forEach(shape => {
+          console.log(shape);
+      });
       this.getMouse(e);
       var addedShape;
 
