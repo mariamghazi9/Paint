@@ -92,6 +92,7 @@ public class Canvas {
     }
 
     private Action myUndo(Stack<Action> from, Stack<Action> to) {
+        if (from.size() == 0) return null;
         Action tempAction = from.pop();
         Shape tempShape = tempAction.getShape();
 

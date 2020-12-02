@@ -26,7 +26,7 @@ public class App {
     }
 
     public Canvas createCanvas() {
-        System.out.println("Called");
+        //System.out.println("Called");
         this.canvas = new Canvas();
         return this.canvas;
     }

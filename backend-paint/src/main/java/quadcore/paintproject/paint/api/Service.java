@@ -48,11 +48,19 @@ public class Service {
     }
 
     protected Action undo() {
-        return canvas.undo();
+        try {
+            return canvas.undo();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     protected Action redo() {
-        return canvas.redo();
+        try {
+            return canvas.redo();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     protected void editShape(Map<String, Object> shapeMap) {
