@@ -468,8 +468,8 @@ export default {
           break;
         case 2:
           addedShape = this.addRect(
-            this.mouse_x,
-            this.mouse_y,
+            this.mouse_x-30,
+            this.mouse_y-20,
             60,
             40,
             this.colorChosen
@@ -485,16 +485,16 @@ export default {
           break;
         case 4:
           addedShape = this.addSquare(
-            this.mouse_x,
-            this.mouse_y,
+            this.mouse_x-20,
+            this.mouse_y-20,
             40,
             this.colorChosen
           );
           break;
         case 5:
           addedShape = this.addTriangle(
-            new Point(this.mouse_x - 30, this.mouse_y),
-            new Point(this.mouse_x + 30, this.mouse_y),
+            new Point(this.mouse_x - 30, this.mouse_y+30),
+            new Point(this.mouse_x + 30, this.mouse_y+30),
             new Point(this.mouse_x, this.mouse_y - 50),
             this.colorChosen
           );
@@ -564,7 +564,6 @@ export default {
         Service.addShape(copiedShape).then(Response => {
         copiedShape.id = Number(Response.data);
         this.shapes.push(copiedShape);
-        
         this.invalidate();
       });
       }
