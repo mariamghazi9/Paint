@@ -15,7 +15,7 @@
       </v-row>
     </v-container>
     <v-container>
-      <v-toolbar dense floating src="../assets/colors.jpg" width="800">
+      <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
         <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -171,7 +171,7 @@ export default {
   name: "Toolbar",
   data() {
     return {
-      color: "white",
+      color: "blue",
       value: "",
       fileName: "",
       file: "",

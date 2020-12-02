@@ -540,6 +540,7 @@ export default {
     },
     undoRedo(isUndo) {
       Service.undoRedo(isUndo).then(Response => {
+        console.log(Response.data);
         switch (Response.data["type"]) {
           case "DELETE":
             UndoHandler.undoByDelete(Response.data["shape"]["id"], this);

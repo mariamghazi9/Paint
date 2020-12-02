@@ -50,6 +50,7 @@ export default {
       formData.append("ext", this.extension);
       PaintService.load(formData, this.extension)
         .then(Response => {
+          console.log(Response.data);
           this.$root.$emit('loaded',Response.data);
         })
         .catch(function() {

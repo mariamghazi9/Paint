@@ -95,8 +95,8 @@ class PaintService {
   }
   //TODO load
   /**
-   * @param file to be deserialized
    * @returns List of Shapes
+   * @param formData
    */
   load(formData) {
     return axios.post(API_URL + "/load", formData, {

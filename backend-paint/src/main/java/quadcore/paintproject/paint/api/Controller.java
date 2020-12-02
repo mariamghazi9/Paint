@@ -44,12 +44,16 @@ public class Controller {
 
     @RequestMapping(value = "/undo", method = RequestMethod.GET)
     public Action undo() {
-        return service.undo();
+        Action action = service.undo();
+        System.out.println(action.getType());
+        return action;
     }
 
     @RequestMapping(value = "/redo", method = RequestMethod.GET)
     public Action redo() {
-        return service.redo();
+        Action action = service.redo();
+        System.out.println(action.getType());
+        return action;
     }
 
     @RequestMapping(value = "/createCanvas", method = RequestMethod.POST)
@@ -78,14 +82,12 @@ public class Controller {
 
     @RequestMapping(value = "/load", method = RequestMethod.POST)
     public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) {
-        System.out.println(ext);
         InputStream initialStream;
         File targetFile;
         try {
             initialStream = multipartFile.getInputStream();
             byte[] buffer = new byte[initialStream.available()];
             if(initialStream.read(buffer) == -1) throw new RuntimeException("Empty File");
-            System.out.println(initialStream);
             targetFile = new File("targetFile.tmp");
             if (!targetFile.createNewFile()) throw new RuntimeException("Target File Cannot Be Created");
             OutputStream outStream = new FileOutputStream(targetFile);
@@ -95,12 +97,13 @@ public class Controller {
             StringBuilder sb = new StringBuilder();
             while (myReader.hasNextLine()) {
               String data = myReader.nextLine();
-              System.out.println(data);
               sb.append(data);
             }
             myReader.close();
             if(!targetFile.delete()) System.out.println("Could not delete file");
-            return service.load(sb.toString(), ext);
+            List<Shape> list = service.load(sb.toString(), ext);
+            System.out.println(list);
+            return list;
         } catch (IOException e1) {
             e1.printStackTrace();
         }

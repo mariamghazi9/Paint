@@ -89,7 +89,7 @@ public class Canvas {
         Shape tempShape = tempAction.getShape();
 
         if (tempAction.getType() == Action.Type.ADD) {
-            removeShape(tempShape.getId());
+            shapes.remove(tempShape.getId());
             tempAction.setType(tempAction.reverseType());
             to.push(tempAction);
             return to.peek();
