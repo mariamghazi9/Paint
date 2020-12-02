@@ -13,7 +13,7 @@ public class App {
     private final FileManager fileManager = new FileManager();
 
     private App() {
-        canvas = new Canvas();
+        this.canvas = new Canvas();
     }
 
     public static App getInstance() {
@@ -22,12 +22,13 @@ public class App {
     }
 
     public Canvas getCanvas() {
-        return canvas;
+        return this.canvas;
     }
 
     public Canvas createCanvas() {
+        System.out.println("Called");
         this.canvas = new Canvas();
-        return canvas;
+        return this.canvas;
     }
 
     /**
@@ -50,7 +51,7 @@ public class App {
             this.canvas = fileManager.loadXML(file);
             return canvas;
         } else if (type.equalsIgnoreCase("json")){
-            this.canvas.setAttributes(fileManager.loadJson(file));
+            this.canvas = fileManager.loadJson(file);
             return canvas;
         }
         throw new RuntimeException("Invalid File Format: Valid formats are xml and json");

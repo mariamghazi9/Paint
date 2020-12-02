@@ -50,7 +50,6 @@ export default {
       formData.append("ext", this.extension);
       PaintService.load(formData, this.extension)
         .then(Response => {
-          console.log(Response.data);
           this.$root.$emit('loaded',Response.data);
         })
         .catch(function() {
@@ -59,10 +58,11 @@ export default {
       document.getElementById("close").click();
     },
     handleFileUpload() {
+      if (this.$refs.file.files.length == 0) {
+        return
+      }
       this.file = this.$refs.file.files[0];
-      
       let fileName = this.file.name;
-      console.log(this.file);
       let regex = new RegExp('[^.]+$');
       this.extension = fileName.match(regex);
     }

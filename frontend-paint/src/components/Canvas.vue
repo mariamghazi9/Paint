@@ -162,10 +162,10 @@ export default {
       this.delete();
     });
     this.$root.$on("loaded", data => {
-      console.log("coming  data",data);
       this.loadShapes(data);
     });
     this.$root.$on("new", () => {
+      Service.createCanvas();
       this.cleardata();
     });
   },
@@ -176,17 +176,16 @@ export default {
       this.expectResize =  -1;
       this.shapes = [];
       this.selectedShape = null;
-      Service.createCanvas();
       this.invalidate()
     },
     loadShapes(loadedData)
     {   
-        this.cleardata();
-        for (var i=0;i<loadedData.length;i++)
-        {
-          const shape=loadedData[i]
-          this.shapes.push(this.deserializeShape(shape,shape.name))
-        }
+      this.cleardata()
+      for (var i=0;i<loadedData.length;i++)
+      {
+        const shape=loadedData[i]
+        this.shapes.push(this.deserializeShape(shape,shape.name))
+      }
     },
  
     deserializeShape(shape,name)
@@ -460,9 +459,6 @@ export default {
       this.expectResize = -1;
     },
     addShape(e) {
-      this.shapes.forEach(shape => {
-          console.log(shape);
-      });
       this.getMouse(e);
       var addedShape;
 
@@ -548,7 +544,6 @@ export default {
     },
     undoRedo(isUndo) {
       Service.undoRedo(isUndo).then(Response => {
-        console.log(Response.data);
         switch (Response.data["type"]) {
           case "DELETE":
             UndoHandler.undoByDelete(Response.data["shape"]["id"], this);
@@ -565,6 +560,8 @@ export default {
             break;
         }
         this.invalidate();
+      }).catch(() => {
+        console.log("No more");
       });
     },
     copy () {

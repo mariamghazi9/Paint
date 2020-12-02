@@ -61,7 +61,6 @@ public class Controller {
         service.createCanvas();
     }
 
-    // TODO check save is working
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public ResponseEntity<byte[]> save(@RequestParam String type) {
         File file = service.save(type);
@@ -102,7 +101,6 @@ public class Controller {
             myReader.close();
             if(!targetFile.delete()) System.out.println("Could not delete file");
             List<Shape> list = service.load(sb.toString(), ext);
-            System.out.println(list);
             return list;
         } catch (IOException e1) {
             e1.printStackTrace();

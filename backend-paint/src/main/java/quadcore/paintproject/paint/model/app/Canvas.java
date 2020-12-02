@@ -124,12 +124,4 @@ public class Canvas {
             shapes.put(shape.getId(), shape);
         }
     }
-
-    protected void setAttributes(Canvas tempCanvas) {
-        this.name = tempCanvas.getName();
-        this.idCount = tempCanvas.getIdCount();
-        for (Shape shape: tempCanvas.getShapes()) {
-            this.shapes.put(shape.getId(), shape);
-        }
-    }
 }

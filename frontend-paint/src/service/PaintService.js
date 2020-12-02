@@ -7,7 +7,6 @@ class PaintService {
    * @returns id of the new created shape
    */
   addShape(shape) {
-    console.log(shape);
     return axios.post(API_URL + "/addShape", shape);
   }
 
@@ -28,7 +27,6 @@ class PaintService {
    * @returns nothing
    */
   editShape(shape) {
-    console.log(shape.x, shape.y);
     return axios.post(API_URL + "/editShape", shape);
   }
 
