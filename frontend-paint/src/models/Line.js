@@ -87,7 +87,10 @@ class Line{
       this.id = shape["id"];
     }
     clone() {
-      return new Line(new Point(this.p1.x + 30, this.p1.y + 30), new Point(this.p2.x + 30, this.p2.y + 30), this.fill);
+      let l = new Line(new Point(this.p1.x + 30, this.p1.y + 30), new Point(this.p2.x + 30, this.p2.y + 30), this.fill);
+      l.x = this.x;
+      l.y = this.y; 
+      return l;
     }
 }
 export default Line;

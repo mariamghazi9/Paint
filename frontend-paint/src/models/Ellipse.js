@@ -121,7 +121,13 @@ class Ellipse {
     this.id = shape["id"];
   }
   clone() {
-    return new Ellipse(this.x + 30, this.y+30, this.radius_x, this.radius_y, this.fill);
+    let ell = new Ellipse();
+    ell.x = this.x + 30;
+    ell.y = this.y + 30;
+    ell.radius_x = this.radius_x;
+    ell.radius_y = this.radius_y;
+    ell.fill = this.fill;
+    return ell;
   }
 }
 

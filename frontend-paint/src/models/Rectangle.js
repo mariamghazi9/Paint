@@ -127,7 +127,13 @@ class Rectangle {
     this.id = shape["id"];
   }
   clone() {
-    return new Rectangle(this.x + 30, this.y + 30, this.w, this.h, this.fill);
+    let rect = new Rectangle();
+    rect.x = this.x + 30;
+    rect.y = this.y + 30;
+    rect.w = this.w;
+    rect.h = this.h;
+    rect.fill = this.fill;
+    return rect;
   }
 }
 

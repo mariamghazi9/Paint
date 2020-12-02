@@ -103,7 +103,12 @@ class Circle {
     this.id = shape["id"];
   }
   clone() {
-    return new Circle(this.x + 30, this.y+30, this.r, this.fill);
+    let cir = new Circle();
+    cir.x = this.x + 30;
+    cir.y = this.y + 30;
+    cir.r = this.r;
+    cir.fill = this.fill;
+    return cir;
   }
 }
 

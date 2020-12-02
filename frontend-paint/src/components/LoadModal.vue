@@ -49,8 +49,8 @@ export default {
       formData.append("file", this.file);
       formData.append("ext", this.extension);
       PaintService.load(formData, this.extension)
-        .then(function() {
-          console.log("SUCCESS!!");
+        .then(Response => {
+          this.$root.$emit('loaded',Response.data);
         })
         .catch(function() {
           console.log("FAILURE LOADING FILE");

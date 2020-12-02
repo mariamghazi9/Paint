@@ -134,7 +134,6 @@ export default {
     // make mainDraw() fire every INTERVAL milliseconds
     setInterval(this.mainDraw, this.INTERVAL);
     // set our events. Up and down are for dragging,
-    // double click is for making new boxes
     this.canvas.onmousedown = this.mouseDown;
     this.canvas.onmouseup = this.mouseUp;
     this.canvas.ondblclick = this.addShape;
@@ -144,72 +143,50 @@ export default {
       var rect = new Rectangle();
       this.selectionHandles.push(rect);
     }
-    // add custom initialization here:
-    // add a large green rectangle
-    this.addRect(260, 70, 60, 65, "rgba(0,205,0,0.7)");
-    // add a green-blue rectangle
-    this.addRect(240, 120, 40, 40, "rgba(2,165,165,0.7)");
-    // add a smaller purple rectangle
-    this.addCircle(45, 60, 50, "rgba(150,150,250,0.7)");
-    /*var p1 = new Point(300, 25);
-    var p2 = new Point(250, 25);
-    var p3 = new Point(200, 55);*/
-    this.addSquare(300, 200, 70, "rgba(150,150,250,0.7)");
-    this.addCircle(45, 60, 80, "rgba(150,150,250,0.7)");
-
-
     this.$root.$on("flag", flag => {
       this.toolbarFlag = flag;
     });
     this.$root.$on('undoFlag', (undoFlag) => {
-      console.log(undoFlag);
-          this.undoRedo(undoFlag);
-        });
+      this.undoRedo(undoFlag);
+    });
     this.$root.$on("isFill", isFill => {
-      console.log(isFill);
       this.fill = isFill;
     });
     this.$root.$on("color", color => {
-      console.log(color);
       this.colorChosen = color;
     });
-    
     this.$root.$on("copy", () => {
-      console.log("cpy");
       this.copy()
     });
-    /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
-    Service.addShape(s).then(Response => {
-        s.id = Number(Response.data);
+    this.$root.$on("delete", () => {
+      this.delete();
     });
-    this.addRect(300, 90, 25, 25, "rgba(150,150,250,0.7)", 202);
-    this.addSquare(300,200,70,"rgba(150,150,250,0.7)", 203);
-    this.addLine(new Point(30,80),new Point(90,80),"rgba(150,150,250,0.7)", 205);
-    this.addSquare(400,355,89,"rgba(150,150,250,0.7)", 206);*/
+    this.$root.$on("loaded", data => {
+      this.loadShapes(data);
+    });
+    this.$root.$on("new", () => {
+      this.cleardata();
+    });
   },
   methods: {
-      loadShapes()
+    cleardata() {
+      this.isDrag = false;
+      this.isResizeDrag = false;
+      this.expectResize =  -1;
+      this.shapes = [];
+      this.selectionHandles = [];
+      this.selectedShape = null;
+      Service.createCanvas();
+      this.invalidate()
+    },
+    loadShapes(loadedData)
     {   
-        Service.getList().then(Response => {
- 
-        var loadedData=Response.data;
- 
-        console.log(loadedData)
- 
- 
-       for (var i=0;i<loadedData.length;i++)
+        this.cleardata();
+        for (var i=0;i<loadedData.length;i++)
         {
           const shape=loadedData[i]
-           this.shapes.push(this.deserializeShape(shape,shape.name))
- 
+          this.shapes.push(this.deserializeShape(shape,shape.name))
         }
-          //this.invalidate()
- 
-      })
- 
- 
- 
- 
     },
  
     deserializeShape(shape,name)
@@ -587,6 +564,23 @@ export default {
         Service.addShape(copiedShape).then(Response => {
         copiedShape.id = Number(Response.data);
         this.shapes.push(copiedShape);
+        
+        this.invalidate();
+      });
+      }
+    },
+    delete () {
+      if (this.selectedShape != null) {
+        let l = this.shapes.length;
+        for (var i = l - 1; i >= 0; i--) {
+          if (this.shapes[i] == this.selectedShape) {
+            this.shapes.splice(i, i+1);
+            break;
+          }
+        }
+        Service.deleteShape(this.selectedShape.id).then(() => {
+        
+        this.selectedShape = null;
         this.invalidate();
       });
       }

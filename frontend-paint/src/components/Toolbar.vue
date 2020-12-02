@@ -2,7 +2,7 @@
   <div>
     <v-container class="myContainer">
       <v-row justify="center">
-        <v-col cols="12" sm="6" md="3">
+        <v-col cols="15" sm="6" md="3">
           <v-text-field
             label="Canvas Name"
             placeholder="Untitled"
@@ -17,7 +17,14 @@
     <v-container>
       <v-toolbar dense floating src="../assets/colors.jpg" width="800">
         <v-spacer />
-
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on" @click="newCanvas">
+                <v-icon>mdi-file-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>New Canvas</span>
+          </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="$emit('load')">
@@ -48,7 +55,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="del" >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </template>
@@ -231,6 +238,12 @@ export default {
     },
     copy() {
       this.$root.$emit('copy');
+    },
+    del() {
+      this.$root.$emit('delete');
+    },
+    newCanvas() {
+      this.$root.$emit('new');
     }
   }
 };

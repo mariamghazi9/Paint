@@ -106,7 +106,10 @@ class Triangle {
     this.id = shape["id"];
   }
   clone() {
-    return new Triangle(new Point(this.p1.x, this.p1.y) , new Point(this.p2.x, this.p2.y), new Point(this.p3.x, this.p3.y), this.fill, this.x + 30, this.y +30);
+    let tri = new Triangle(new Point(this.p1.x, this.p1.y), new Point(this.p2.x, this.p2.y), new Point(this.p3.x, this.p3.y), this.fill);
+    tri.x = this.x + 30;
+    tri.y = this.y + 30;
+    return tri;
   }
 }
 

@@ -58,9 +58,7 @@ class UndoHandler {
         // ID to be deleted
         for (var i = l - 1; i >= 0; i--) {
             if (currentApp.shapes[i].id == id) {
-                console.log("Got it");
                 currentApp.shapes[i].setAttributes(shape);
-                console.log(currentApp.shapes[i]);
                 break;
             }
         }
