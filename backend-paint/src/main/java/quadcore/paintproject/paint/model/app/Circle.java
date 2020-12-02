@@ -8,7 +8,7 @@ public class Circle extends Shape {
     private float radius;
 
     protected Circle() {
-        super("circle");
+        //super("circle");
         this.radius = 1;
     }
 

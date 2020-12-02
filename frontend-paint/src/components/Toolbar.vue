@@ -177,7 +177,7 @@ export default {
       fileName: "",
       file: "",
       flag: "",
-      nameField: "untitled",
+      nameField: "Untitled",
       undoFlag:"",
       isFill: false
     };
@@ -203,15 +203,12 @@ export default {
       this.undoFlag = u;
       this.$root.$emit("undoFlag", this.undoFlag);
     },
-    fill(){
-      this.isFill=!this.isFill;
+    fill() {
+      this.isFill = !this.isFill;
       this.$root.$emit("isFill", this.isFill);
     },
     getColor() {
       this.$root.$emit("color", this.color);
-    },
-    save() {
-      PaintService.save("xml");
     },
     copy() {
       this.$root.$emit("copy");
@@ -221,7 +218,17 @@ export default {
     },
     newCanvas() {
       this.$root.$emit("new");
+      this.nameField = "Untitled";
+    },
+    setCanvasName() {
+      this.nameField = name;
+      this.$root.$emit("setCanvasName");
     }
+  },
+  mounted() {
+    this.$root.$on("nameChanged", newName => {
+      this.nameField = newName;
+    });
   }
 };
 </script>

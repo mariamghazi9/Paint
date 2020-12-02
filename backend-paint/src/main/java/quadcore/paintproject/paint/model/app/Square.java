@@ -8,7 +8,7 @@ public class Square extends Shape {
 
 
     protected Square() {
-        super("square");
+        //super("square");
         this.length = 1;
     }
 

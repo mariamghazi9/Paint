@@ -21,14 +21,14 @@ import java.io.*;
 public abstract class Shape implements Serializable {
 
     private String color;
-    private final String name;
+    //private final String name;
     private int id;
     private final Point point;
 
 
-    protected Shape(String name) {
+    protected Shape() {
         this.color = "#FFFFFF";
-        this.name = name.toLowerCase();
+        //this.name = name.toLowerCase();
         point = new Point(0, 0);
         this.id = App.getInstance().getCanvas().createID();
     }
@@ -83,10 +83,10 @@ public abstract class Shape implements Serializable {
         return color;
     }
 
-    @JsonGetter("name")
-    private String getName() {
-        return name;
-    }
+//    @JsonGetter("name")
+//    private String getName() {
+//        return name;
+//    }
 
     @JsonGetter("point")
     private int[] getPointAsArr() {

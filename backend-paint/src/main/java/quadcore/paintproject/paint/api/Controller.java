@@ -107,4 +107,9 @@ public class Controller {
     public void setName(@RequestParam String canvasName) {
         service.setCanvasName(canvasName);
     }
+
+    @RequestMapping(value = "/getName", method = RequestMethod.GET)
+    public String getName() {
+        return service.getCanvasName();
+    }
 }

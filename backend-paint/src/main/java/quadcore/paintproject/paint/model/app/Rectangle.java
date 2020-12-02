@@ -10,7 +10,7 @@ public class Rectangle extends Shape {
 
 
     protected Rectangle() {
-        super("rectangle");
+        //super("rectangle");
         height = 1;
         width = 1;
     }

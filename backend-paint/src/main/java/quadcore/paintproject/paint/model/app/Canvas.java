@@ -19,7 +19,7 @@ public class Canvas {
 
 
     public Canvas() {
-        this.name = "untitled";
+        this.name = "Untitled";
         this.shapes = new HashMap<>();
         this.factory = new ShapeFactory();
         this.undo = new Stack<>();

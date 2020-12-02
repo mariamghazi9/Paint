@@ -8,7 +8,7 @@ public class Ellipse extends Shape {
     private float radiusY;
 
     protected Ellipse() {
-        super("ellipse");
+        //super("ellipse");
         this.radiusX = 1;
         this.radiusY = 1;
     }

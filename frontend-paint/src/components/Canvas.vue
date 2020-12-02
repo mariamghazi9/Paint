@@ -142,8 +142,8 @@ export default {
     this.canvas.ondblclick = this.addShape;
     this.canvas.onmousemove = this.mouseMove;
     // set up the selection handle boxes
-    for (var i = 0; i < 8; i++) {
-      var rect = new Rectangle();
+    for (let i = 0; i < 8; i++) {
+      let rect = new Rectangle();
       this.selectionHandles.push(rect);
     }
     this.$root.$on("flag", flag => {
@@ -169,11 +169,11 @@ export default {
     });
     this.$root.$on("new", () => {
       Service.createCanvas();
-      this.cleardata();
+      this.clearData();
     });
   },
   methods: {
-    cleardata() {
+    clearData() {
       this.isDrag = false;
       this.isResizeDrag = false;
       this.expectResize = -1;
@@ -182,17 +182,17 @@ export default {
       this.invalidate();
     },
     loadShapes(loadedData) {
-      this.cleardata();
-      for (var i = 0; i < loadedData.length; i++) {
+      this.clearData();
+      for (let i = 0; i < loadedData.length; i++) {
         const shape = loadedData[i];
-        this.shapes.push(this.deserializeShape(shape, shape.name));
+        this.shapes.push(this.deserializeShape(shape, shape.type));
       }
     },
     deserializeShape(shape, name) {
-      var point = shape.point;
+      let point = shape.point;
       switch (name) {
         case "circle": {
-          var circle = new Circle();
+          let circle = new Circle();
           circle.fill = shape.color;
           circle.r = shape.radius;
           circle.x = point[0];
@@ -201,7 +201,7 @@ export default {
           return circle;
         }
         case "rectangle": {
-          var rectangle = new Rectangle();
+          let rectangle = new Rectangle();
           rectangle.fill = shape.color;
           rectangle.w = shape.width;
           rectangle.h = shape.height;
@@ -212,12 +212,12 @@ export default {
           return rectangle;
         }
         case "line": {
-          var line = new Line();
+          let line = new Line();
           line.fill = shape.color;
-          p1 = shape.point;
-          p2 = shape.end;
-          var start = new Point(p1[0], p1[1]);
-          var end = new Point(p2[0], p2[1]);
+          let p1 = shape.point;
+          let p2 = shape.end;
+          let start = new Point(p1[0], p1[1]);
+          let end = new Point(p2[0], p2[1]);
           line.p1 = start;
           line.p2 = end;
           line.id = shape.id;
@@ -225,10 +225,10 @@ export default {
         }
 
         case "ellipse": {
-          var ellipse = new Ellipse();
+          let ellipse = new Ellipse();
           ellipse.fill = shape.color;
-          ellipse.radius_X = shape.radiusX;
-          ellipse.radius_Y = shape.radiusY;
+          ellipse.radius_x = shape.radiusX;
+          ellipse.radius_y = shape.radiusY;
           point = shape.point;
           ellipse.x = point[0];
           ellipse.y = point[1];
@@ -237,13 +237,12 @@ export default {
         }
 
         case "triangle": {
-          var triangle = new Triangle();
+          let triangle = new Triangle();
           triangle.fill = shape.color;
-          var points = shape.points;
-          var p1 = new Point(points[0], points[1]);
-          var p2 = new Point(points[2], points[3]);
-          var p3 = new Point(points[4], points[5]);
-          triangle.p1 = p1;
+          triangle.p1 = new Point(shape.point[0], shape.point[1]);
+          let points = shape.points;
+          let p2 = new Point(points[0], points[1]);
+          let p3 = new Point(points[2], points[3]);
           triangle.p2 = p2;
           triangle.p3 = p3;
           triangle.id = shape.id;
@@ -251,7 +250,7 @@ export default {
         }
 
         case "square": {
-          var square = new Square();
+          let square = new Square();
           square.fill = shape.color;
           square.width = shape.length;
           point = shape.point;
@@ -263,7 +262,7 @@ export default {
       }
     },
     addRect(x, y, w, h, fill) {
-      var rect = new Rectangle();
+      let rect = new Rectangle();
       rect.x = x;
       rect.y = y;
       rect.w = w;
@@ -274,7 +273,7 @@ export default {
       return rect;
     },
     addCircle(x, y, r, fill) {
-      var cir = new Circle();
+      let cir = new Circle();
       cir.x = x;
       cir.y = y;
       cir.r = r;
@@ -284,7 +283,7 @@ export default {
       return cir;
     },
     addEllipse(x, y, rx, ry, fill) {
-      var ell = new Ellipse();
+      let ell = new Ellipse();
       ell.x = x;
       ell.y = y;
       ell.radius_x = rx;
@@ -295,19 +294,19 @@ export default {
       return ell;
     },
     addTriangle(p1, p2, p3, fill) {
-      var triangle = new Triangle(p1, p2, p3, fill);
+      let triangle = new Triangle(p1, p2, p3, fill);
       this.shapes.push(triangle);
       this.invalidate();
       return triangle;
     },
     addLine(p1, p2, fill) {
-      var line = new Line(p1, p2, fill);
+      let line = new Line(p1, p2, fill);
       this.shapes.push(line);
       this.invalidate();
       return line;
     },
     addSquare(x, y, length, fill) {
-      var square = new Square(x, y, length, fill);
+      let square = new Square(x, y, length, fill);
       this.shapes.push(square);
       this.invalidate();
       return square;
@@ -323,8 +322,8 @@ export default {
       if (this.canvasValid === false) {
         this.clear(this.ctx);
         // draw all boxes
-        var l = this.shapes.length;
-        for (var i = 0; i < l; i++) {
+        let l = this.shapes.length;
+        for (let i = 0; i < l; i++) {
           this.shapes[i].draw(this.ctx, this);
         }
         this.canvasValid = true;
@@ -348,11 +347,11 @@ export default {
       this.getMouse(e);
       // if there's a selection see if we grabbed one of the selection handles
       if (this.selectedShape !== null && !this.isResizeDrag) {
-        for (var i = 0; i < 8; i++) {
+        for (let i = 0; i < 8; i++) {
           // 0  1  2
           // 3     4
           // 5  6  7
-          var cur = this.selectionHandles[i];
+          let cur = this.selectionHandles[i];
           // we dont need to use the ghost context because
           // selection handles will always be rectangles
           if (
@@ -408,12 +407,12 @@ export default {
         return;
       }
       this.clear(this.gctx);
-      var l = this.shapes.length;
-      for (var i = l - 1; i >= 0; i--) {
+      let l = this.shapes.length;
+      for (let i = l - 1; i >= 0; i--) {
         // draw shape onto ghost context
         this.shapes[i].draw(this.gctx, "black");
         // get image data at the mouse x,y pixel
-        var imageData = this.gctx.getImageData(
+        let imageData = this.gctx.getImageData(
           this.mouse_x,
           this.mouse_y,
           1,
@@ -427,7 +426,7 @@ export default {
           this.selectedShape.x = this.mouse_x - this.offset_x;
           this.selectedShape.y = this.mouse_y - this.offset_y;
           this.isDrag = true;
-          if (this.fill && this.selectedShape != null) {
+          if (this.fill) {
             this.selectedShape.fill = this.colorChosen;
           }
           this.invalidate();
@@ -435,7 +434,7 @@ export default {
           return;
         }
       }
-      // havent returned means we have selected nothing
+      // haven't returned means we have selected nothing
       this.selectedShape = null;
       // clear the ghost canvas for next time
       this.clear(this.gctx);
@@ -452,7 +451,7 @@ export default {
     },
     addShape(e) {
       this.getMouse(e);
-      var addedShape;
+      let addedShape;
 
       switch (this.toolbarFlag) {
         case 1:
@@ -517,7 +516,7 @@ export default {
     // Sets mouse_x,mouse_y to the mouse position relative to the canvas
     // unfortunately this can be tricky, we have to worry about padding and borders
     getMouse(e) {
-      var element = this.canvas,
+      let element = this.canvas,
         offsetX = 0,
         offsetY = 0;
       if (element.offsetParent) {
@@ -560,7 +559,7 @@ export default {
     },
     copy() {
       if (this.selectedShape != null) {
-        var copiedShape = this.selectedShape.clone();
+        let copiedShape = this.selectedShape.clone();
         Service.addShape(copiedShape).then(Response => {
           copiedShape.id = Number(Response.data);
           this.shapes.push(copiedShape);
@@ -571,7 +570,7 @@ export default {
     delete() {
       if (this.selectedShape != null) {
         let l = this.shapes.length;
-        for (var i = l - 1; i >= 0; i--) {
+        for (let i = l - 1; i >= 0; i--) {
           if (this.shapes[i] === this.selectedShape) {
             this.shapes.splice(i, i + 1);
             break;

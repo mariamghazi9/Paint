@@ -11,7 +11,7 @@ public class Line extends Shape {
 
 
     protected Line() {
-        super("line");
+        //super("line");
         this.end = new Point(1, 1);
     }
 

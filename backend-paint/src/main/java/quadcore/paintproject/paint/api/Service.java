@@ -4,6 +4,7 @@ import quadcore.paintproject.paint.model.app.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -122,6 +123,9 @@ public class Service {
         canvas.setName(name);
     }
 
+    protected String getCanvasName() {
+        return canvas.getName();
+    }
 
     private int setCircle(Shape myShape, Map<String, Object> shape) {
         Circle circle = (Circle) myShape;
