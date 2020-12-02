@@ -34,9 +34,9 @@ export default {
   name: "Canvas",
   data() {
     return {
-      colorChosen:"",
+      colorChosen: "",
       //color chosen from colorpicker
-      fill:false,
+      fill: false,
       //check if fill button is clicked
       toolbarFlag: -1,
       //to save the flag coming from toolbar to choose the shape to be drawn
@@ -149,7 +149,7 @@ export default {
     this.$root.$on("flag", flag => {
       this.toolbarFlag = flag;
     });
-    this.$root.$on('undoFlag', (undoFlag) => {
+    this.$root.$on("undoFlag", undoFlag => {
       this.undoRedo(undoFlag);
     });
     this.$root.$on("isFill", isFill => {
@@ -159,7 +159,7 @@ export default {
       this.colorChosen = color;
     });
     this.$root.$on("copy", () => {
-      this.copy()
+      this.copy();
     });
     this.$root.$on("delete", () => {
       this.delete();
@@ -176,18 +176,16 @@ export default {
     cleardata() {
       this.isDrag = false;
       this.isResizeDrag = false;
-      this.expectResize =  -1;
+      this.expectResize = -1;
       this.shapes = [];
       this.selectedShape = null;
-      this.invalidate()
+      this.invalidate();
     },
-    loadShapes(loadedData)
-    {   
-      this.cleardata()
-      for (var i=0;i<loadedData.length;i++)
-      {
-        const shape=loadedData[i]
-        this.shapes.push(this.deserializeShape(shape,shape.name))
+    loadShapes(loadedData) {
+      this.cleardata();
+      for (var i = 0; i < loadedData.length; i++) {
+        const shape = loadedData[i];
+        this.shapes.push(this.deserializeShape(shape, shape.name));
       }
     },
     deserializeShape(shape,name)
@@ -230,48 +228,8 @@ export default {
         line.id = shape.id;
         return line
       }
-
-      case "ellipse":
-      {
-        var ellipse=new Ellipse()
-        ellipse.fill=shape.color
-        ellipse.radius_X=shape.radiusX
-        ellipse.radius_Y=shape.radiusY
-        point=shape.point
-        ellipse.x=point[0]
-        ellipse.y=point[1]
-        ellipse.id = shape.id;
-        return ellipse
-      }
-
-      case "triangle":
-      {
-        var triangle=new Triangle()
-        triangle.fill=shape.color
-        var points=shape.points
-        var p1=new Point(points[0],points[1])
-        var p2=new Point(points[2],points[3])
-        var p3=new Point(points[4],points[5])
-        triangle.p1=p1
-        triangle.p2=p2
-        triangle.p3=p3
-        triangle.id = shape.id;
-        return triangle
-      }
-
-      case "square":
-      {
-        var square=new Square()
-        square.fill=shape.color
-        square.width=shape.length
-        point=shape.point
-        square.x=point[0]
-        square.y=point[1]
-        square.id = shape.id;
-        return square
-      }
-    }
-  },
+     },
+    
     addRect(x, y, w, h, fill) {
       var rect = new Rectangle();
       rect.x = x;
@@ -474,8 +432,8 @@ export default {
           break;
         case 2:
           addedShape = this.addRect(
-            this.mouse_x-30,
-            this.mouse_y-20,
+            this.mouse_x - 30,
+            this.mouse_y - 20,
             60,
             40,
             this.colorChosen
@@ -491,16 +449,16 @@ export default {
           break;
         case 4:
           addedShape = this.addSquare(
-            this.mouse_x-20,
-            this.mouse_y-20,
+            this.mouse_x - 20,
+            this.mouse_y - 20,
             40,
             this.colorChosen
           );
           break;
         case 5:
           addedShape = this.addTriangle(
-            new Point(this.mouse_x - 30, this.mouse_y+30),
-            new Point(this.mouse_x + 30, this.mouse_y+30),
+            new Point(this.mouse_x - 30, this.mouse_y + 30),
+            new Point(this.mouse_x + 30, this.mouse_y + 30),
             new Point(this.mouse_x, this.mouse_y - 50),
             this.colorChosen
           );
@@ -515,9 +473,9 @@ export default {
           );
           break;
       }
-      if (this.toolbarFlag != -1) {
+      if (this.toolbarFlag !== -1) {
         Service.addShape(addedShape).then(Response => {
-        addedShape.id = Number(Response.data);
+          addedShape.id = Number(Response.data);
         });
       }
     },
@@ -545,51 +503,52 @@ export default {
       this.mouse_y = e.pageY - offsetY;
     },
     undoRedo(isUndo) {
-      Service.undoRedo(isUndo).then(Response => {
-        switch (Response.data["type"]) {
-          case "DELETE":
-            UndoHandler.undoByDelete(Response.data["shape"]["id"], this);
-            break;
-          case "EDIT":
-            UndoHandler.undoByEditing(Response.data["shape"], this);
-            break;
-          case "ADD":
-            UndoHandler.undoByAdding(
-              Response.data["shape"]["type"],
-              Response.data["shape"],
-              this
-            );
-            break;
-        }
-        this.invalidate();
-      }).catch(() => {
-        console.log("No more");
-      });
+      Service.undoRedo(isUndo)
+        .then(Response => {
+          switch (Response.data["type"]) {
+            case "DELETE":
+              UndoHandler.undoByDelete(Response.data["shape"]["id"], this);
+              break;
+            case "EDIT":
+              UndoHandler.undoByEditing(Response.data["shape"], this);
+              break;
+            case "ADD":
+              UndoHandler.undoByAdding(
+                Response.data["shape"]["type"],
+                Response.data["shape"],
+                this
+              );
+              break;
+          }
+          this.invalidate();
+        })
+        .catch(() => {
+          console.log("No more");
+        });
     },
-    copy () {
+    copy() {
       if (this.selectedShape != null) {
         var copiedShape = this.selectedShape.clone();
         Service.addShape(copiedShape).then(Response => {
-        copiedShape.id = Number(Response.data);
-        this.shapes.push(copiedShape);
-        this.invalidate();
-      });
+          copiedShape.id = Number(Response.data);
+          this.shapes.push(copiedShape);
+          this.invalidate();
+        });
       }
     },
-    delete () {
+    delete() {
       if (this.selectedShape != null) {
         let l = this.shapes.length;
         for (var i = l - 1; i >= 0; i--) {
-          if (this.shapes[i] == this.selectedShape) {
-            this.shapes.splice(i, i+1);
+          if (this.shapes[i] === this.selectedShape) {
+            this.shapes.splice(i, i + 1);
             break;
           }
         }
         Service.deleteShape(this.selectedShape.id).then(() => {
-        
-        this.selectedShape = null;
-        this.invalidate();
-      });
+          this.selectedShape = null;
+          this.invalidate();
+        });
       }
     }
   }

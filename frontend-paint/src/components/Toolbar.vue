@@ -18,13 +18,13 @@
       <v-toolbar dense floating src="../assets/colors.jpg">
         <v-spacer />
         <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click="newCanvas">
-                <v-icon>mdi-file-outline</v-icon>
-              </v-btn>
-            </template>
-            <span>New Canvas</span>
-          </v-tooltip>
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="newCanvas">
+              <v-icon>mdi-file-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>New Canvas</span>
+        </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn icon v-on="on" @click="$emit('load')">
@@ -55,7 +55,7 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" @click="del" >
+            <v-btn icon v-on="on" @click="del">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </template>
@@ -184,30 +184,6 @@ export default {
   },
 
   methods: {
-    pickFile() {
-      this.$refs.file.click();
-    },
-    onFilePicked(e) {
-      const files = e.target.files;
-      if (files[0] !== undefined) {
-        this.fileName = files[0].name;
-        if (this.fileName.lastIndexOf(".") <= 0) {
-          return;
-        }
-        const fr = new FileReader();
-        fr.readAsDataURL(files[0]);
-        fr.addEventListener("load", () => {
-          this.file = files[0]; // this is a file that can be sent to server...
-          this.loadCanvas(this.file);
-        });
-      } else {
-        this.fileName = "";
-        this.file = "";
-      }
-    },
-    loadCanvas(file) {
-      PaintService.load(file);
-    },
     saveJSON() {
       PaintService.save("json");
     },
@@ -229,22 +205,22 @@ export default {
     },
     fill(){
       this.isFill=!this.isFill;
-      this.$root.$emit('isFill',this.isFill);
+      this.$root.$emit("isFill", this.isFill);
     },
-    getColor(){
-      this.$root.$emit('color',this.color);
+    getColor() {
+      this.$root.$emit("color", this.color);
     },
     save() {
       PaintService.save("xml");
     },
     copy() {
-      this.$root.$emit('copy');
+      this.$root.$emit("copy");
     },
     del() {
-      this.$root.$emit('delete');
+      this.$root.$emit("delete");
     },
     newCanvas() {
-      this.$root.$emit('new');
+      this.$root.$emit("new");
     }
   }
 };
