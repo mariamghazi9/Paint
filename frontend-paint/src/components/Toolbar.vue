@@ -136,6 +136,7 @@
           <span>Line</span>
         </v-tooltip>
             </v-btn-toggle>
+        <v-btn-toggle  color="dark" dense group>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn icon v-on="on" @click="fill()">
@@ -144,7 +145,7 @@
             </template>
             <span>Fill</span>
           </v-tooltip>
-        
+        </v-btn-toggle>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn :color="color" v-on="on">
@@ -178,7 +179,7 @@ export default {
       flag: "",
       nameField: "untitled",
       undoFlag:"",
-      isFill:""
+      isFill: false
     };
   },
 
@@ -227,7 +228,7 @@ export default {
       this.$root.$emit("undoFlag", this.undoFlag);
     },
     fill(){
-      this.isFill=true;
+      this.isFill=!this.isFill;
       this.$root.$emit('isFill',this.isFill);
     },
     getColor(){
