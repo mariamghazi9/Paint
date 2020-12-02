@@ -1,3 +1,4 @@
+import Point from "./Point";
 class Line{
     constructor(p1,p2,fill)
     {
@@ -84,6 +85,9 @@ class Line{
       this.x=0;
       this.y=0;
       this.id = shape["id"];
+    }
+    clone() {
+      return new Line(new Point(this.p1.x + 30, this.p1.y + 30), new Point(this.p2.x + 30, this.p2.y + 30), this.fill);
     }
 }
 export default Line;

@@ -36,9 +36,9 @@ export default {
     return {
       colorChosen:"",
       //color chosen from colorpicker
-      fill:"",
+      fill:false,
       //check if fill button is clicked
-      toolbarFlag: "",
+      toolbarFlag: -1,
       //to save the flag coming from toolbar to choose the shape to be drawn
       shapes: [],
       // Array to carry the selection handles (drag boxes) for each shape selection
@@ -174,6 +174,10 @@ export default {
       this.colorChosen = color;
     });
     
+    this.$root.$on("copy", () => {
+      console.log("cpy");
+      this.copy()
+    });
     /*var s = this.addTriangle(new Point(300, 25), new Point(250, 25), new Point(200, 55), "rgba(150,150,250,0.7)");
     Service.addShape(s).then(Response => {
         s.id = Number(Response.data);
@@ -209,84 +213,81 @@ export default {
     },
  
     deserializeShape(shape,name)
-  {
+    {
      switch (name)
      {
-       case "circle":
-         {
-          var circle=new Circle()
-          circle.fill=shape.color
-          circle.r=shape.radius
-          var point=shape.point
-          circle.x=point[0]
-          circle.y=point[1]
-          return circle
-         }
- 
-         case "rectangle":
-          {
-           var rectangle=new Rectangle()
-           rectangle.fill=shape.color
-           rectangle.w=shape.width
-           rectangle.h=shape.height
-            point=shape.point
-           rectangle.x=point[0]
-           rectangle.y=point[1]
-           return rectangle
-          }
-          case "line":
-            {
-             var line=new Line()
-             line.fill=shape.color
-              p1=shape.point
-              p2=shape.end
-             var start= new Point(p1[0],p1[1])
-             var end= new Point(p2[0],p2[1])
-             line.p1=start
-             line.p2=end
-             return line
-            }
- 
-             case "ellipse":
-            {
-              var ellipse=new Ellipse()
-              ellipse.fill=shape.color
-              ellipse.radius_X=shape.radiusX
-              ellipse.radius_Y=shape.radiusY
-              point=shape.point
-              ellipse.x=point[0]
-              ellipse.y=point[1]
-              return ellipse
-            }
- 
-             case "triangle":
-            {
-              var triangle=new Triangle()
-              triangle.fill=shape.color
-              var points=shape.points
-              var p1=new Point(points[0],points[1])
-              var p2=new Point(points[2],points[3])
-              var p3=new Point(points[4],points[5])
-              triangle.p1=p1
-              triangle.p2=p2
-              triangle.p3=p3
- 
-              return triangle
-            }
- 
-            case "square":
-            {
-               var square=new Square()
-               square.fill=shape.color
-               square.width=shape.length
-               point=shape.point
-               square.x=point[0]
-               square.y=point[1]
-               return square
-            }
- 
- 
-     }
+      case "circle":
+      {
+      var circle=new Circle()
+      circle.fill=shape.color
+      circle.r=shape.radius
+      var point=shape.point
+      circle.x=point[0]
+      circle.y=point[1]
+      return circle
+      }
+      case "rectangle":
+      {
+        var rectangle=new Rectangle()
+        rectangle.fill=shape.color
+        rectangle.w=shape.width
+        rectangle.h=shape.height
+        point=shape.point
+        rectangle.x=point[0]
+        rectangle.y=point[1]
+        return rectangle
+      }
+      case "line":
+      {
+        var line=new Line()
+        line.fill=shape.color
+        p1=shape.point
+        p2=shape.end
+        var start= new Point(p1[0],p1[1])
+        var end= new Point(p2[0],p2[1])
+        line.p1=start
+        line.p2=end
+        return line
+      }
+
+      case "ellipse":
+      {
+        var ellipse=new Ellipse()
+        ellipse.fill=shape.color
+        ellipse.radius_X=shape.radiusX
+        ellipse.radius_Y=shape.radiusY
+        point=shape.point
+        ellipse.x=point[0]
+        ellipse.y=point[1]
+        return ellipse
+      }
+
+      case "triangle":
+      {
+        var triangle=new Triangle()
+        triangle.fill=shape.color
+        var points=shape.points
+        var p1=new Point(points[0],points[1])
+        var p2=new Point(points[2],points[3])
+        var p3=new Point(points[4],points[5])
+        triangle.p1=p1
+        triangle.p2=p2
+        triangle.p3=p3
+
+        return triangle
+      }
+
+      case "square":
+      {
+        var square=new Square()
+        square.fill=shape.color
+        square.width=shape.length
+        point=shape.point
+        square.x=point[0]
+        square.y=point[1]
+        return square
+      }
+    }
   },
     addRect(x, y, w, h, fill) {
       var rect = new Rectangle();
@@ -365,7 +366,6 @@ export default {
         // something is changing position so we better invalidate the canvas!
         this.invalidate();
       } else if (this.isResizeDrag) {
-        // time ro resize!
         // 0  1  2
         // 3     4
         // 5  6  7
@@ -454,6 +454,9 @@ export default {
           this.selectedShape.x = this.mouse_x - this.offset_x;
           this.selectedShape.y = this.mouse_y - this.offset_y;
           this.isDrag = true;
+          if (this.fill && this.selectedShape != null) {
+            this.selectedShape.fill = this.colorChosen;
+          }
           this.invalidate();
           this.clear(this.gctx);
           return;
@@ -477,12 +480,13 @@ export default {
     addShape(e) {
       this.getMouse(e);
       var addedShape;
+
       switch (this.toolbarFlag) {
         case 1:
           addedShape = this.addLine(
             new Point(this.mouse_x - 30, this.mouse_y),
             new Point(this.mouse_x + 30, this.mouse_y),
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
         case 2:
@@ -491,7 +495,7 @@ export default {
             this.mouse_y,
             60,
             40,
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
         case 3:
@@ -499,7 +503,7 @@ export default {
             this.mouse_x,
             this.mouse_y,
             40,
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
         case 4:
@@ -507,7 +511,7 @@ export default {
             this.mouse_x,
             this.mouse_y,
             40,
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
         case 5:
@@ -515,7 +519,7 @@ export default {
             new Point(this.mouse_x - 30, this.mouse_y),
             new Point(this.mouse_x + 30, this.mouse_y),
             new Point(this.mouse_x, this.mouse_y - 50),
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
         case 6:
@@ -524,18 +528,15 @@ export default {
             this.mouse_y,
             60,
             40,
-            "rgba(220,205,65,0.7)"
+            this.colorChosen
           );
           break;
       }
-      Service.addShape(addedShape).then(Response => {
+      if (this.toolbarFlag != -1) {
+        Service.addShape(addedShape).then(Response => {
         addedShape.id = Number(Response.data);
-      });
-      /*var addedShape = this.addCircle(this.mouse_x , this.mouse_y, 50, "rgba(150,150,250,0.7)");
-      // Added the shape in the backend
-      Service.addShape(addedShape).then(Response => {
-        addedShape.id = Number(Response.data);
-      });*/
+        });
+      }
     },
     invalidate() {
       this.canvasValid = false;
@@ -579,6 +580,16 @@ export default {
         }
         this.invalidate();
       });
+    },
+    copy () {
+      if (this.selectedShape != null) {
+        var copiedShape = this.selectedShape.clone();
+        Service.addShape(copiedShape).then(Response => {
+        copiedShape.id = Number(Response.data);
+        this.shapes.push(copiedShape);
+        this.invalidate();
+      });
+      }
     }
   }
 };

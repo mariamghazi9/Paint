@@ -126,6 +126,9 @@ class Rectangle {
     this.fill = shape["color"];
     this.id = shape["id"];
   }
+  clone() {
+    return new Rectangle(this.x + 30, this.y + 30, this.w, this.h, this.fill);
+  }
 }
 
 export default Rectangle;

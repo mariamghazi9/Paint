@@ -76,7 +76,6 @@ public class Controller {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()).body(arr);
     }
 
-    // TODO load
     @RequestMapping(value = "/load", method = RequestMethod.POST)
     public List<Shape> load(@RequestPart(name = "file") MultipartFile multipartFile, @RequestPart(name = "ext") String ext) {
         System.out.println(ext);

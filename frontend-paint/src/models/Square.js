@@ -82,5 +82,8 @@ class Square{
       this.fill = shape["color"];
       this.id = shape["id"];
     }
+    clone() {
+      return new Square(this.x + 30, this.y + 30, this.length, this.fill);
+    }
 }
 export default Square;

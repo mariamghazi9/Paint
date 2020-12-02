@@ -120,6 +120,9 @@ class Ellipse {
     this.fill = shape["color"];
     this.id = shape["id"];
   }
+  clone() {
+    return new Ellipse(this.x + 30, this.y+30, this.radius_x, this.radius_y, this.fill);
+  }
 }
 
 export default Ellipse;

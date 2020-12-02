@@ -102,6 +102,9 @@ class Circle {
     this.fill = shape["color"];
     this.id = shape["id"];
   }
+  clone() {
+    return new Circle(this.x + 30, this.y+30, this.r, this.fill);
+  }
 }
 
 export default Circle;

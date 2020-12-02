@@ -52,12 +52,12 @@
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </template>
-          <span>Delete Canvas</span>
+          <span>Delete</span>
         </v-tooltip>
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on">
+            <v-btn icon v-on="on" @click="copy">
               <v-icon>mdi-content-copy</v-icon>
             </v-btn>
           </template>
@@ -222,13 +222,15 @@ export default {
     fill(){
       this.isFill=true;
       this.$root.$emit('isFill',this.isFill);
-
     },
     getColor(){
       this.$root.$emit('color',this.color);
     },
     save() {
       PaintService.save("xml");
+    },
+    copy() {
+      this.$root.$emit('copy');
     }
   }
 };
