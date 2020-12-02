@@ -85,6 +85,9 @@ export default {
       selectedCursor: "auto"
     };
   },
+  created() {
+    Service.createCanvas();
+  },
   mounted() {
     // Canvas initialization
     this.canvas = document.getElementById("canvas");
@@ -187,7 +190,6 @@ export default {
         this.shapes.push(this.deserializeShape(shape,shape.name))
       }
     },
- 
     deserializeShape(shape,name)
     {
       var point=shape.point
