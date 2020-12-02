@@ -188,48 +188,80 @@ export default {
         this.shapes.push(this.deserializeShape(shape, shape.name));
       }
     },
-    deserializeShape(shape,name)
-    {
-      var point=shape.point
-     switch (name)
-     {  
-      case "circle":
-      {
-        var circle=new Circle()
-        circle.fill=shape.color
-        circle.r=shape.radius
-        circle.x=point[0]
-        circle.y=point[1]
-        circle.id = shape.id;
-        return circle
+    deserializeShape(shape, name) {
+      var point = shape.point;
+      switch (name) {
+        case "circle": {
+          var circle = new Circle();
+          circle.fill = shape.color;
+          circle.r = shape.radius;
+          circle.x = point[0];
+          circle.y = point[1];
+          circle.id = shape.id;
+          return circle;
+        }
+        case "rectangle": {
+          var rectangle = new Rectangle();
+          rectangle.fill = shape.color;
+          rectangle.w = shape.width;
+          rectangle.h = shape.height;
+          point = shape.point;
+          rectangle.x = point[0];
+          rectangle.y = point[1];
+          rectangle.id = shape.id;
+          return rectangle;
+        }
+        case "line": {
+          var line = new Line();
+          line.fill = shape.color;
+          p1 = shape.point;
+          p2 = shape.end;
+          var start = new Point(p1[0], p1[1]);
+          var end = new Point(p2[0], p2[1]);
+          line.p1 = start;
+          line.p2 = end;
+          line.id = shape.id;
+          return line;
+        }
+
+        case "ellipse": {
+          var ellipse = new Ellipse();
+          ellipse.fill = shape.color;
+          ellipse.radius_X = shape.radiusX;
+          ellipse.radius_Y = shape.radiusY;
+          point = shape.point;
+          ellipse.x = point[0];
+          ellipse.y = point[1];
+          ellipse.id = shape.id;
+          return ellipse;
+        }
+
+        case "triangle": {
+          var triangle = new Triangle();
+          triangle.fill = shape.color;
+          var points = shape.points;
+          var p1 = new Point(points[0], points[1]);
+          var p2 = new Point(points[2], points[3]);
+          var p3 = new Point(points[4], points[5]);
+          triangle.p1 = p1;
+          triangle.p2 = p2;
+          triangle.p3 = p3;
+          triangle.id = shape.id;
+          return triangle;
+        }
+
+        case "square": {
+          var square = new Square();
+          square.fill = shape.color;
+          square.width = shape.length;
+          point = shape.point;
+          square.x = point[0];
+          square.y = point[1];
+          square.id = shape.id;
+          return square;
+        }
       }
-      case "rectangle":
-      {
-        var rectangle=new Rectangle()
-        rectangle.fill=shape.color
-        rectangle.w=shape.width
-        rectangle.h=shape.height
-        point=shape.point
-        rectangle.x=point[0]
-        rectangle.y=point[1]
-        rectangle.id = shape.id;
-        return rectangle
-      }
-      case "line":
-      {
-        var line=new Line()
-        line.fill=shape.color
-        p1=shape.point
-        p2=shape.end
-        var start= new Point(p1[0],p1[1])
-        var end= new Point(p2[0],p2[1])
-        line.p1=start
-        line.p2=end
-        line.id = shape.id;
-        return line
-      }
-     },
-    
+    },
     addRect(x, y, w, h, fill) {
       var rect = new Rectangle();
       rect.x = x;
