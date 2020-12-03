@@ -103,6 +103,9 @@ class PaintService {
       }
     });
   }
+  getName() {
+    return axios.get(API_URL + "/getName");
+  }
 }
 
 export default new PaintService();

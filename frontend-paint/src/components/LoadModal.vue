@@ -14,14 +14,13 @@
               v-on:change="handleFileUpload()"
             />
           </div>
-
-          <div class="modal-footer">
+          <div class="modal-footer" style="margin-top: 10%">
             <slot name="footer">
-              <v-btn icon v-on:click="submitFile()">
+              <v-btn text color="primary" v-on:click="submitFile()">
                 Load
               </v-btn>
               <br />
-              <v-btn id="close" icon @click="$emit('close')">
+              <v-btn id="close" text color="error" @click="$emit('close')">
                 Cancel
               </v-btn>
             </slot>
@@ -50,6 +49,9 @@ export default {
       formData.append("ext", this.extension);
       PaintService.load(formData, this.extension)
         .then(Response => {
+          PaintService.getName().then( response => {
+            this.$root.$emit("nameChanged", response.data);
+          });
           this.$root.$emit('loaded',Response.data);
         })
         .catch(function() {
@@ -58,7 +60,7 @@ export default {
       document.getElementById("close").click();
     },
     handleFileUpload() {
-      if (this.$refs.file.files.length == 0) {
+      if (this.$refs.file.files.length === 0) {
         return
       }
       this.file = this.$refs.file.files[0];
