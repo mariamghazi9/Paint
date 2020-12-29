@@ -252,7 +252,7 @@ export default {
         case "square": {
           let square = new Square();
           square.fill = shape.color;
-          square.width = shape.length;
+          square.length = shape.length;
           point = shape.point;
           square.x = point[0];
           square.y = point[1];
